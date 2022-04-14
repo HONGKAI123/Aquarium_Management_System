@@ -1,3 +1,15 @@
 # Aquarium-Management-System
-CMPE138 project
-Leo
+
+## Configuration
+
+### Database
+
+- User Name
+> `root`
+
+- Password
+> `hongkai`
+
+- port #
+
+> `3306`
