@@ -29,7 +29,41 @@
 
 #### 常见问题:
 
-`ValueError: Path not found or generated: PosixPath`
+- `ValueError: Path not found or generated: PosixPath`
+
+> 复制之后路径有问题
+
+> 方法:
+>
+> 1. [修改virtualenv 相关路径](https://stackoverflow.com/questions/6628476/renaming-a-virtualenv-folder-without-breaking-it)
+>
+> 2. 本机直接安装所有依赖
+>
+>    > `cd /path/to/Aquarium_Management_System/GUI`
+>    >
+>    > `pip3 install -r requirements.txt`
+>
+> 3. python 虚拟机安装依赖
+>
+>    1. 创建 virtualenv 后进入虚拟机, 执行 step. 2
+>
+>    2. 使用 pipenv `pipenv install -r /path/to/the/requirements.txt`
+>
+>       
+>
+>       注: python3 自带pipenv, 其已集成了 `virtualenv`,`pip`
+
+
+
+- `django.db.utils.OperationalError: (2002, "Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)")`
+
+> MYSQL daemon 没开
+
+> 方法:
+>
+> 电脑砸了吧,没用了.
+
+
 
 
 ## ~~API Doc~~
