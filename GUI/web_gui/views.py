@@ -30,11 +30,13 @@ def log_in(request):
     pwd = request.POST.get('pwd')
     print(user_name)
     print(pwd)
-    sql = "select * from "
-    pass
     # with connection.cursor() as cursor:
     with connection.cursor() as cursor:
         cursor.execute(r"SELECT * FROM animal")
         row = cursor.fetchall()
-    if row:
-        return render()
+
+    # if row:
+    if 0:
+        return render(request,'Director/director.html')
+    else:
+        return render(request,'Login/signup.html',{'error':'username or password wrong'})
