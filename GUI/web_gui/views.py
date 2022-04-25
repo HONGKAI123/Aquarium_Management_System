@@ -33,3 +33,8 @@ def log_in(request):
     sql = "select * from "
     pass
     # with connection.cursor() as cursor:
+    with connection.cursor() as cursor:
+        cursor.execute(r"SELECT * FROM animal")
+        row = cursor.fetchall()
+    if row:
+        return render()
