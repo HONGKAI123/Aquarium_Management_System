@@ -76,16 +76,18 @@ WSGI_APPLICATION = 'GUI.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # },
+    'default':{
+        'NAME': 'aquarium',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'root',
+        'PASSWORD': 'lucifer',
+        'HOST':'localhost',
+        'PORT':'3306',
     }
-    # 'default':{
-    #     'NAME': 'website',
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'USER': 'root',
-    #     'PASSWORD': 'lucifer'
-    # }
 
 }
 
