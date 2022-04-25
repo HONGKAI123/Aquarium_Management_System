@@ -27,6 +27,15 @@
 >  macOS 12.2.1
 >  anaconda3: python 3.8.8
 
+`which python3` 查看当前 python3 编辑器
+
+`pip3 list` 检查依赖包安装情况
+
+需要看到
+
+- Django
+- mysqlclient
+
 #### 常见问题:
 
 - `ValueError: Path not found or generated: PosixPath`
@@ -39,7 +48,7 @@
 >
 > 2. 本机直接安装所有依赖
 >
->    > `cd /path/to/Aquarium_Management_System/GUI`
+>    > `cd /path/to/Aquarium_Management_System`
 >    >
 >    > `pip3 install -r requirements.txt`
 >
@@ -48,8 +57,6 @@
 >    1. 创建 virtualenv 后进入虚拟机, 执行 step. 2
 >
 >    2. 使用 pipenv `pipenv install -r /path/to/the/requirements.txt`
->
->       
 >
 >       注: python3 自带pipenv, 其已集成了 `virtualenv`,`pip`
 
