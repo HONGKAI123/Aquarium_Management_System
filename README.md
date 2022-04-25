@@ -5,15 +5,16 @@
 ### Database
 
 - User Name
-> `root`
+  
+  > `root`
 
 - Password
-> `hongkai`
+  
+  > `hongkai`
 
 - port #
 
 > `3306`
-
 
 ## ~~API Doc~~
 
@@ -86,6 +87,11 @@ main_C-->facility_check
 main_A --> vmc[view maintenance schedule+mantain as a choice];
 vmc --> mantain[choose facility to clean ]
 ```
+
+
+
+### web 页面设计
+![web](./Main.png)
 
 #### 四大操作 增删改查
 
