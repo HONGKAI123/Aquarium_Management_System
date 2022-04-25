@@ -1,0 +1,71 @@
+* {
+  
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  body {
+    background-image: url("https://www.korvia.com/wp-content/uploads/2015/11/korvia-image-background-tnkr-signup-2.jpg");
+    height: 200px;
+   
+  }
+  
+  .login-form {
+    background: #fff;
+    width: 500px;
+    margin: 65px auto;
+    display: -webkit-box;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    box-shadow: 0 2px 25px rgba(0, 0, 0, 0.2);
+  }
+  .login-form h1 {
+    padding: 35px;
+    font-size: 50px;
+    font-weight: 500;
+    margin-left: 150px;
+  }
+  .login-form .content {
+    padding: 35px;
+    text-align: center;
+  }
+  .login-form .input-field {
+    padding: 12px 10px;
+  }
+  .login-form .input-field input {
+    font-size: 16px;
+    display: block;
+
+    width: 100%;
+    padding: 10px 1px;
+    border: 0;
+    border-bottom: 1px solid #747474;
+    outline: none;
+    -webkit-transition: all .2s;
+    transition: all .2s;
+  }
+  
+  
+  .login-form .action button {
+    width: 100%;
+    border: none;
+    padding: 18px;
+    font-family: 'Rubik', sans-serif;
+    cursor: pointer;
+   
+    background: #e8e9ec;
+    color: black;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 0;
+    letter-spacing: 0.2px;
+    outline: 0;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+  }
+  .login-form .action button:hover {
+    background: aqua;
+  }
+  
+  
