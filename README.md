@@ -10,11 +10,27 @@
 
 - Password
   
-  > `hongkai`
+  TBA
+
+> ~~`hongkai`~~
 
 - port #
 
 > `3306`
+
+## 运行
+
+已测试
+
+>  基本环境:
+
+>  macOS 12.2.1
+>  anaconda3: python 3.8.8
+
+#### 常见问题:
+
+`ValueError: Path not found or generated: PosixPath`
+
 
 ## ~~API Doc~~
 

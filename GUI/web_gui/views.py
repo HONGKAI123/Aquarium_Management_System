@@ -21,3 +21,15 @@ def welcome(request):
     #     sample[1].append(i)
     # print(sample)
     return render(request,'index.html',{'numbers':sample})
+
+def index(request):
+    return render(request,'Login/signup.html')
+
+def log_in(request):
+    user_name = request.POST.get('username')
+    pwd = request.POST.get('pwd')
+    print(user_name)
+    print(pwd)
+    sql = "select * from "
+    pass
+    # with connection.cursor() as cursor:
