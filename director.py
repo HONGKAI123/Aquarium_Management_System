@@ -1,4 +1,7 @@
 import mysql.connector
+import time
+
+from zmq import EVENT_LISTENING
 
 db = mysql.connector.connect(
     host ="localhost",
@@ -98,10 +101,26 @@ def fire_staff(st_ID):
 # Refresh facility/animals
 def refreshAll():
     try:
+        # maintance status set to false
         mycursor.execute("update facility_maint set facility_maint.maint_status= false;")
         db.commit()
+
+        # animal feed time set to 0
         mycursor.execute("update animal set animal.status = 0;")
         db.commit()
+
+        # create event_instance for a new day
+        localtime = time.localtime(time.time())
+        newdate= str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2]) # retrieve current date
+
+        mycursor.execute("select event.ev_ID from event;") # retrieve all events from event table
+        eventList = mycursor.fetchall() # array of all event ID
+
+        # insert each event to a new date in event_instance table
+        for i in eventList:
+            mycursor.execute("insert into event_instance values ('{event_ID}', '{date}', null);".format(event_ID=i[0],date=newdate))
+            db.commit()
+
         print("Success Update/Refresh")
     except:
         print("Fail to refresh")
@@ -122,4 +141,4 @@ def refreshAll():
 
 #fire_staff('733289255')
 
-#refreshAll()
+refreshAll()
