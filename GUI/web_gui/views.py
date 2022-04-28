@@ -35,6 +35,8 @@ def log_in(request):
         cursor.execute(r"SELECT * FROM animal")
         row = cursor.fetchall()
 
+    # todo
+    # todo miss select user from each table
     # if row:
     if 0:
         return render(request,'Director/director.html')
