@@ -20,7 +20,9 @@ def view_event(*arg): # type,start_date,end_date
             where type ='{type}' and (date between '{start_date}' and '{end_date}')\
                 order by attendance desc;".format(type=arg[0],start_date=arg[1],end_date=arg[2]))
     result=mycursor.fetchall()
-    print(result)
+    print("ev_ID        title        type             date                 attend")
+    for i in range(len(result)):
+            print(str(result[i])+"\n")
 
 # create new event
 def create_event(*arg):# ev_ID,title,type,overseer
@@ -37,24 +39,29 @@ def view_staff_report():
     for i in range(4):
         if(i==0):
             print("\n Curator Report \n")
+            print("curator   animal")
             mycursor.execute("select curator.name, animal.name\
 	            from curator join animal on curator.st_ID=animal.curator;")
         elif(i==1):
             print("\n Event Manager Report \n")
+            print("manager      event")
             mycursor.execute("select event_manager.name as mangaer_Name, event.title as event_title\
 	            from event_manager join event on event_manager.st_ID = event.overseer;")
         elif(i==2):
             print("\n Aquarist---Facility Report \n")
+            print("aquarist   facility")
             mycursor.execute("select aquarist.name as aquarist_Name, facility.name as facility_Name\
 	            from aquarist, facility, maintain\
                 where aquarist.st_ID=maintain.staff and maintain.facility = facility.fa_ID;")
         else:
             print("\n Acquarist---Event Report \n")
+            print("aquarist      event")
             mycursor.execute("select aquarist.name as aquarist_Name, event.title as event_Name\
 	            from aquarist, event, work_on\
                 where aquarist.st_ID = work_on.staff and work_on.event = event.ev_ID;")
         result = mycursor.fetchall()
-        print(result)
+        for i in range(len(result)):
+            print(str(result[i])+"\n")
 
 # Hire Staff
 def hire_staff(*arg): # role,st_ID,name,phone,email
@@ -125,6 +132,14 @@ def refreshAll():
     except:
         print("Fail to refresh")
 
+def selectTest(st_ID):
+    staffList=['aquarist','curator','event_manager','general_manager']
+    for i in range(4):
+        mycursor.execute("select st_ID, name from {staff} where st_ID='{st_ID}';".format(staff=staffList[i],st_ID=st_ID))
+        foundStaff = mycursor.fetchall() 
+        if(len(foundStaff) !=0):
+            print("In table {tableName} found ".format(tableName=staffList[i])+str(foundStaff))
+            return []
 ####################################################################### TESTING AREA ########################################################
 
 #mycursor.execute("select * from event where event.title='bad'")
@@ -132,6 +147,10 @@ def refreshAll():
 #view_event("performance","2022-05-03","2022-05-04")
 
 #mycursor.execute("select curator.name, animal.name from curator join animal on curator.st_ID=animal.curator;")
+#cursorArray = mycursor.fetchall()
+#print("Animal   Name")
+#for i in range(len(cursorArray)):
+#    print(str(cursorArray[i])+"\n")
 
 #view_staff_report()
 
@@ -142,3 +161,5 @@ def refreshAll():
 #fire_staff('733289255')
 
 # refreshAll()
+
+selectTest(733289255)
