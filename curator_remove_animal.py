@@ -34,6 +34,7 @@ def remove_animal(*arg):
 
 
 ########## Test
+"""
 user_id = '736289249'
 
 an_id = '0000000000' # test a nonsense value
@@ -67,3 +68,4 @@ remove_animal(user_id, an_id)
 cursor.execute("SELECT * FROM animal;")
 for i in cursor.fetchall():
     print(i)
+"""
