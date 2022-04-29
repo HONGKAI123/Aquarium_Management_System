@@ -4,7 +4,7 @@ use aquarium;
 
 create table aquarist
 	(st_ID		char(9),
-     hashed_pw	binary(64),
+     hashed_pw	binary(32),
      name		varchar(40),
      phone		char(9),
      email		varchar(40),
@@ -13,7 +13,7 @@ create table aquarist
     
 create table curator
 	(st_ID		char(9),
-     hashed_pw	binary(64),
+     hashed_pw	binary(32),
      name		varchar(40),
      phone		char(9),
      email		varchar(40),
@@ -22,7 +22,7 @@ create table curator
     
 create table event_manager
 	(st_ID		char(9),
-     hashed_pw	binary(64),
+     hashed_pw	binary(32),
      name		varchar(40),
      phone		char(9),
      email		varchar(40),
@@ -31,7 +31,7 @@ create table event_manager
     
 create table director
 	(st_ID		char(9),
-     hashed_pw	binary(64),
+     hashed_pw	binary(32),
      name		varchar(40),
      phone		char(9),
      email		varchar(40),
