@@ -29,7 +29,7 @@ create table event_manager
      primary key (st_ID)
     );
     
-create table general_manager
+create table director
 	(st_ID		char(9),
      hashed_pw	binary(64),
      name		varchar(40),
@@ -102,22 +102,23 @@ create table participate
      foreign key (animal) references animal(an_ID) on delete cascade
 	);
 
-insert into general_manager values ('517465989', NULL, 'Farnsworth', '5551234', 'farnsworth@aquarium.com');
 
-insert into event_manager values ('243910037', NULL, 'Leela', '5551235', 'leela@aquarium.com');
-insert into event_manager values ('218363685', NULL, 'Hermes', '5551236', 'hermes@aquarium.com');
+insert into director values ('517465989', md5(517465989), 'Farnsworth', '5551234', 'farnsworth@aquarium.com');
 
-insert into curator values ('736289249', NULL, 'Zoidberg', '5551237', 'zoidberg@aquarium.com');
-insert into curator values ('705628448', NULL, 'Amy', '5551238', 'amy@aquarium.com');
+insert into event_manager values ('243910037', md5(243910037), 'Leela', '5551235', 'leela@aquarium.com');
+insert into event_manager values ('218363685', md5(218363685), 'Hermes', '5551236', 'hermes@aquarium.com');
 
-insert into aquarist values ('914191383', NULL, 'Fry', '5551239', 'fry@aquarium.com');
-insert into aquarist values ('143705926', NULL, 'Bender', '5551240', 'bender@aquarium.com');
-insert into aquarist values ('315400662', NULL, 'Scruffy', '5551241', 'scruffy@aquarium.com');
-insert into aquarist values ('888748129', NULL, 'Cubert', '5551242', 'cubert@aquarium.com');
-insert into aquarist values ('689620370', NULL, 'Zapp', '5551243', 'zapp@aquarium.com');
-insert into aquarist values ('504236312', NULL, 'Kif', '5551244', 'kif@aquarium.com');
-insert into aquarist values ('987153744', NULL, 'Elzar', '5551245', 'elzar@aquarium.com');
-insert into aquarist values ('608059001', NULL, 'Flexo', '5551246', 'flexo@aquarium.com');
+insert into curator values ('736289249', md5(736289249), 'Zoidberg', '5551237', 'zoidberg@aquarium.com');
+insert into curator values ('705628448', md5(705628448), 'Amy', '5551238', 'amy@aquarium.com');
+
+insert into aquarist values ('914191383', md5(914191383), 'Fry', '5551239', 'fry@aquarium.com');
+insert into aquarist values ('143705926', md5(143705926), 'Bender', '5551240', 'bender@aquarium.com');
+insert into aquarist values ('315400662', md5(315400662), 'Scruffy', '5551241', 'scruffy@aquarium.com');
+insert into aquarist values ('888748129', md5(888748129), 'Cubert', '5551242', 'cubert@aquarium.com');
+insert into aquarist values ('689620370', md5(689620370), 'Zapp', '5551243', 'zapp@aquarium.com');
+insert into aquarist values ('504236312', md5(504236312), 'Kif', '5551244', 'kif@aquarium.com');
+insert into aquarist values ('987153744', md5(987153744), 'Elzar', '5551245', 'elzar@aquarium.com');
+insert into aquarist values ('608059001', md5(608059001), 'Flexo', '5551246', 'flexo@aquarium.com');
 
 
 insert into facility values ('100001', 'whale tank');
