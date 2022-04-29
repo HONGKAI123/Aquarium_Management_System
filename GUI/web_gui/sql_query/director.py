@@ -1,13 +1,12 @@
 import mysql.connector
 import time
 
-from zmq import EVENT_LISTENING
 
 db = mysql.connector.connect(
-    host ="localhost",
-    user="root",
-    passwd="root",
-    database = "aquarium"
+    host = 'localhost',
+    user = 'root',
+    password = 'lucifer',
+    database = 'aquarium'
 
 )
 
