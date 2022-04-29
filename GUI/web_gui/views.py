@@ -19,9 +19,7 @@ def welcome(request):
     # with connection.cursor() as cursor:
     #     cursor.execute(r"SELECT * FROM animal")
     #     row = cursor.fetchall()
-    temp = director.view_event('exhibit', '2022-05-02', '2022-05-04')
-    print(temp)
-    sample = temp;
+
     # sample = range(1,10)
     # sample = [[],[]]
     # for i in range(1,10):
@@ -30,9 +28,14 @@ def welcome(request):
     #     sample[1].append(i)
     # print(sample)
     # return render(request, 'index.html', {'numbers': sample})
+
+    #event test
+    temp = director.view_event('exhibit', '2022-05-02', '2022-05-04')
+    print(temp)
     test_data = [('101001', 'penguin exhibit', 'exhibit', datetime.date(2022, 5, 4), 130), ('101001', 'penguin exhibit', 'exhibit', datetime.date(2022, 5, 3), 120), ('101002', 'whale exhibit', 'exhibit', datetime.date(2022, 5, 4), 100)]
-    test_data_header = ['id','name','type','date']
-    return render(request,'Director/director.html',{"job_title":"fuck!","main_table":test_data,"main_table_header":test_data_header,})
+    test_data_header = ['id','name','type','date','attendence']
+    return render(request,'Director/director.html',{"job_title":"fuck!","main_table":test_data,"main_table_header":test_data_header,'page_title':'YO bitch'})
+
 
 
 def index(request):

@@ -1,29 +1,31 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>Login </title>
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Rubik:400,700'/>
-	<link rel="stylesheet"  href={% static 'Login/loginstyle.css' %}/>
+{% block title %}
+	Welcome To 138 Project
+{% endblock %}
 
-</head>
-<body>
-<div class="login-form">
-  <form action="/login/" method="post">
-	  {% csrf_token %}
-    <h1>Login</h1>
-    <div class="content">
-      <div class="input-field">
-        <input type="username" placeholder=" Username" autocomplete="nope" name = "username">
-      </div>
-      <div class="input-field">
-        <input type="password" placeholder=" Password" autocomplete="nope" name = "pwd">
-      </div>
+{% block stat %}
+	{% static 'Login/loginstyle.css' %}
+{% endblock %}
+{% block content %}
+	<body>
+	<div class="login-form">
+		<form action="/login/" method="post">
+			{% csrf_token %}
+			<h1>Login</h1>
+			<div class="content">
+				<div class="input-field">
+					<input type="username" placeholder=" Username" autocomplete="nope" name="username">
+				</div>
+				<div class="input-field">
+					<input type="password" placeholder=" Password" autocomplete="nope" name="pwd">
+				</div>
 
-    </div>
-    <div class="action">
-      <button>Sign in</button>
-    </div>
-  </form>
-</div>
+			</div>
+			<div class="action">
+				<button>Sign in</button>
+			</div>
+		</form>
+	</div>
+	</body>
+{% endblock %}

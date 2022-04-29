@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
-{% block title_name %}
+{% load static %}
+{% block title %}
 	Welcome To 138 Project
 {% endblock %}
 
+{% block stat %}
+	{% static "Director/director.css" %}
+{% endblock %}
 {% block content %}
-	<h1>fuck you!</h1>
-	{% for i in numbers %}
-		{{ i }}
-		<br>
-	{% endfor %}
 {% endblock %}
