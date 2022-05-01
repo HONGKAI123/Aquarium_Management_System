@@ -23,7 +23,7 @@ def view_my_events(*args):
 
 def check_aquarist_availability():     #COUNT(*) event_count?
     """
-    list all workers with numbers of events that the person is working on
+    list all workers and numbers of events that the person is working on
     """
     # list all people, count events..
     sql_query = "SELECT staff, COUNT(*) event_count " \
@@ -42,7 +42,7 @@ def assign_aquarist_to_event(*args):
     
     aquarist_ID = args[0]
     event_ID = args[1]
-    sql_query = "INSERT INTO Work_on VALUES (" + "'" + event_ID + "','" + aquarist_ID + "')"
+    sql_query = "INSERT INTO Work_on VALUES (" + "'" + event_ID + "','" + aquarist_ID + "')"  #aquarist_ID?
     try:
         cursor.execute(sql_query)
         database.commit()
@@ -56,7 +56,7 @@ def check_facility_availability():
     """
     list all facilities that is not hosting an event
     """
-    sql_query = "SELECT * from Facility WHERE fa_ID NOT IN (SELECT facility from Event)"
+    sql_query = "SELECT * from Facility WHERE fa_ID NOT IN (SELECT facility from Event )"  # In where facility.... = event......
     cursor.execute(sql_query)
     result = cursor.fetchall()
     print(result)
