@@ -24,6 +24,7 @@ class aquarist():
         self.q = query()
         self.cursor = self.q.cursor()
 
+
     # check maintanence times
     # arg = [user_id]
     def check_maint_times(self, *arg):
@@ -59,7 +60,6 @@ class aquarist():
         :return:
         """
         # Check if the fa_id and maint_time combo exists for current user
-        self.row = 0
         input_match = False
         for i in self.check_maint_times(arg[0])[1]:
             if str(i[1]) == str(arg[1]) and str(i[2]) == str(arg[2]):
@@ -68,12 +68,13 @@ class aquarist():
         try:
             if input_match == True:
                 query = "UPDATE facility_maint \
-                SET maint_status = true \
-                WHERE facility = '" + arg[1] + "' \
-                AND maint_time = '" + arg[2] + "';"
-            print('sql ok')
+                SET maint_status = 1 \
+                WHERE facility = '{0}' \
+                AND maint_time = '{1}';".format(arg[1],arg[2])
+                print('sql ok',query)
+
             self.cursor.execute(query)
-            self.row = self.cursor.rowcount()
+            # print(self.cursor.rowcount)
             print("????")
             self.q.conn.commit()
             self.q.disconnect()
@@ -81,5 +82,5 @@ class aquarist():
             print (e)
 
         finally:
-            return True if self.row > 0 else False
+            return True if self.cursor.rowcount > 0 else False
 

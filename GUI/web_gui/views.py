@@ -21,18 +21,24 @@ def welcome(request):
     # res = aqu.check_maint_times('987153744')
     # print(res[0])
     # print(res[1])
+
+    # q = all_query.query()
+    # cur = q.cursor()
+    # cur.execute('select * from animal')
+    # res = cur.fetchall()
+    # print(cur.rowcount)
+    # q.disconnect()
+    # print(res)
+
     res = aqu.maintain_facility('987153744','300001','12:00:00')
     print(res)
     return render(request,'index.html')
 
-    # conn.cursor.execute(r'select * from animal')
-    # row = conn.cursor.fetchall()
-    # conn.disconnect()
-    # print(row)
 
     # with connection.cursor() as cursor:
     #     cursor.execute(r"SELECT * FROM animal")
     #     row = cursor.fetchall()
+
 
     # event test ok
     # temp = director.view_event('exhibit', '2022-05-02', '2022-05-04')

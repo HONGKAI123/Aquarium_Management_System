@@ -204,6 +204,120 @@ graph TD;
     etc-->Disconnect;
 ```
 
+**DB Diagrame**
+
+![Main](aquarium_schema.drawio.png)
+
+
+
+**DB_structure**
+
+```sql
+
+create table aquarist
+	(st_ID		char(9),
+     hashed_pw	binary(64),
+     name		varchar(40),
+     phone		char(9),
+     email		varchar(40),
+     primary key (st_ID)
+    );
+    
+create table curator
+	(st_ID		char(9),
+     hashed_pw	binary(64),
+     name		varchar(40),
+     phone		char(9),
+     email		varchar(40),
+     primary key (st_ID)
+    );
+    
+create table event_manager
+	(st_ID		char(9),
+     hashed_pw	binary(64),
+     name		varchar(40),
+     phone		char(9),
+     email		varchar(40),
+     primary key (st_ID)
+    );
+    
+create table general_manager
+	(st_ID		char(9),
+     hashed_pw	binary(64),
+     name		varchar(40),
+     phone		char(9),
+     email		varchar(40),
+     primary key (st_ID)
+    );
+    
+create table facility
+	(fa_ID		char(6),
+     name		varchar(40),
+     primary key (fa_ID)
+     );
+
+create table facility_maint
+	(facility	char(6),
+     maint_time	time,
+     maint_status bool,
+     foreign key (facility) references facility(fa_id) on delete cascade
+     );
+	
+create table maintain
+	(staff		char(9),
+     facility	char(6),
+     foreign key (staff) references aquarist(st_ID),
+     foreign key (facility) references facility(fa_ID)
+	);
+
+create table animal
+	(an_ID		char(6),
+     name		varchar(40),
+     species	varchar(40),
+     status		int,
+     curator	char(9),
+     habitat	char(6),
+     primary key (an_ID),
+     foreign key (curator) references curator(st_ID) on delete no action,
+     foreign key (habitat) references facility(fa_ID) on delete no action
+     );
+     
+create table event
+	(ev_ID		char(6),
+	 title		varchar(40),
+     type		enum('exhibit', 'performance'),
+     facility	char(6),
+     overseer	char(9),
+     primary key (ev_ID),
+     foreign key (facility) references facility(fa_ID) on delete no action,
+     foreign key (overseer) references event_manager(st_ID) on delete no action
+	);
+
+create table event_instance
+	(event		char(6),
+     date		date,
+     attendance	int,
+     foreign key (event) references event(ev_ID) on delete cascade
+	);
+    
+create table work_on
+	(event		char(6),
+     staff		char(9),
+     foreign key (event) references event(ev_ID) on delete cascade,
+     foreign key (staff) references aquarist(st_ID) on delete cascade
+	);
+    
+create table participate
+	(event		char(6),
+     animal		char(6),
+     foreign key (event) references event(ev_ID) on delete cascade,
+     foreign key (animal) references animal(an_ID) on delete cascade
+	);
+
+```
+
+
+
 #### pseudo code:
 
 Django Setting:

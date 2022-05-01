@@ -14,13 +14,14 @@ mycursor = db.cursor()
 
 # view events report
 def view_event(*arg): # type,start_date,end_date
-
+    ls = ['a','b','c']
     mycursor.execute("select ev_ID, title, type, date, attendance \
         from event join event_instance on event.ev_ID = event_instance.event \
             where type ='{type}' and (date between '{start_date}' and '{end_date}')\
                 order by attendance desc;".format(type=arg[0],start_date=arg[1],end_date=arg[2]))
     result=mycursor.fetchall()
     print(result)
+    return ls,result
 
 # create new event
 def create_event(*arg):# ev_ID,title,type,overseer
