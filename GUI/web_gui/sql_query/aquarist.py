@@ -1,4 +1,6 @@
+# SJSU CMPE 138 Spring 2022 TEAM6
 import mysql.connector
+
 
 database = mysql.connector.connect(
     host = 'localhost',
@@ -15,6 +17,7 @@ cursor = database.cursor()
 # check maintanence times
 # arg = [user_id]
 def check_maint_times(*arg):
+    ls =['Name','ID','Maintenance Time']
     query = "\
     SELECT name AS 'Facility', fa_id AS 'ID', maint_time AS 'Maintenance Time' \
     FROM facility_maint \
@@ -25,11 +28,13 @@ def check_maint_times(*arg):
     ORDER BY maint_time ASC;"
     
     cursor.execute(query)
+   
 
     #"""
     # Use block below if returning query results directly
     # RETURN FORMAT: list of tuples [('facility_name', 'fa_id', maint_time), ...]
     result = cursor.fetchall()
+    return ls,result
     #print(result)
     
     """

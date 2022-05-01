@@ -1,3 +1,4 @@
+# SJSU CMPE 138 Spring 2022 TEAM6
 import mysql.connector
 import time
 
@@ -14,13 +15,14 @@ mycursor = db.cursor()
 
 # view events report
 def view_event(*arg): # type,start_date,end_date
-
+    ls =["Event ID", "Event Title", "Type", "Date", "Attendance"]       #Event ID(string) Event Title(string) Type(enum) Date(date) Attendance(int)
     mycursor.execute("select ev_ID, title, type, date, attendance \
         from event join event_instance on event.ev_ID = event_instance.event \
             where type ='{type}' and (date between '{start_date}' and '{end_date}')\
                 order by attendance desc;".format(type=arg[0],start_date=arg[1],end_date=arg[2]))
     result=mycursor.fetchall()
     print(result)
+    return ls,result
 
 # create new event
 def create_event(*arg):# ev_ID,title,type,overseer
@@ -67,16 +69,20 @@ def hire_staff(*arg): # role,st_ID,name,phone,email
         print("Fail to hire new staff")
 
 #Checking if Curator's animals have been reassigned before firing them
-def animalAssignCheck(st_ID):
+def animalAssignCheck(st_ID):  #st_ID(string)
+    ls =["Animals"]
     mycursor.execute("select * from animal where animal.curator={st_ID};".format(st_ID=st_ID))
     test=mycursor.fetchall()
+    # return ls,result
     if(len(test)==0):
         return True
     else:
         return False
+  
 
 #Checking if event manager's events have been reassigned before firing them
-def eventAssignCheck(st_ID):
+def eventAssignCheck(st_ID):   #st_ID(string)
+    ls =["Event overseer"]
     mycursor.execute("select * from event where event.overseer = {st_ID};".format(st_ID=st_ID))
     test=mycursor.fetchall()
     if(len(test)==0):

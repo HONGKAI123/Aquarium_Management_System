@@ -1,3 +1,4 @@
+# SJSU CMPE 138 Spring 2022 TEAM6
 import mysql.connector
 
 database = mysql.connector.connect(
