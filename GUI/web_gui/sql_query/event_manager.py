@@ -21,9 +21,9 @@ def view_my_events(*args):
     print(result)
 
 
-def check_aquarist_availability():
+def check_aquarist_availability():     #COUNT(*) event_count?
     """
-    list all workers with counts of events that the person is working on
+    list all workers with numbers of events that the person is working on
     """
     # list all people, count events..
     sql_query = "SELECT staff, COUNT(*) event_count " \
