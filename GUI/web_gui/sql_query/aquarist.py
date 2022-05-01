@@ -2,10 +2,13 @@ import mysql.connector
 
 database = mysql.connector.connect(
     host = 'localhost',
-    user = 'root',
-    password = 'lucifer',
+    user = 'aq_admin',
+    password = 'aq_Password01!',
     database = 'aquarium'
 )
+
+
+
 
 cursor = database.cursor()
 

@@ -1,5 +1,6 @@
 import mysql.connector
 
+
 database = mysql.connector.connect(
     host = 'localhost',
     user = 'aq_admin',

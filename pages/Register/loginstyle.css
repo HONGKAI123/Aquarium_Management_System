@@ -59,7 +59,7 @@
     padding: 18px;
     font-family: 'Rubik', sans-serif;
     cursor: pointer;
-   
+
     background: #e8e9ec;
     color: black;
     border-bottom-left-radius: 4px;
@@ -72,5 +72,5 @@
   .login-form .action button:hover {
     background: aqua;
   }
-  
+
   
