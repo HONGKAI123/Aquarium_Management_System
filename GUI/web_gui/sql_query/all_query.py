@@ -50,6 +50,7 @@ class aquarist():
             return ['Facility', 'ID', 'Maintenance Time'], result
 
     def maintain_facility(self, *arg):
+        # todo effected row not return
         """
         Update facility maintanence status
         :param arg:
@@ -71,11 +72,12 @@ class aquarist():
                 SET maint_status = 1 \
                 WHERE facility = '{0}' \
                 AND maint_time = '{1}';".format(arg[1],arg[2])
-                print('sql ok',query)
+            cursor = self.cursor()
+            cursor.execute(query)
 
-            self.cursor.execute(query)
             # print(self.cursor.rowcount)
-            print("????")
+            print(query)
+            print('?')
             self.q.conn.commit()
             self.q.disconnect()
         except connector.Error as e:

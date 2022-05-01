@@ -369,23 +369,52 @@ def my_custom_sql(self):
 
 | Function name | input(format)                     | Output(format)              |
 | ------------- | --------------------------------- | --------------------------- |
-| login_account | Usernamd, password(string,string) | has any suitable value(T/F) |
+| login_account | Usernamd, password(string,string) | column name list with resultset |
 |               |                                   |                             |
 |               |                                   |                             |
 
-- login_account
-  
-  根据已有用户名/密码查找是否存在该用户
-  
-  明文密码哈希转换后和数据库中比对
+return format 
+
+```python
+return ['Facility', 'ID', 'Maintenance Time'], result
+```
 
 #### insert
 
-| Function name | input(format) | Output(format)       |
-| ------------- | ------------- | -------------------- |
-| new_event     | ???           | query seceeed? (T/F) |
-|               |               | query seceeed? (T/F) |
-|               |               | query seceeed? (T/F) |
-|               |               | query seceeed? (T/F) |
+| Function name | input(format) | Output(format)           |
+| ------------- | ------------- | ------------------------ |
+| new_event     | ???           | cursor.rowcount>0? (T/F) |
+|               |               |                          |
+|               |               |                          |
+|               |               |                          |
 
-- new_event
+return example
+
+```python
+return True if cursor.rowcount > 0 else False
+```
+
+
+
+## 目前问题
+
+## login:
+
+没找到select username & password 语句关于:
+
+-> general_manager
+
+-> event_manager
+
+Event_manager.py ??
+
+-> aquarist
+
+aquarist.py
+
+-> curator
+
+curator.py
+
+
+

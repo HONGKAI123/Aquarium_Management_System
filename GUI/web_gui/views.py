@@ -24,13 +24,18 @@ def welcome(request):
 
     # q = all_query.query()
     # cur = q.cursor()
-    # cur.execute('select * from animal')
+    arg = ['987153744','300001','12:00:00']
+    # cur.execute("UPDATE facility_maint \
+    #     SET maint_status = true \
+    #     WHERE facility = '" + arg[1] + "' \
+    #     AND maint_time = '" + arg[2] + "';")
     # res = cur.fetchall()
+    # q.conn.commit()
     # print(cur.rowcount)
     # q.disconnect()
     # print(res)
 
-    res = aqu.maintain_facility('987153744','300001','12:00:00')
+    res = aqu.maintain_facility(*arg)
     print(res)
     return render(request,'index.html')
 
@@ -71,13 +76,9 @@ def log_in(request):
         user_name = request.POST.get('username')
         pwd = request.POST.get('pwd')
         print(user_name)
-        hash_pwd = hashlib.sha256(pwd.encode('utf-8')).hexdigest()
+        hash_pwd = hashlib.md5(pwd.encode('utf-8')).hexdigest()
         print(hash_pwd)
 
-        # with connection.cursor() as cursor:
-        with connection.cursor() as cursor:
-            cursor.execute(r"SELECT * FROM animal")
-            row = cursor.fetchall()
 
         if 1:
             return render(request, 'Director/director.html', {'job_title': "ha?"})
