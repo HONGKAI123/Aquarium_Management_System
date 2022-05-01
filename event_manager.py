@@ -10,8 +10,11 @@ database = mysql.connector.connect(
 
 cursor = database.cursor()
 
-
 def view_my_events(*args):
+    """
+    input: manager ID,
+    return all of the event manager's events. 
+    """
     sql_query = "SELECT * FROM Event WHERE overseer = " + "'" + args[0] + "'"
     cursor.execute(sql_query)
     result = cursor.fetchall()
@@ -19,6 +22,9 @@ def view_my_events(*args):
 
 
 def check_aquarist_availability():
+    """
+    list all workers with counts of events that the person is working on
+    """
     # list all people, count events..
     sql_query = "SELECT staff, COUNT(*) event_count " \
                 "FROM Work_on " \
@@ -30,6 +36,10 @@ def check_aquarist_availability():
 
 
 def assign_aquarist_to_event(*args):
+    """
+    assign aquarist(id) to event(id) 
+    """
+    
     aquarist_ID = args[0]
     event_ID = args[1]
     sql_query = "INSERT INTO Work_on VALUES (" + "'" + event_ID + "','" + aquarist_ID + "')"
@@ -43,6 +53,9 @@ def assign_aquarist_to_event(*args):
 
 
 def check_facility_availability():
+    """
+    list all facilities that is not hosting an event
+    """
     sql_query = "SELECT * from Facility WHERE fa_ID NOT IN (SELECT facility from Event)"
     cursor.execute(sql_query)
     result = cursor.fetchall()
@@ -50,6 +63,9 @@ def check_facility_availability():
 
 
 def assign_facility_to_event(*args):
+    """
+    assign facility(id) to event(id) 
+    """
     event_ID = args[0]
     facility_ID = args[1]
     sql_query = "UPDATE Event SET facility = " + "'" + facility_ID + "' " + \
@@ -64,6 +80,10 @@ def assign_facility_to_event(*args):
 
 
 def log_event_attendance(*args):
+    """
+    Input: recorded_attendance, event_ID
+    Update an event's attendance number to an Event_instance.
+    """
     event_ID = args[0]
     recorded_attendance = args[1]
     sql_query = "UPDATE Event_instance SET attendance = " + str(recorded_attendance) + \
