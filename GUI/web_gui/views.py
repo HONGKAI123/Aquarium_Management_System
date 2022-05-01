@@ -18,10 +18,11 @@ def welcome(request):
     # conn = conn.connect()
     from .sql_query import all_query
     aqu = all_query.aquarist()
-    res = aqu.check_maint_times(987153744)
-    print(res[0])
-    print(res[1])
-
+    # res = aqu.check_maint_times('987153744')
+    # print(res[0])
+    # print(res[1])
+    res = aqu.maintain_facility('987153744','300001','12:00:00')
+    print(res)
     return render(request,'index.html')
 
     # conn.cursor.execute(r'select * from animal')
@@ -32,15 +33,6 @@ def welcome(request):
     # with connection.cursor() as cursor:
     #     cursor.execute(r"SELECT * FROM animal")
     #     row = cursor.fetchall()
-
-    # sample = range(1,10)
-    # sample = [[],[]]
-    # for i in range(1,10):
-    #     for j in range(1,10):
-    #         sample[0].append(j*i)
-    #     sample[1].append(i)
-    # print(sample)
-    # return render(request, 'index.html', {'numbers': sample})
 
     # event test ok
     # temp = director.view_event('exhibit', '2022-05-02', '2022-05-04')
