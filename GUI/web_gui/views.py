@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import reverse
 from django.shortcuts import redirect
 from .sql_query import login_verify
+from .sql_query.all_query import director
 
 # from .sql_query.all_query import query
 
@@ -41,10 +42,7 @@ def log_in(request):
             if res[1]:
                 request.session['table'] = res[0]
                 check_title(request)
-                #rint(request.session['title'])
-
-                url = reverse('jobs_page',kwargs = {"title":request.session['title']})
-                # return render(request, 'Director/director.html', {'job_title':request.session['title'] })
+                url = reverse('jobs_page',kwargs = {"job_title":request.session['title']})
                 return redirect(url)
             else:
                 return render(request, 'Login/signin.html', {'msg': 'username or password wrong'})
@@ -59,18 +57,19 @@ def report(request,job_title):
     :param request:
     :return:
     """
-    title = job_title
-    if title > 0:
+    title = check_title(request)
+    if title is not None:
         if title == 1:
             pass
-            # todo sql query
-            return render(request, 'Director1/director.html', {'table_value'})
         elif title == 2:
             pass
         elif title == 3:
             pass
         elif title == 4:
-            pass
+            dire = director()
+            value = dire.view_staff_report()
+            print(value)
+            return render(request, 'Director/director.html', {'main_table_header':value[0],'main_table':value[1]})
     else:
         return render()
 
@@ -85,8 +84,6 @@ return 2 for curator
 return 3 for event_manager
 return 4 for general_manager
 """
-
-
 def check_title(request) -> int:
     table = request.session['table']
     if table is not None:

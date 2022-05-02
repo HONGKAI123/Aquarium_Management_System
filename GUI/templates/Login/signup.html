@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+	Welcome To 138 Project
+{% endblock %}
+
+{% block stat %}
+	{% static 'Login/loginstyle.css' %}
+{% endblock %}
+{% block content %}
+	<body>
+	<div class="login-form">
+		<form action="/login/" method="post">
+			{% csrf_token %}
+			<h1>Login</h1>
+			<div class="content">
+				<div class="input-field">
+					<input type="username" placeholder=" Username" autocomplete="nope" name="username">
+				</div>
+				<div class="input-field">
+					<input type="password" placeholder=" Password" autocomplete="nope" name="pwd">
+				</div>
+
+			</div>
+			<div class="action">
+				<button>Sign in</button>
+			</div>
+		</form>
+	</div>
+	</body>
+{% endblock %}
