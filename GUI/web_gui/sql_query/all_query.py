@@ -6,11 +6,11 @@ class dbHelper():
         pass
 
 class query():
-    def cursor(self):
+    def cursor(self,username:str = 'root',pwd:str= "lucifer"):
         self.conn = connector.connect(
             host = 'localhost',
-            user = 'root',
-            password = 'lucifer',
+            user = username,
+            password =pwd,
             database = 'aquarium')
         return self.conn.cursor()
 

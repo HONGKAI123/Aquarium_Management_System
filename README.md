@@ -363,7 +363,31 @@ def my_custom_sql(self):
     return row
 ```
 
+
+
+所有语句都放在
+
+GUI/web_gui/sql_query
+
+all_query 别动
+
 ### API
+
+**DB connection**
+
+```python
+"""
+统一 mysq db connection
+"""
+from all_query.query import 
+
+```
+
+
+
+
+
+
 
 #### select
 

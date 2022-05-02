@@ -40,10 +40,10 @@ def welcome(request):
     return render(request,'index.html')
 
 
-    # with connection.cursor() as cursor:
-    #     cursor.execute(r"SELECT * FROM animal")
-    #     row = cursor.fetchall()
-
+    with connection.cursor() as cursor:
+        cursor.execute(r"SELECT * FROM animal")
+        row = cursor.fetchall()
+    print(row)
 
     # event test ok
     # temp = director.view_event('exhibit', '2022-05-02', '2022-05-04')
