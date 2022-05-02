@@ -1,7 +1,5 @@
-/* cmpe138 */
-
-
 * {
+  
     padding: 0;
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
@@ -12,9 +10,7 @@
     height: 200px;
    
   }
-  h6{
-    text-align: center;
-  }
+
   h2{
     font-weight: 10px;
     font-family: 'Times New Roman', Times, serif;
@@ -32,12 +28,9 @@
   }
   .login-form h1 {
     padding: 35px;
-    font-size: 45px;
+    font-size: 50px;
     font-weight: 500;
-    margin-left: 145px;
-    color: #7c795d; font-family: 'Trocchi', serif; 
-     font-weight: 60px; 
-     line-height: 58px;
+    margin-left: 150px;
   }
   .login-form .content {
     padding: 35px;
@@ -59,18 +52,8 @@
     transition: all .2s;
   }
   
-  footer {
-    position: absolute;
-    height: 300px;
-    width: 100%;
-    text-align: center;
-    margin-top: 310px;
-    
-}
   
-  
-  
-  /* .login-form .action button {
+  .login-form .action button {
     width: 100%;
     border: none;
     padding: 18px;
@@ -88,6 +71,6 @@
   }
   .login-form .action button:hover {
     background: aqua;
-  } */
+  }
   
   

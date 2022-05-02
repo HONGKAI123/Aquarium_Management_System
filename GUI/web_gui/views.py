@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import reverse
 from .sql_query import login_verify
 
 # from .sql_query.all_query import query
@@ -15,12 +16,11 @@ def welcome(request):
     # print(temp)
     # test_data = [('101001', 'penguin exhibit', 'exhibit', datetime.date(2022, 5, 4), 130), ('101001', 'penguin exhibit', 'exhibit', datetime.date(2022, 5, 3), 120), ('101002', 'whale exhibit', 'exhibit', datetime.date(2022, 5, 4), 100)]
     # test_data_header = ['id','name','type','date','attendence']
-    # return render(request,'Director/director.html',{"job_title":"fuck!","main_table":test_data,"main_table_header":test_data_header,'page_title':'YO bitch'})
+    # return render(request,'Director1/director.html',{"job_title":"fuck!","main_table":test_data,"main_table_header":test_data_header,'page_title':'YO bitch'})
 
 
 def index(request):
-    return render(request, 'Login/signup.html')
-
+    return render(request, 'Login/signin.html')
 
 def log_in(request):
     """
@@ -39,7 +39,9 @@ def log_in(request):
             res = login_verify.verify_user(*login_info)
             if res[1]:
                 request.session['table'] = res[0]
-                return render(request, 'Director/director.html', {'job_title':request.session['table'] })
+                check_title(request)
+                url = reverse('jobs')
+                return render(request, 'Director/director.html', {'job_title':request.session['title'] })
             else:
                 return render(request, 'Login/signup.html', {'msg': 'username or password wrong'})
 
@@ -47,18 +49,18 @@ def log_in(request):
         return render(request, 'Login/signup.html')
 
 
-def report(request):
+def report(request,job_title):
     """
     return different type of webpage based on the job title
     :param request:
     :return:
     """
-    title = check_title(request)
+    title = job_title
     if title > 0:
         if title == 1:
             pass
             # todo sql query
-            return render(request, 'Director/director.html', {'table_value'})
+            return render(request, 'Director1/director.html', {'table_value'})
         elif title == 2:
             pass
         elif title == 3:
@@ -73,7 +75,7 @@ def report(request):
 :return 0 if the session/cookie value invalid
 by checking the table name set the job title for it
 title = staff, when table is aquarist,curator,event_manager
-title = Director when table is general_manager
+title = Director1 when table is general_manager
 return 1 for aquarist
 return 2 for curator
 return 3 for event_manager
@@ -94,11 +96,14 @@ def check_title(request) -> int:
             request.session['title'] = 'staff'
             return 3
         elif table == "general_manager":
-            request.session['title'] = 'Director'
+            request.session['title'] = 'DIRECTOR'
             return 4
     else:
         return 0
 
 
 def dire(request):
+    pass
+
+def todo_view(request):
     pass
