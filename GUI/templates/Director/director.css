@@ -1,5 +1,58 @@
 body {
-    background-image: url("https://www.korvia.com/wp-content/uploads/2015/11/korvia-image-background-tnkr-signup-2.jpg");
+  background-image: url(https://i0.wp.com/www.csscodelab.com/wp-content/uploads/2019/11/stripe-hero-background-effect-html-css.png?fit=1062%2C631&ssl=1);
+	
+	background-attachment:fixed;
+
     height: 200px;
    
+  }
+  .title{
+
+    text-align: center;
+    margin-top: 30px;
+   
+  }
+
+  h2{
+    font-family: "Raleway", sans-serif;  
+    font-weight: 300;
+}
+  h1{
+    text-align: center;
+    text-transform: uppercase;
+    padding-bottom: 5px;
+    position: relative;
+  padding: 0;
+  margin: 0;
+  font-family: "Raleway", sans-serif;
+  font-weight: 300;
+  font-size: 50px;
+  color: #080808;
+  -webkit-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+  }
+
+  h1:before{
+    width: 28px;
+    height: 5px;
+    display: block;
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    margin-left: -14px;
+    background-color: #b80000;
+  }
+
+  h1:after {
+    width: 100px;
+    height: 1px;
+    display: block;
+    content: "";
+    position: relative;
+    margin-top: 25px;
+    left: 50%;
+    margin-left: -50px;
+    background-color: #b80000;
   }

@@ -1,3 +1,4 @@
+# SJSU CMPE 138 Spring 2022 TEAM6
 from mysql import connector
 import time
 
@@ -84,6 +85,7 @@ class aquarist():
         except connector.Error as e:
             print(e)
 
+        # SJSU CMPE 138 Spring 2022 TEAM6
         finally:
             return True if self.cursor.rowcount > 0 else False
 

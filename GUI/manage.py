@@ -1,3 +1,4 @@
+# SJSU CMPE 138 Spring 2022 TEAM6
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os

@@ -1,3 +1,4 @@
+# SJSU CMPE 138 Spring 2022 TEAM6
 from django.shortcuts import render
 from django.shortcuts import reverse
 from django.shortcuts import redirect
@@ -104,7 +105,10 @@ def check_title(request) -> int:
 
 
 def dire(request):
-    pass
+    return render(request, "Director/director.html")
 
-def todo_view(request):
-    pass
+def home(request):
+    return render(request, 'Home/Home.html')
+
+def register(request):
+    return render(request, 'Register/register.html')
