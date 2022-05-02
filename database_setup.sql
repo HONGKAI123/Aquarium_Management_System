@@ -29,7 +29,7 @@ create table event_manager
      primary key (st_ID)
     );
     
-create table director
+create table general_manager
 	(st_ID		char(9),
      hashed_pw	binary(32),
      name		varchar(40),
@@ -103,7 +103,7 @@ create table participate
 	);
 
 
-insert into director values ('517465989', md5(517465989), 'Farnsworth', '5551234', 'farnsworth@aquarium.com');
+insert into general_manager values ('517465989', md5(517465989), 'Farnsworth', '5551234', 'farnsworth@aquarium.com');
 
 insert into event_manager values ('243910037', md5(243910037), 'Leela', '5551235', 'leela@aquarium.com');
 insert into event_manager values ('218363685', md5(218363685), 'Hermes', '5551236', 'hermes@aquarium.com');
@@ -201,3 +201,11 @@ insert into participate values ('201001', '103001');
 insert into participate values ('201001', '103002');
 insert into participate values ('201002', '105001');
 insert into participate values ('201002', '105002');
+
+select * from aquarist
+union
+select * from curator
+union
+select * from event_manager
+union
+select * from general_manager;
