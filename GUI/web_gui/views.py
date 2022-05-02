@@ -126,4 +126,10 @@ def check_title(request) -> int:
 
 
 def dire(request):
-    pass
+    return render(request, "Director/director.html")
+
+def home(request):
+    return render(request, 'Home/Home.html')
+
+def register(request):
+    return render(request, 'Register/register.html')

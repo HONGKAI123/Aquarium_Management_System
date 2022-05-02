@@ -11,7 +11,7 @@ class query():
         self.conn = connector.connect(
             host = 'localhost',
             user = 'root',
-            password = 'lucifer',
+            password = 'qweqwe123',
             database = 'aquarium')
         return self.conn.cursor()
 
