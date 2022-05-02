@@ -178,14 +178,10 @@ insert into event values ('201002', 'dolphin show', 'performance', '200002', '24
 
 insert into event_instance values ('101001', '2022-05-03', 120);
 insert into event_instance values ('101001', '2022-05-04', 130);
-insert into event_instance values ('101001', '2022-05-05', null);
 insert into event_instance values ('101002', '2022-05-04', 100);
-insert into event_instance values ('101002', '2022-05-05', null);
 insert into event_instance values ('201001', '2022-05-03', 85);
 insert into event_instance values ('201001', '2022-05-04', 93);
-insert into event_instance values ('201001', '2022-05-05', null);
 insert into event_instance values ('201002', '2022-05-04', 60);
-insert into event_instance values ('201002', '2022-05-05', null);
 
 insert into work_on values ('101001', '315400662');
 insert into work_on values ('101002', '888748129');
