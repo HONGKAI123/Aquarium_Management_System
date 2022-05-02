@@ -1,8 +1,6 @@
 from django.shortcuts import render
 import hashlib
 
-from web_gui import sql_query
-
 
 # Create your views here.
 

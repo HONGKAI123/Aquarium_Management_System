@@ -27,7 +27,7 @@ def update_example(*args):
     # 创建语句
     sql_query = "UPDATE animal \
     SET status = true \
-    WHERE an_ID = {0};".format(args[0])
+    WHERE an_ID = {};".format(args[0])
 
     # 根据不同数据库登录信息执行
     with q.cursor(username = 'root', pwd = 'lucifer') as cur:
