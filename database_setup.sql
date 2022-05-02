@@ -63,8 +63,8 @@ create table animal
      name		varchar(40),
      species	varchar(40),
      status		int,
-     curator	char(9),
-     habitat	char(6),
+     curator	char(9) NOT NULL,
+     habitat	char(6) NOT NULL,
      primary key (an_ID),
      foreign key (curator) references curator(st_ID) on delete no action,
      foreign key (habitat) references facility(fa_ID) on delete no action
@@ -75,7 +75,7 @@ create table event
 	 title		varchar(40),
      type		enum('exhibit', 'performance'),
      facility	char(6),
-     overseer	char(9),
+     overseer	char(9) NOT NULL,
      primary key (ev_ID),
      foreign key (facility) references facility(fa_ID) on delete no action,
      foreign key (overseer) references event_manager(st_ID) on delete no action
