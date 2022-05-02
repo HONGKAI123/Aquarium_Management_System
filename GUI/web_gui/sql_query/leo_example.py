@@ -3,6 +3,11 @@ from all_query import query
 
 # select
 def select_example(*args):
+    """
+    print out all data from a table by specific table name
+    :param args: table name : str
+    :return: list of column name with sql result set
+    """
     # 实例化 db connection API
     q = query()
 
@@ -25,7 +30,7 @@ def update_example(*args):
     update animal status in animal table by animal ID
     :param args: animal ID 'string'
     有其他 input 就继续描述其他变量
-    :return: has any effected row
+    :return: bool:  has any effected row
     """
     # 实例化 db connection API
     q = query()
@@ -59,7 +64,7 @@ def insert_example(*args):
     curator id:string,
     habitat id:string
 
-    :return: has any effected row
+    :return: bool: has any effected row
     """
     # 实例化 db connection API
     q = query()
@@ -88,7 +93,7 @@ def delete_example(*args):
     """
     delete a row from animal by animal id
     :param args: animal id :str
-    :return: has any effected row
+    :return: bool: has any effected row
     """
     # 实例化 db connection API
     q = query()
