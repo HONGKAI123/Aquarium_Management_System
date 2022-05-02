@@ -133,3 +133,6 @@ def home(request):
 
 def register(request):
     return render(request, 'Register/register.html')
+
+def aquarist(request):
+    return render(request,'Aquarist/aquarist.html')
