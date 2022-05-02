@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'aquarium',
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'root',
-        'PASSWORD': 'qweqwe123',
+        'PASSWORD': 'lucifer',
         'HOST':'localhost',
         'PORT':'3306',
     }

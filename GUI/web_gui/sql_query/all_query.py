@@ -108,7 +108,7 @@ class director():
                     where type ='{type}' and (date between '{start_date}' and '{end_date}')\
                     order by attendance desc;".format(type = arg[0], start_date = arg[1], end_date = arg[2])
 
-        with q.cursor(username = 'root', pwd = 'root') as cur:
+        with q.cursor() as cur:
             cur.execute(sql_query)
             # catch return result
             res = cur.fetchall()
@@ -230,7 +230,7 @@ class director():
 
 
     # Checking if Curator's animals have been reassigned before firing them
-    def animalAssignCheck(st_ID):
+    def animalAssignCheck(self,st_ID):
         """
         :param args: st_ID(char-9)
 
@@ -251,7 +251,7 @@ class director():
 
 
     # Checking if event manager's events have been reassigned before firing them
-    def eventAssignCheck(st_ID):
+    def eventAssignCheck(self,st_ID):
         """
         :param args: st_ID(char-9)
 
@@ -273,7 +273,7 @@ class director():
 
 
     # Fire Staff
-    def fire_staff(st_ID):
+    def fire_staff(self,st_ID):
         """
         :param args: st_ID(char-9)
 
@@ -287,7 +287,7 @@ class director():
 
         with q.cursor() as cur:
             # since aquarist is not in either tables, both remain true
-            if (self.animalAssignCheck(st_ID) == True and eventAssignCheck(st_ID) == True):
+            if (self.animalAssignCheck(st_ID) == True and self.eventAssignCheck(st_ID) == True):
                 for i in staff:  # locate the staff's role and fire
                     # sql query that delete staff from db
                     sql_query = "delete from {staff} where st_ID ='{st_ID}';".format(staff = i, st_ID = st_ID)
