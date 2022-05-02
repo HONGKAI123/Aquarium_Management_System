@@ -10,37 +10,6 @@ def welcome(request):
     """
     test pages, check sql connection
     """
-    # from .sql_query import sql_connection
-    # conn = sql_connection.connector()
-    # conn = conn.connect()
-    from .sql_query import all_query
-    aqu = all_query.aquarist()
-    # res = aqu.check_maint_times('987153744')
-    # print(res[0])
-    # print(res[1])
-
-    # q = all_query.query()
-    # cur = q.cursor()
-    arg = ['987153744', '300001', '12:00:00']
-    # cur.execute("UPDATE facility_maint \
-    #     SET maint_status = true \
-    #     WHERE facility = '" + arg[1] + "' \
-    #     AND maint_time = '" + arg[2] + "';")
-    # res = cur.fetchall()
-    # q.conn.commit()
-    # print(cur.rowcount)
-    # q.disconnect()
-    # print(res)
-
-    res = aqu.maintain_facility(*arg)
-    print(res)
-    return render(request, 'index.html')
-
-    with connection.cursor() as cursor:
-        cursor.execute(r"SELECT * FROM animal")
-        row = cursor.fetchall()
-    print(row)
-
     # event test ok
     # temp = director.view_event('exhibit', '2022-05-02', '2022-05-04')
     # print(temp)
@@ -60,16 +29,12 @@ def log_in(request):
     if exsit,redirect to relative pages,
     otherwise return error
     """
+    # test login
+    # username = 517465989
+    # password = 517465989
     if request.method == "POST":
-        # todo
-        # todo miss select user from each table
-        # todo by get user from different table, show the different webpage to them
-        # todo set session about the title
         request.session['table'] = ''
-
-        login_info = []
-        login_info.append(request.POST.get('username'))
-        login_info.append(request.POST.get('pwd'))
+        login_info = [request.POST.get('username'),request.POST.get('pwd')]
         if login_info[0] and login_info[1]:
             res = login_verify.verify_user(*login_info)
             if res[1]:
