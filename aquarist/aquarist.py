@@ -1,16 +1,6 @@
-import mysql.connector
+from all_query import query
 
-database = mysql.connector.connect(
-    host = 'localhost',
-    user = 'aq_admin',
-    password = 'aq_Password01!',
-    database = 'aquarium'
-)
-
-cursor = database.cursor()
-
-
-def check_maint_times(*arg):
+def check_maint_times(*args):
     """
     arg = [user_id]
     returns list of list
@@ -30,37 +20,27 @@ def check_maint_times(*arg):
         ['whale tank', '100001', datetime.timedelta(seconds=72000)], 
         ['seal beach', '100003', datetime.timedelta(seconds=79200)]]
     """
+    # db connection API
+    q = query()
 
-    query = "\
+    # build SQL query
+    sql_query = "\
     SELECT name AS 'Facility', fa_id AS 'ID', maint_time AS 'Maintenance Time' \
     FROM facility_maint \
     LEFT JOIN facility ON facility.fa_id = facility_maint.facility \
     LEFT JOIN maintain ON fa_id = maintain.facility \
     WHERE maint_status = FALSE \
-    AND staff = '" + arg[0] + "' \
-    ORDER BY maint_time ASC;"
-    
-    cursor.execute(query)
+    AND staff = '{0}' \
+    ORDER BY maint_time ASC;".format(args[0])
 
-    """
-    # Use block below if returning query results directly
-    # RETURN FORMAT: list of tuples [('facility_name', 'fa_id', maint_time), ...]
-    result = cursor.fetchall()
-    #print(result)
-    
-    """
-    # Use block below if returning list[rows[]]
-    # RETURN FORMAT: list of lists [['facility_name', 'fa_id', maint_time], ...]
-    result = []
-    result.append(['Facility', 'ID', 'Maintenance Time']) # Add header row
-    for x in cursor.fetchall():
-        result.append(list(x))
-    # check results
-    """
-    for i in result:
-        print(i[0], ' ', i[1], ' ', i[2])
-    """
-    return result
+    # connect to API
+    with q.cursor(username = 'root', pwd = 'lucifer') as cur:
+        cur.execute(sql_query)
+        
+        res = cur.fetchall()
+
+    # add column names to result and return
+    return ['Facility Name', 'ID', 'Maintenance Time'], res
 
 
 
