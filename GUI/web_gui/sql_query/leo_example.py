@@ -21,6 +21,12 @@ def select_example(*args):
 
 # update
 def update_example(*args):
+    """
+    update animal status in animal table by animal ID
+    :param args: animal ID 'string'
+    有其他 input 就继续描述其他变量
+    :return: has any effected row
+    """
     # 实例化 db connection API
     q = query()
 
@@ -45,6 +51,16 @@ def update_example(*args):
 
 # insert
 def insert_example(*args):
+    """
+    insert animal information into animal table
+    :param args: animal id:string,
+    animal name:string,
+    animal species:string,
+    curator id:string,
+    habitat id:string
+
+    :return: has any effected row
+    """
     # 实例化 db connection API
     q = query()
 
@@ -69,6 +85,11 @@ def insert_example(*args):
 
 # delete
 def delete_example(*args):
+    """
+    delete a row from animal by animal id
+    :param args: animal id :str
+    :return: has any effected row
+    """
     # 实例化 db connection API
     q = query()
 
