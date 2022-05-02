@@ -1,238 +1,272 @@
-from distutils.log import error
-import mysql.connector
+# SJSU CMPE 138 Spring 2022 TEAM4
 import time
-from zmq import EVENT_LISTENING
-
-database = mysql.connector.connect(
-    host ="localhost",
-    user="root",
-    passwd="root",
-    database = "aquarium"
-)
-
-cursor = database.cursor()
+from all_query import query
 
 # view events report
 def view_event(*arg): # type,start_date,end_date
     """
-    Input parameters: type (enum),start_date(str),end_date(str) in order
+    View events by selecting 
+    :param args: type (enum),start_date(str),end_date(str)
 
-    Function: Select event details and return result with colunm: ev_ID, 
-    title, type, date, attendance. 
-
+    :return: array of selected event detail
     """
-    try:
-        # sql query that reterive event detail 
-        cursor.execute("select ev_ID, title, type, date, attendance \
+    # call db connection API
+    q=query()
+
+     # sql query that reterive event detail 
+    sql_query = "select ev_ID, title, type, date, attendance \
                 from event join event_instance on event.ev_ID = event_instance.event \
                 where type ='{type}' and (date between '{start_date}' and '{end_date}')\
-                order by attendance desc;".format(type=arg[0],start_date=arg[1],end_date=arg[2]))
+                order by attendance desc;".format(type=arg[0],start_date=arg[1],end_date=arg[2])
 
-        result=cursor.fetchall() #fetch sql result to array
-        formatResult = "ev_ID        title        type             date                 attend" #declare column name
+    with q.cursor(username='root',pwd='root') as cur:
+        cur.execute(sql_query)
+        # catch return result
+        res = cur.fetchall()
 
-        for i in range(len(result)): #create a list for output
-            formatResult=formatResult+"\n"+str(result[i])
-        return formatResult
+    return ['ev_ID','title','type','date','attend'], res
 
-    except:
-        errorNotice = "Error for pulling up event detail"
-        return errorNotice
 
 # create new event
 def create_event(*arg):# ev_ID,title,type,overseer
     """
-    Input parameters: ev_ID(char-6),title(str),type(enum),overseer(char-9) in order
+    Create new event by inserting 
+    :param args: ev_ID(char-6), title(str),type(enum),overseer(char-9)
 
-    Function: Create new event by inserting to event table
-
+    :return: has created event into database
     """
-    try:
-        cursor.execute("insert into event values ('{ev_ID}', '{title}', '{type}', null, '{overseer}');"\
-            .format(ev_ID=arg[0],title=arg[1],type=arg[2],overseer=arg[3]))
-        database.commit()
-        return("Success to create event")
-    except:
-        return("Fail to create event,Check if event already exsits")
+    # call db connection API
+    q=query()
+
+     # sql query that create new event to db 
+    sql_query = "insert into event values ('{ev_ID}', '{title}', '{type}', null, '{overseer}');"\
+            .format(ev_ID=arg[0],title=arg[1],type=arg[2],overseer=arg[3])
+
+    with q.cursor(username='root',pwd='root') as cur:
+        cur.execute(sql_query)
+
+        #submit change to database
+        q.conn.commit()
+
+        # catch return result
+        res = cur.rowcount
+
+    return True if res > 0 else False
 
 # view staff report
 def view_staff_report():
     """
-    Input parameters: N/A
+    :param args: N/A
 
-    Function: Return report show curator-animal, event manager-event,
-    aquraist-facility, aquraist-event
-
+    :return: array of selected report on curator-animal, 
+    event manager-event, aquraist-facility, aquraist-event
     """
-    tempResult=[] # a temp array that store colunm name, report title and staff detail without formating 
-    for i in range(4): # each round append one type of staff's detail
-        if(i==0):
-            column_title= "\n Curator Report \n curator   animal" # assign column name to str variable
-            cursor.execute("select curator.name, animal.name\
-	            from curator join animal on curator.st_ID=animal.curator;")
-            tempResult.append(column_title) # insert column name
-            tempResult.append(cursor.fetchall()) #follow by staff detail
 
-        elif(i==1):
-            column_title= "\n \nEvent Manager Report \nmanager      event"
-            cursor.execute("select event_manager.name as mangaer_Name, event.title as event_title\
-	            from event_manager join event on event_manager.st_ID = event.overseer;")
-            tempResult.append(column_title)
-            tempResult.append(cursor.fetchall())
+    q = query()
 
-        elif(i==2):
-            column_title=("\n \nAquarist---Facility Report \naquarist   facility")
-            cursor.execute("select aquarist.name as aquarist_Name, facility.name as facility_Name\
+    with q.cursor(username='root',pwd='root') as cur:
+
+        finalResult=[] # an array that store colunm name, report title and staff detail without formating 
+        for i in range(4): # each round append one type of staff's detail
+            if(i==0):
+                sql_query = "select curator.name, animal.name\
+	                from curator join animal on curator.st_ID=animal.curator;"  
+                cur.execute(sql_query)
+                res = cur.fetchall()
+                column_title= ['Curator','Animal'] # assign column name to str variable
+                finalResult.append(column_title) # insert column name
+                finalResult.append(res) #follow by staff detail
+
+            elif(i==1):
+                sql_query = "select event_manager.name as mangaer_Name, event.title as event_title\
+	            from event_manager join event on event_manager.st_ID = event.overseer;"
+                cur.execute(sql_query)
+                column_title=['Manager','Event'] 
+                res = cur.fetchall()
+                finalResult.append(column_title)
+                finalResult.append(res)
+
+            elif(i==2):
+                sql_query = "select aquarist.name as aquarist_Name, facility.name as facility_Name\
 	            from aquarist, facility, maintain\
-                where aquarist.st_ID=maintain.staff and maintain.facility = facility.fa_ID;")
-            tempResult.append(column_title)
-            tempResult.append(cursor.fetchall())
+                where aquarist.st_ID=maintain.staff and maintain.facility = facility.fa_ID;"
+                cur.execute(sql_query)
+                column_title=['Aquarist','Facility']
+                res = cur.fetchall()
+                finalResult.append(column_title)
+                finalResult.append(res)
 
-        else:
-            column_title=("\n \nAcquarist---Event Report \naquarist      event")
-            cursor.execute("select aquarist.name as aquarist_Name, event.title as event_Name\
+            else:       
+                sql_query="select aquarist.name as aquarist_Name, event.title as event_Name\
 	            from aquarist, event, work_on\
-                where aquarist.st_ID = work_on.staff and work_on.event = event.ev_ID;")
-            tempResult.append(column_title)
-            tempResult.append(cursor.fetchall())
+                where aquarist.st_ID = work_on.staff and work_on.event = event.ev_ID;"
+                cur.execute(sql_query)
+                column_title=['Aquarist','Event']
+                res = cur.fetchall()
+                finalResult.append(column_title)
+                finalResult.append(res)
 
-    complete_report="" # define an empty string for final formatted report
-    for i in range(int(len(tempResult)/2)): # run 4 times in outerloop
-        indexOfTitle=2*i #column name location are 0 2 4 6
-        indexOfStaff = 2*i+1 # staff info location are 1 3 5 7
-        complete_report = complete_report+tempResult[indexOfTitle] # insert related colunm name
-        for j in range(len(tempResult[indexOfStaff])): # retierice and sort staff from list of the list
-            complete_report=complete_report+"\n"+str(tempResult[indexOfStaff][j]) # format the staff line by line
-    return complete_report
+    return finalResult
 
 # Hire Staff
 def hire_staff(*arg): # role,st_ID,name,phone,email
     """
-    Input parameters: role{aquirst,curator,event_manger}, st_ID(char-9), name(str),
-    phone(char-9), email(str)
+    :param args: role{aquirst,curator,event_manger}, st_ID(char-9),
+    name(str), phone(char-9), email(str)
 
-    Function: Insert new staff to corresponding table
+    :return: has added staff to database
 
     """
-    try:
-        cursor.execute("insert into {role} values ('{st_ID}', NULL, '{name}', '{phone}', '{email}');"\
-            .format(role=arg[0],st_ID=arg[1],name=arg[2],phone=arg[3],email=arg[4]))
-        database.commit()
-        return("Success to hire a new staff")
-    except:
-        return("Fail to hire new staff")
+    # call db connection API
+    q=query()
+
+     # sql query that create new staff to db 
+    sql_query = "insert into {role} values ('{st_ID}', NULL, '{name}', '{phone}', '{email}');"\
+            .format(role=arg[0],st_ID=arg[1],name=arg[2],phone=arg[3],email=arg[4])
+
+    with q.cursor(username='root',pwd='root') as cur:
+        cur.execute(sql_query)
+
+        #submit change to database
+        q.conn.commit()
+
+        # catch return result
+        res = cur.rowcount
+
+    return True if res > 0 else False
+
 
 #Checking if Curator's animals have been reassigned before firing them
 def animalAssignCheck(st_ID):
     """
-    Input parameters: st_ID(char-9)
+    :param args: st_ID(char-9)
 
-    Function: return boolean to check if animal has been reassign 
-    to new staff before firing a curator
-
+    :return: has an valid reassignment
     """
-    try:
-        cursor.execute("select * from animal where animal.curator={st_ID};".format(st_ID=st_ID))
-        test=cursor.fetchall()
-        if(len(test)==0): # 0 indicate all animal has been reassigned
-            return True 
-        else:
-            return False
-    except:
-        return("Error in animal assigning status checking")
+    # call db connection API
+    q=query()
+
+     # sql query that reterive animal and curator from db
+    sql_query = "select * from animal where animal.curator={st_ID};".format(st_ID=st_ID)
+
+    with q.cursor(username='root',pwd='root') as cur:
+        cur.execute(sql_query)
+        # catch return result
+        res = cur.fetchall()
+
+    return True if len(res)==0 else False #length=0 indicates reassigned all tasks
 
 #Checking if event manager's events have been reassigned before firing them
 def eventAssignCheck(st_ID):
     """
-    Input parameters: st_ID(char-9)
+    :param args: st_ID(char-9)
 
-    Function: return boolean to check if event has been reassign 
-    to new staff before firing a event manager
+    :return: has an valid reassignment
     """
-    try:
-        cursor.execute("select * from event where event.overseer = {st_ID};".format(st_ID=st_ID))
-        test=cursor.fetchall()
-        if(len(test)==0): # 0 indicate all events has been reassigned
-            return True
-        else:
-            return False
-    except:
-        return("Error in event assigning status checking")
+
+    # call db connection API
+    q=query()
+
+     # sql query that reterive event and manager from db
+    sql_query = "select * from event where event.overseer = {st_ID};".format(st_ID=st_ID)
+
+    with q.cursor(username='root',pwd='root') as cur:
+        cur.execute(sql_query)
+        # catch return result
+        res = cur.fetchall()
+
+    return True if len(res)==0 else False #length=0 indicates reassigned all tasks
 
 # Fire Staff
 def fire_staff(st_ID):
     """
-    Input parameters: st_ID(char-9)
+    :param args: st_ID(char-9)
 
-    Function: fire staff after ensuring their task has been reassigned
+    :return: has removed staff from database
     """
+    
     staff=['curator','aquarist','event_manager']
-    try:
-        if(animalAssignCheck(st_ID)==True  and eventAssignCheck(st_ID)==True): # since aquarist is not in either tables, both remain true
-            for i in staff: #locate the staff's role and fire
-                cursor.execute("delete from {staff} where st_ID ='{st_ID}';".format(staff=i,st_ID=st_ID))
-                database.commit()
-            return("Success to fire staff")
-        else:
-            return("Fail to fire staff who still have duties assigned")
-    except:
-        return("Fail to fire staff due to exception")
 
-# Refresh facility/animals
+    # call db connection API
+    q=query()
+    
+    with q.cursor(username='root',pwd='root') as cur:
+        # since aquarist is not in either tables, both remain true
+        if(animalAssignCheck(st_ID)==True and eventAssignCheck(st_ID)==True): 
+            for i in staff: #locate the staff's role and fire
+                # sql query that delete staff from db 
+                sql_query = "delete from {staff} where st_ID ='{st_ID}';".format(staff=i,st_ID=st_ID)
+                cur.execute(sql_query)
+
+                #submit change to database
+                q.conn.commit()
+
+            return True
+        else:
+            return False
+
+# Refresh events/facility/animals
 def refreshAll():
     """
-    Input parameters: N/A
+    :param args: N/A
 
-    Function: reset maintance status to false, reset feeding status to false,
-    create new events to event_instance for a new date
+    :return: has update requirement
     """
-    try:
-        # maintance status set to false
-        cursor.execute("update facility_maint set facility_maint.maint_status= false;")
+    q=query()
 
-        # animal feed time set to 0
-        cursor.execute("update animal set animal.status = 0;")
+    with q.cursor(username='root',pwd='root') as cur:
 
-        # create event_instance for a new day
+        sql_query_maintance = "update facility_maint set facility_maint.maint_status= false;"
+        cur.execute(sql_query_maintance)
+
+        sql_query_feeding = "update animal set animal.status = 0;"
+        cur.execute(sql_query_feeding)
+
+         # create event_instance for a new day
         localtime = time.localtime(time.time())
-        newdate= str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2]) # retrieve current date
+        newdate= str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2]) # retrieve current 
 
-        cursor.execute("select event.ev_ID from event;") # retrieve all events from event table
-        eventList = cursor.fetchall() # array of all event ID
+        sql_query_getEvent = "select event.ev_ID from event;"
+        cur.execute(sql_query_getEvent)
+        eventList = cur.fetchall()
 
-        # insert each event to a new date in event_instance table
         for i in eventList:
-            cursor.execute("insert into event_instance values ('{event_ID}', '{date}', null);".format(event_ID=i[0],date=newdate))
-        database.commit()
-        return("Success Update/Refresh")
-    except:
-        database.rolloback()
-        return("Fail to refresh")
+            sql_query_renewEvent = "insert into event_instance values ('{event_ID}', '{date}', null);".format(event_ID=i[0],date=newdate)
+            cur.execute(sql_query_renewEvent)
+        #submit change to database
+        q.conn.commit()
 
+        # catch return result
+        res = cur.rowcount
+
+    return True if res > 0 else False
+
+# Testing function to locate staff(This is only for director.py's internal testing)
 def selectTest(st_ID):
     """
-    Input parameters: st_ID(char-9)
+    :param args: st_ID(Char-9)
 
-    Function: for testing to check which table the staff locate
+    :return: print staff and his table in db
     """
     staffList=['aquarist','curator','event_manager','general_manager']
-    for i in range(4):
-        cursor.execute("select st_ID, name from {staff} where st_ID='{st_ID}';".format(staff=staffList[i],st_ID=st_ID))
-        foundStaff = cursor.fetchall() 
-        if(len(foundStaff) !=0):
-            print("In table {tableName} found ".format(tableName=staffList[i])+str(foundStaff))
-            return []
+    q=query()
+    with q.cursor(username='root',pwd='root') as cur:
+        for i in range(4):
+            cur.execute("select st_ID, name from {staff} where st_ID='{st_ID}';".format(staff=staffList[i],st_ID=st_ID))
+            foundStaff = cur.fetchall() 
+            if(len(foundStaff) !=0):
+                print("In table {tableName} found ".format(tableName=staffList[i])+str(foundStaff))
 ####################################################################### TESTING AREA ########################################################
 
-#print(view_staff_report())
+print(view_staff_report())
 
 #print(view_event("performance","2022-05-03","2022-05-04"))
 
-#print(create_event('201008','crab show','performance','243910037'))
+#print(create_event('301015','snake show','performance','243910037'))
 
-#print(hire_staff('curator','733289755','Johny','3224545','Johny@aquarium.com'))
+#print(hire_staff('curator','132049705','judy','3224545','Johny@aquarium.com'))
 
-#print(fire_staff('733289255'))
+#print(fire_staff('132049705'))
 
 #print(refreshAll())
 
