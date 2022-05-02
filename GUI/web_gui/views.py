@@ -1,8 +1,6 @@
 from django.shortcuts import render
 import hashlib
 
-from web_gui import sql_query
-
 
 # Create your views here.
 
@@ -40,10 +38,10 @@ def welcome(request):
     return render(request,'index.html')
 
 
-    # with connection.cursor() as cursor:
-    #     cursor.execute(r"SELECT * FROM animal")
-    #     row = cursor.fetchall()
-
+    with connection.cursor() as cursor:
+        cursor.execute(r"SELECT * FROM animal")
+        row = cursor.fetchall()
+    print(row)
 
     # event test ok
     # temp = director.view_event('exhibit', '2022-05-02', '2022-05-04')
