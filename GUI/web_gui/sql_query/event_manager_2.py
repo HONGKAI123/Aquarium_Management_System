@@ -69,10 +69,12 @@ def check_facility_availability():
 
 def assign_facility_to_event(*args):
     """
+    Input: facility_ID, event_ID
     assign facility(id) to event(id) 
     """
-    event_ID = args[0]
-    facility_ID = args[1]
+    facility_ID = args[0]
+    event_ID = args[1]
+ 
     sql_query = "UPDATE event SET facility = " + "'" + facility_ID + "' " + \
                 "WHERE ev_ID =" + "'" + event_ID + "'"
     try:
