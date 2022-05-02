@@ -3,9 +3,10 @@
 {% block title %}
 	{{ page_title }}
 {% endblock %}
-{% block stat %}
-	{% static "Director/director.css" %}
+{% block css_file %}
+	<link rel="stylesheet" href="{% static 'Director/director.css' %}" />
 {% endblock %}
+
 {% block content %}
 	<body>
 	<h1>{{ job_title|default:"Director" }}</h1>
@@ -50,11 +51,7 @@
 						<button type="button" class="btn btn-primary">Create a new report</button>
 					</div>
 				</div>
-
-
 			</div>
-
-
 		</div>
 		<div>
 			<div class="container">

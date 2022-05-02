@@ -6,10 +6,7 @@
 
         if(userName !='' && Password !='' ){
           document.getElementById("submit1").removeAttribute("disabled")
-
-
         }
         else{
-
         }
       }

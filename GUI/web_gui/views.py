@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import reverse
+from django.shortcuts import redirect
 from .sql_query import login_verify
 
 # from .sql_query.all_query import query
@@ -40,13 +41,16 @@ def log_in(request):
             if res[1]:
                 request.session['table'] = res[0]
                 check_title(request)
-                url = reverse('jobs')
-                return render(request, 'Director/director.html', {'job_title':request.session['title'] })
+                #rint(request.session['title'])
+
+                url = reverse('jobs_page',kwargs = {"title":request.session['title']})
+                # return render(request, 'Director/director.html', {'job_title':request.session['title'] })
+                return redirect(url)
             else:
-                return render(request, 'Login/signup.html', {'msg': 'username or password wrong'})
+                return render(request, 'Login/signin.html', {'msg': 'username or password wrong'})
 
     elif request.method == "GET":
-        return render(request, 'Login/signup.html')
+        return render(request, 'Login/signin.html')
 
 
 def report(request,job_title):

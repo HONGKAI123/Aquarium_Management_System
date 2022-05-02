@@ -3,25 +3,24 @@
 {% block title %}
 	Login
 {% endblock %}
-{% block stat %}
-	{% static 'Login/loginstyle.css' %}
+{% block css_file %}
+	<link rel="stylesheet" href="{% static 'Login/loginstyle.css' %}" />
 {% endblock %}
+
 
 {% block content %}
 <body>
-
-
 <div class="login-form">
-	<form action="/login/" method="post">
+	<form action="{% url 'login_page' %}" method="post">
 		{% csrf_token %}
 		<h1>Login</h1>
 		<h6>Please sign in with your username and password</h6>
 		<div class="content">
 			<div class="input-field">
-				<input id='user' type="username" placeholder="Username" autocomplete="nope" onkeyup="empty()">
+				<input id='user' type="username" placeholder="Username" autocomplete="nope" onkeyup="empty()" name="username">
 			</div>
 			<div class="input-field">
-				<input id='pswd1' type="password" placeholder="Password" autocomplete="nope" onkeyup="empty()">
+				<input id='pswd1' type="password" placeholder="Password" autocomplete="nope" onkeyup="empty()" name="pwd">
 			</div>
 
 		</div>
@@ -32,6 +31,6 @@
 </div>
 </body>
 {% endblock %}
-{% block stat_js %}
-	{% static 'Login/loginscript.js' %}
+{% block js_file %}
+	<script src = {% static "Login/loginscript.js"%} ></script>
 {% endblock %}
