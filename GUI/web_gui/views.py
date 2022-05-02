@@ -1,59 +1,26 @@
 from django.shortcuts import render
-import hashlib
+from django.shortcuts import reverse
+from .sql_query import login_verify
 
+# from .sql_query.all_query import query
 
-# Create your views here.
+from django.http import HttpResponse
 
-# from django.http import HttpResponse
-from mysql import connector
 
 def welcome(request):
     """
     test pages, check sql connection
     """
-    # from .sql_query import sql_connection
-    # conn = sql_connection.connector()
-    # conn = conn.connect()
-    from .sql_query import all_query
-    aqu = all_query.aquarist()
-    # res = aqu.check_maint_times('987153744')
-    # print(res[0])
-    # print(res[1])
-
-    # q = all_query.query()
-    # cur = q.cursor()
-    arg = ['987153744','300001','12:00:00']
-    # cur.execute("UPDATE facility_maint \
-    #     SET maint_status = true \
-    #     WHERE facility = '" + arg[1] + "' \
-    #     AND maint_time = '" + arg[2] + "';")
-    # res = cur.fetchall()
-    # q.conn.commit()
-    # print(cur.rowcount)
-    # q.disconnect()
-    # print(res)
-
-    res = aqu.maintain_facility(*arg)
-    print(res)
-    return render(request,'index.html')
-
-
-    with connection.cursor() as cursor:
-        cursor.execute(r"SELECT * FROM animal")
-        row = cursor.fetchall()
-    print(row)
-
     # event test ok
     # temp = director.view_event('exhibit', '2022-05-02', '2022-05-04')
     # print(temp)
     # test_data = [('101001', 'penguin exhibit', 'exhibit', datetime.date(2022, 5, 4), 130), ('101001', 'penguin exhibit', 'exhibit', datetime.date(2022, 5, 3), 120), ('101002', 'whale exhibit', 'exhibit', datetime.date(2022, 5, 4), 100)]
     # test_data_header = ['id','name','type','date','attendence']
-    # return render(request,'Director/director.html',{"job_title":"fuck!","main_table":test_data,"main_table_header":test_data_header,'page_title':'YO bitch'})
+    # return render(request,'Director1/director.html',{"job_title":"fuck!","main_table":test_data,"main_table_header":test_data_header,'page_title':'YO bitch'})
 
 
 def index(request):
-    return render(request, 'Login/signup.html')
-
+    return render(request, 'Login/signin.html')
 
 def log_in(request):
     """
@@ -62,42 +29,38 @@ def log_in(request):
     if exsit,redirect to relative pages,
     otherwise return error
     """
+    # test login
+    # username = 517465989
+    # password = 517465989
     if request.method == "POST":
-        # todo
-        # todo miss select user from each table
-        # todo by get user from different table, show the different webpage to them
-        # todo set session about the title
-        request.session['title'] = ''
+        request.session['table'] = ''
+        login_info = [request.POST.get('username'),request.POST.get('pwd')]
+        if login_info[0] and login_info[1]:
+            res = login_verify.verify_user(*login_info)
+            if res[1]:
+                request.session['table'] = res[0]
+                check_title(request)
+                url = reverse('jobs')
+                return render(request, 'Director/director.html', {'job_title':request.session['title'] })
+            else:
+                return render(request, 'Login/signup.html', {'msg': 'username or password wrong'})
 
-        # if row:
-
-        user_name = request.POST.get('username')
-        pwd = request.POST.get('pwd')
-        print(user_name)
-        hash_pwd = hashlib.md5(pwd.encode('utf-8')).hexdigest()
-        print(hash_pwd)
-
-
-        if 1:
-            return render(request, 'Director/director.html', {'job_title': "ha?"})
-        else:
-            return render(request, 'Login/signup.html', {'error': 'username or password wrong'})
     elif request.method == "GET":
         return render(request, 'Login/signup.html')
 
 
-def report(request):
+def report(request,job_title):
     """
     return different type of webpage based on the job title
     :param request:
     :return:
     """
-    title = check_title(request)
+    title = job_title
     if title > 0:
         if title == 1:
             pass
             # todo sql query
-            return render(request, 'Director/director.html', {'table_value'})
+            return render(request, 'Director1/director.html', {'table_value'})
         elif title == 2:
             pass
         elif title == 3:
@@ -110,24 +73,37 @@ def report(request):
 
 """
 :return 0 if the session/cookie value invalid
-return 1 for 
-return 2 for 
-return 3 for 
+by checking the table name set the job title for it
+title = staff, when table is aquarist,curator,event_manager
+title = Director1 when table is general_manager
+return 1 for aquarist
+return 2 for curator
+return 3 for event_manager
+return 4 for general_manager
 """
 
 
 def check_title(request) -> int:
-    title = request.session['title']
-    if title is not None:
-        if title == "xxx":
+    table = request.session['table']
+    if table is not None:
+        if table == "aquarist":
+            request.session['title'] = 'staff'
             return 1
-        elif title == "yyy":
+        elif table == "curator":
+            request.session['title'] = 'staff'
             return 2
-        elif title == "zzz":
-            return 2
+        elif table == "event_manager":
+            request.session['title'] = 'staff'
+            return 3
+        elif table == "general_manager":
+            request.session['title'] = 'DIRECTOR'
+            return 4
     else:
         return 0
 
 
 def dire(request):
+    pass
+
+def todo_view(request):
     pass

@@ -3,14 +3,18 @@ body {
     height: 200px;
    
   }
-  .title{
 
-    text-align: center;
-    margin-top: 30px;
-   
+  .title{
+      text-align: center;
+      margin-top: 30px;
+     padding-bottom: 10px;
   }
 
-  h2{
+  /* span{
+    border: 5px solid ;
+    border-color: aqua;
+  } */
+h2{
     font-family: "Raleway", sans-serif;  
     font-weight: 300;
 }

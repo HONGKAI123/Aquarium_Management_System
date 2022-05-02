@@ -28,13 +28,9 @@
   }
   .login-form h1 {
     padding: 35px;
-    font-size: 45px;
+    font-size: 50px;
     font-weight: 500;
-    margin-left: 125px;
-    color: #7c795d; font-family: 'Trocchi', serif; 
-     font-weight: 60px; 
-     line-height: 58px;
-    
+    margin-left: 150px;
   }
   .login-form .content {
     padding: 35px;
@@ -56,25 +52,8 @@
     transition: all .2s;
   }
   
-  button{
-    position:relative;
-    margin-bottom: 50px;
-  }
-
-  footer {
-    position: absolute;
-   
-    width: 100%;
-    text-align: center;
-    margin-top: 100px;
-    
-    
-}
-h6{
-  text-align: center;
-}
   
-  /* .login-form .action button {
+  .login-form .action button {
     width: 100%;
     border: none;
     padding: 18px;
@@ -93,5 +72,5 @@ h6{
   .login-form .action button:hover {
     background: aqua;
   }
-   */
+  
   

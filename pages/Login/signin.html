@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Login </title>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Rubik:400,700'><link rel="stylesheet" href="./loginstyle.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  
+</head>
+<body>
+
+
+<div class="login-form">
+  <form>
+    <h1>Login</h1>
+    <h6>Please sign in with your username  and password</h6>
+    <div class="content">
+      <div class="input-field">
+        <input id ='user'type="username" placeholder= "Username" autocomplete="nope" onkeyup="empty()">
+      </div>
+      <div class="input-field">
+        <input id ='pswd1'type="password" placeholder= "Password" autocomplete="nope" onkeyup="empty()">
+      </div>
+
+    </div>
+    <div class="action text-center">
+      
+      <button disabled id= 'submit1' class="btn btn-primary mb-5 btn-lg" type = "submit">Sign in</button>
+    </div>
+  </form>
+
+  <script src="./loginscript.js"></script>
+</div>
+<footer>
+  <h5>copyright@ CMPE138 Team6 Spring 2022</h5>
+</footer>
+
+</body>
