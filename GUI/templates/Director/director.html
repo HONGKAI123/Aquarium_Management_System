@@ -9,154 +9,47 @@
 {% endblock %}
 
 {% block content %}
-<body>
-    <h1 class ='title'>Director</h1>
-</br>
+ 	<body>
+ 	<h1>{{ job_title|default:"Director" }}</h1>
+	<div class="container">
+		<div class='jumbotron'>
+			<div class="card">
+				<div class="card-header">
+					<h1>Report</h1>
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">Create,edit or delete the reports</h5>
+					<table class="table table-dark table-hover table-bordered">
+						<thead>
+						<tr>
+							{% for name in main_table_header %}
+								<th scope="col">{{ name }}</th>
+							{% endfor %}
+							<th class="float-right">Actions</th>
+						</tr>
+						</thead>
+						<tbody>
+						{% for content in main_table %}
+ 							<tr>
+								{% for each_row in content %}
+									{% if forloop.first %}
+										<th scope="row">{{ each_row }}</th>
+									{% else %}
+										<td>{{ each_row }}</td>
+									{% endif %}
+ 								{% endfor %}
+									<button type="button" class="btn btn-primary">Edit</button>
+									<button type="button" class="btn btn-danger">Delete</button>
+ 								</td>
 
-    <div>
-<div class="container" >
-  <div class ='jumbotron'>
-    <div class="card">
-        <div class="card-header">
-          <h2>Report</h2>
-        
-        </div>
-        <div class="card-body">
-			 <button type="button" class="btn btn-danger">next day</button>
-          <h5 class="card-title">Create,edit or delete the reports</h5> 
-          <table class="table table-dark table-hover table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">a</th>
-                <th scope="col">b</th>
-                <th scope="col">c</th>
-                <th scope="col">d</th>
-                <th class="float-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>123</td>
-                <td>123</td>
-                <td>123@</td>
-                <td>123@</td>
-                <td class="float-right"><button type="button" class="btn btn-primary">Edit</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>123</td>
-                <td>123</td>
-                <td>@fat</td>
-                <td>asd</td>
-                <td class="float-right"><button type="button" class="btn btn-primary">Edit</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>123</td>
-                <td> 123</td>
-                <td>@</td>
-                <td>123</td>
-                <td class="float-right"><button type="button" class="btn btn-primary">Edit</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </td>
-                
-              </tr>
-            </tbody>
-            
-          </table>
-          <button type="button" class="btn btn-primary">Create a new report</button>
-        </div>
-      </div>
-
-
-      
-
-  </div>
-
-  
-    
-</div>
- <div>
-  <div class="container" >
-    <div class ='jumbotron'>
-      <div class="card">
-          <div class="card-header">
-            <h2>Staff</h2>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Hire or Fire staff</h5> 
-            <table class="table table-dark table-hover table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">a</th>
-                  <th scope="col">b</th>
-                  <th scope="col">c</th>
-                  <th scope="col">d</th>
-                  <th class="float-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>123</td>
-                  <td>123</td>
-                  <td>123@</td>
-                  <td>123@</td>
-                  <td class="float-right">
-                      <button type="button" class="btn btn-danger">Fire</button>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>123</td>
-                  <td>123</td>
-                  <td>@fat</td>
-                  <td>asd</td>
-                  <td class="float-right">
-                      <button type="button" class="btn btn-danger">Fire</button>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>123</td>
-                  <td> 123</td>
-                  <td>@</td>
-                  <td>123</td>
-                  <td class="float-right">
-                      <button type="button" class="btn btn-danger">Fire</button>
-                  </td>
-                  
-                </tr>
-              </tbody>
-              
-            </table>
-            <button id ="mybutton"type="button" class="btn btn-primary">Hire</button>
-           <script>
-             document.getElementById("mybutton").onclick = function () {
-                 location.href = "../Register/register.html";
-              };
-           </script>
-           
-          </div>
-          
-        </div>
-  
-        <button id ="mybutton"type="button" class="btn btn-primary float-right ">Start new Day!</button>
-        
-  
-    </div>
-  
-      
-  </div>
- </div>
-
-</div>
-</body>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+					<button type="button" class="btn btn-primary">Create a new report</button>
+ 				</div>
+ 			</div>
+ 		</div>
+ 	</div>
+	</body>
 {% endblock %}
