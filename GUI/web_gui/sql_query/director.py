@@ -15,7 +15,9 @@ mycursor = db.cursor()
 
 # view events report
 def view_event(*arg): # type,start_date,end_date
-    ls =["Event ID", "Event Title", "Type", "Date", "Attendance"]       #Event ID(string) Event Title(string) Type(enum) Date(date) Attendance(int)
+
+    ls = ['a','b','c']
+
     mycursor.execute("select ev_ID, title, type, date, attendance \
         from event join event_instance on event.ev_ID = event_instance.event \
             where type ='{type}' and (date between '{start_date}' and '{end_date}')\

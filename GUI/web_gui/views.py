@@ -21,18 +21,29 @@ def welcome(request):
     # res = aqu.check_maint_times('987153744')
     # print(res[0])
     # print(res[1])
-    res = aqu.maintain_facility('987153744','300001','12:00:00')
+
+    # q = all_query.query()
+    # cur = q.cursor()
+    arg = ['987153744','300001','12:00:00']
+    # cur.execute("UPDATE facility_maint \
+    #     SET maint_status = true \
+    #     WHERE facility = '" + arg[1] + "' \
+    #     AND maint_time = '" + arg[2] + "';")
+    # res = cur.fetchall()
+    # q.conn.commit()
+    # print(cur.rowcount)
+    # q.disconnect()
+    # print(res)
+
+    res = aqu.maintain_facility(*arg)
     print(res)
     return render(request,'index.html')
 
-    # conn.cursor.execute(r'select * from animal')
-    # row = conn.cursor.fetchall()
-    # conn.disconnect()
-    # print(row)
 
     # with connection.cursor() as cursor:
     #     cursor.execute(r"SELECT * FROM animal")
     #     row = cursor.fetchall()
+
 
     # event test ok
     # temp = director.view_event('exhibit', '2022-05-02', '2022-05-04')
@@ -65,13 +76,9 @@ def log_in(request):
         user_name = request.POST.get('username')
         pwd = request.POST.get('pwd')
         print(user_name)
-        hash_pwd = hashlib.sha256(pwd.encode('utf-8')).hexdigest()
+        hash_pwd = hashlib.md5(pwd.encode('utf-8')).hexdigest()
         print(hash_pwd)
 
-        # with connection.cursor() as cursor:
-        with connection.cursor() as cursor:
-            cursor.execute(r"SELECT * FROM animal")
-            row = cursor.fetchall()
 
         if 1:
             return render(request, 'Director/director.html', {'job_title': "ha?"})
