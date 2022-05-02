@@ -24,7 +24,7 @@ def welcome(request):
     # print(res[1])
     res = aqu.maintain_facility('987153744','300001','12:00:00')
     print(res)
-    return render(request,'index.html')
+    return render(request,'Home/Home.html')
 
     # conn.cursor.execute(r'select * from animal')
     # row = conn.cursor.fetchall()
