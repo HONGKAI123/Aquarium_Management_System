@@ -1,11 +1,10 @@
 from django.shortcuts import render
-import hashlib
+from .sql_query import login_verify
 
+# from .sql_query.all_query import query
 
-# Create your views here.
+from django.http import HttpResponse
 
-# from django.http import HttpResponse
-from mysql import connector
 
 def welcome(request):
     """
@@ -22,7 +21,7 @@ def welcome(request):
 
     # q = all_query.query()
     # cur = q.cursor()
-    arg = ['987153744','300001','12:00:00']
+    arg = ['987153744', '300001', '12:00:00']
     # cur.execute("UPDATE facility_maint \
     #     SET maint_status = true \
     #     WHERE facility = '" + arg[1] + "' \
@@ -35,8 +34,7 @@ def welcome(request):
 
     res = aqu.maintain_facility(*arg)
     print(res)
-    return render(request,'index.html')
-
+    return render(request, 'index.html')
 
     with connection.cursor() as cursor:
         cursor.execute(r"SELECT * FROM animal")
@@ -67,21 +65,19 @@ def log_in(request):
         # todo miss select user from each table
         # todo by get user from different table, show the different webpage to them
         # todo set session about the title
-        request.session['title'] = ''
+        request.session['table'] = ''
 
-        # if row:
+        login_info = []
+        login_info.append(request.POST.get('username'))
+        login_info.append(request.POST.get('pwd'))
+        if login_info[0] and login_info[1]:
+            res = login_verify.verify_user(*login_info)
+            if res[1]:
+                request.session['table'] = res[0]
+                return render(request, 'Director/director.html', {'job_title':request.session['table'] })
+            else:
+                return render(request, 'Login/signup.html', {'msg': 'username or password wrong'})
 
-        user_name = request.POST.get('username')
-        pwd = request.POST.get('pwd')
-        print(user_name)
-        hash_pwd = hashlib.md5(pwd.encode('utf-8')).hexdigest()
-        print(hash_pwd)
-
-
-        if 1:
-            return render(request, 'Director/director.html', {'job_title': "ha?"})
-        else:
-            return render(request, 'Login/signup.html', {'error': 'username or password wrong'})
     elif request.method == "GET":
         return render(request, 'Login/signup.html')
 
@@ -110,21 +106,31 @@ def report(request):
 
 """
 :return 0 if the session/cookie value invalid
-return 1 for 
-return 2 for 
-return 3 for 
+by checking the table name set the job title for it
+title = staff, when table is aquarist,curator,event_manager
+title = Director when table is general_manager
+return 1 for aquarist
+return 2 for curator
+return 3 for event_manager
+return 4 for general_manager
 """
 
 
 def check_title(request) -> int:
-    title = request.session['title']
-    if title is not None:
-        if title == "xxx":
+    table = request.session['table']
+    if table is not None:
+        if table == "aquarist":
+            request.session['title'] = 'staff'
             return 1
-        elif title == "yyy":
+        elif table == "curator":
+            request.session['title'] = 'staff'
             return 2
-        elif title == "zzz":
-            return 2
+        elif table == "event_manager":
+            request.session['title'] = 'staff'
+            return 3
+        elif table == "general_manager":
+            request.session['title'] = 'Director'
+            return 4
     else:
         return 0
 

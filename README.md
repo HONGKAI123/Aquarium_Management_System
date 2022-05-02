@@ -424,21 +424,5 @@ return True if cursor.rowcount > 0 else False
 
 ## login:
 
-没找到select username & password 语句关于:
-
--> general_manager
-
--> event_manager
-
-Event_manager.py ??
-
--> aquarist
-
-aquarist.py
-
--> curator
-
-curator.py
-
 
 
