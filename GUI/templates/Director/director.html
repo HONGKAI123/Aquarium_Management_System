@@ -3,9 +3,11 @@
 {% block title %}
 	{{ page_title }}
 {% endblock %}
-{% block stat %}
-	{% static "Director/director.css" %}
+
+{% block css_file %}
+	<link rel="stylesheet" href="{% static "Director/director.css" %}" >
 {% endblock %}
+
 {% block content %}
 <body>
     <h1 class ='title'>Director</h1>
