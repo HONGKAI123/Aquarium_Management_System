@@ -1,4 +1,6 @@
+# SJSU CMPE 138 Spring 2022 TEAM6
 import mysql.connector
+
 
 database = mysql.connector.connect(
     host = 'localhost',
@@ -12,14 +14,17 @@ cursor = database.cursor()
 
 # Helper function to make sure the animal belongs to current user
 def check_ownership(st_id, an_id):
+    ls=['Curator']
     try:
         cursor.execute("SELECT curator FROM animal WHERE an_ID = '" + an_id + "';")
         return(st_id == str(cursor.fetchone()[0]))
     except:
         print("The animal ID you have entered does not exist")
+        # return ls,result
 
 # Check animal status
 def check_an_Status():
+    ls=["Status"]
     query = "\
     SELECT * \
     FROM animal;"
@@ -29,6 +34,7 @@ def check_an_Status():
     results = cursor.fetchall()
     for result in results:
         print(result)
+    return ls,result
 
 
 #Update animal status (set to 1)
@@ -47,6 +53,7 @@ def update_an_Status(*arg):
 #Chekc facility availability for adding new animals
 # arg = [species]
 def check_spare_facility(*arg):
+    ls = ['Facility ID','Facility Name']
     query = "\
     SELECT fa_ID, f.name \
     FROM facility f \
@@ -58,6 +65,8 @@ def check_spare_facility(*arg):
     results = cursor.fetchall()
     for result in results:
         print(result)
+
+    return ls,result
 
 
 #Add new animals
