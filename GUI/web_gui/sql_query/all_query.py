@@ -164,9 +164,8 @@ class director():
                     cur.execute(sql_query)
                     res = cur.fetchall()
                     column_title = ['Curator', 'Animal']  # assign column name to str variable
-                    column.extend(column_title)  # insert column name
-                    print(res,"0")
-                    finalResult.extend(res)  # follow by staff detail
+                    finalResult.append(column_title)  # insert column name                    finalResult.extend(res)  # follow by staff detail
+                    finalResult.append(res)
 
                 elif (i == 1):
                     sql_query = "select event_manager.name as mangaer_Name, event.title as event_title\
@@ -174,9 +173,8 @@ class director():
                     cur.execute(sql_query)
                     column_title = ['Manager', 'Event']
                     res = cur.fetchall()
-                    column.extend(column_title)
-                    print(res,"1")
-                    finalResult.extend(res)
+                    finalResult.append(column_title)
+                    finalResult.append(res)
 
                 elif (i == 2):
                     sql_query = "select aquarist.name as aquarist_Name, facility.name as facility_Name\
@@ -185,8 +183,8 @@ class director():
                     cur.execute(sql_query)
                     column_title = ['Aquarist', 'Facility']
                     res = cur.fetchall()
-                    column.extend(column_title)
-                    finalResult.extend(res)
+                    finalResult.append(column_title)
+                    finalResult.append(res)
 
                 else:
                     sql_query = "select aquarist.name as aquarist_Name, event.title as event_Name\
@@ -195,10 +193,10 @@ class director():
                     cur.execute(sql_query)
                     column_title = ['Aquarist', 'Event']
                     res = cur.fetchall()
-                    column.extend(column_title)
-                    finalResult.extend(res)
+                    finalResult.append(column_title)
+                    finalResult.append(res)
 
-        return column,finalResult
+        return finalResult
 
 
     # Hire Staff

@@ -70,7 +70,17 @@ def report(request,job_title):
             dire = director()
             value = dire.view_staff_report()
             print(value)
-            return render(request, 'Director/director.html', {'main_table_header':value[0],'main_table':value[1]})
+            cont = {
+                'animal_h':value[0],
+                'animal_r':value[1],
+                'manager_h':value[2],
+                'manager_r':value[3],
+                'aquarist_h':value[4],
+                'aquarist_r':value[5],
+                'event_h':value[6],
+                'event_r':value[7]
+            }
+            return render(request, 'Director/director.html',cont)
     else:
         return render()
 

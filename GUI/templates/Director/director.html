@@ -22,14 +22,13 @@
 					<table class="table table-dark table-hover table-bordered">
 						<thead>
 						<tr>
-							{% for name in main_table_header %}
+							{% for name in animal_h %}
 								<th scope="col">{{ name }}</th>
 							{% endfor %}
-							<th class="float-right">Actions</th>
 						</tr>
 						</thead>
 						<tbody>
-						{% for content in main_table %}
+						{% for content in animal_r %}
  							<tr>
 								{% for each_row in content %}
 									{% if forloop.first %}
@@ -38,9 +37,89 @@
 										<td>{{ each_row }}</td>
 									{% endif %}
  								{% endfor %}
+ 								</td>
+
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+
+				<table class="table table-dark table-hover table-bordered">
+						<thead>
+						<tr>
+							{% for name in manager_h %}
+								<th scope="col">{{ name }}</th>
+							{% endfor %}
+						</tr>
+						</thead>
+						<tbody>
+						{% for content in manager_r %}
+ 							<tr>
+								{% for each_row in content %}
+									{% if forloop.first %}
+										<th scope="row">{{ each_row }}</th>
+									{% else %}
+										<td>{{ each_row }}</td>
+									{% endif %}
+ 								{% endfor %}
+
+
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+
+				<table class="table table-dark table-hover table-bordered">
+						<thead>
+						<tr>
+							{% for name in aquarist_h %}
+								<th scope="col">{{ name }}</th>
+							{% endfor %}
+						<th class="float-right">Actions</th>
+						</tr>
+						</thead>
+						<tbody>
+						{% for content in aquarist_r %}
+ 							<tr>
+								{% for each_row in content %}
+									{% if forloop.first %}
+										<th scope="row">{{ each_row }}</th>
+									{% else %}
+										<td>{{ each_row }}</td>
+									{% endif %}
+ 								{% endfor %}
+							<td class="float-right">
 									<button type="button" class="btn btn-primary">Edit</button>
 									<button type="button" class="btn btn-danger">Delete</button>
- 								</td>
+								</td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+
+				<table class="table table-dark table-hover table-bordered">
+						<thead>
+						<tr>
+							{% for name in event_h %}
+								<th scope="col">{{ name }}</th>
+							{% endfor %}
+							<th class="float-right">Actions</th>
+						</tr>
+						</thead>
+						<tbody>
+						{% for content in event_r %}
+ 							<tr>
+								{% for each_row in content %}
+									{% if forloop.first %}
+										<th scope="row">{{ each_row }}</th>
+									{% else %}
+										<td>{{ each_row }}</td>
+									{% endif %}
+ 								{% endfor %}
+ 								<td class="float-right">
+									<button type="button" class="btn btn-primary">Edit</button>
+									<button type="button" class="btn btn-danger">Delete</button>
+								</td>
 
 							</tr>
 						{% endfor %}
