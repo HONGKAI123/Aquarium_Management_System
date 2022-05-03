@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+	Welcome To 138 Project
+{% endblock %}
+
+{% block stat %}
+	{% static 'Aquarist/aquarist.css' %}
+{% endblock %}
+{% block content %}
+
+	<body>
+	<h1 class="title">Aquarist</h1>
+	</br>
+
+	<div>
+		<div class="container">
+			<div class='jumbotron'>
+				<div class="card">
+					<div class="card-header">
+						<h2>Facility Maintenance</h2>
+					</div>
+					<div class="card-body">
+						<table class="table table-dark table-hover table-bordered">
+							<thead>
+							<tr>
+								{% for name in aqu_h %}
+									<th scope="col">{{ name }}</th>
+								{% endfor %}
+							</tr>
+							</thead>
+							<tbody>
+							{% for content in aqu_r %}
+								<tr>
+									{% for each_row in content %}
+										{% if forloop.first %}
+											<th scope="row">{{ each_row }}</th>
+										{% else %}
+											<td>{{ each_row }}</td>
+										{% endif %}
+									{% endfor %}
+									<td class="float-right">
+										<button type="button" class="btn btn-primary">Maintain</button>
+									</td>
+								</tr>
+							{% endfor %}
+
+							</tbody>
+
+						</table>
+
+					</div>
+				</div>
+
+
+			</div>
+
+
+		</div>
+	</body>
+
+{% endblock %}

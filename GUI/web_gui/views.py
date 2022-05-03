@@ -4,6 +4,7 @@ from django.shortcuts import reverse
 from django.shortcuts import redirect
 from .sql_query import login_verify
 from .sql_query.all_query import director
+from .sql_query.all_query import aquarist
 
 # from .sql_query.all_query import query
 
@@ -25,6 +26,7 @@ def welcome(request):
 def index(request):
     return render(request, 'Login/signin.html')
 
+
 def log_in(request):
     """
     get username and pwd from webpage,
@@ -35,18 +37,33 @@ def log_in(request):
     # test login
     # username = 517465989
     # password = 517465989
+    print("ok")
     if request.method == "POST":
         request.session['table'] = ''
-        login_info = [request.POST.get('username'),request.POST.get('pwd')]
+        login_info = [request.POST.get('username'), request.POST.get('pwd')]
+        print(login_info)
         if login_info[0] and login_info[1]:
             res = login_verify.verify_user(*login_info)
+            print(res)
             if res[1]:
                 request.session['table'] = res[0]
+                request.session['id'] = login_info[0]
                 check_title(request)
-                url = reverse('jobs_page',kwargs = {"job_title":request.session['title']})
-                return redirect(url)
-            else:
-                return render(request, 'Login/signin.html', {'msg': 'username or password wrong'})
+                if request.session['table'] == "aquarist":
+                    url = reverse('jobs_page', kwargs = {"job_title": request.session['title']})
+                    return redirect(url)
+
+                elif request.session['table'] == "curator":
+                    pass
+                elif request.session['table'] == "event_manager":
+                    pass
+                elif request.session['table'] == "general_manager":
+                    url = reverse('jobs_page', kwargs = {"job_title": request.session['title']})
+                    return redirect(url)
+
+        else:
+            print("else")
+            return render(request, 'Login/signin.html', {'msg': 'username or password wrong'})
 
     elif request.method == "GET":
         return render(request, 'Login/signin.html')
@@ -59,20 +76,68 @@ def report(request,job_title):
     :return:
     """
     title = check_title(request)
-    if title is not None:
-        if title == 1:
-            pass
-        elif title == 2:
-            pass
-        elif title == 3:
-            pass
-        elif title == 4:
-            dire = director()
-            value = dire.view_staff_report()
-            print(value)
-            return render(request, 'Director/director.html', {'main_table_header':value[0],'main_table':value[1]})
+
+    if job_title == "AQUARIST":
+        aq = aquarist()
+        id = request.session['id']
+        result = aq.check_maint_times(id)
+        print(result)
+        cont = {
+            'aqu_h':result[0],
+            'aqu_r':result[1]
+        }
+        return render(request,"Aquarist/aquarist.html",cont)
+
+    elif job_title == "CURATOR":
+        return render(request,"Aquarist/aquarist.html")
+        # return render(request, "")
+    elif job_title == "MANAGER":
+        return render(request,"Event_manager/")
+    elif job_title == "DIRECTOR":
+        dire = director()
+        value = dire.view_staff_report()
+        cont = {
+            'animal_h': value[0],
+            'animal_r': value[1],
+            'manager_h': value[2],
+            'manager_r': value[3],
+            'aquarist_h': value[4],
+            'aquarist_r': value[5],
+            'event_h': value[6],
+            'event_r': value[7]
+        }
+        # todo edit/delete 缺 id
+        return render(request, 'Director/director.html', cont)
     else:
-        return render()
+        return render(request,'Login/signin/html')
+
+    if request.method == "GET":
+        pass
+
+    # if title is not None:
+    #     if title == 1:
+    #         pass
+    #     elif title == 2:
+    #         pass
+    #     elif title == 3:
+    #         pass
+    #     elif title == 4:
+    #         dire = director()
+    #         value = dire.view_staff_report()
+    #         cont = {
+    #             'animal_h': value[0],
+    #             'animal_r': value[1],
+    #             'manager_h': value[2],
+    #             'manager_r': value[3],
+    #             'aquarist_h': value[4],
+    #             'aquarist_r': value[5],
+    #             'event_h': value[6],
+    #             'event_r': value[7]
+    #         }
+    #         # todo edit/delete 缺 id
+    #         return render(request, 'Director/director.html', cont)
+    # else:
+    #     return render()
 
 
 """
@@ -85,17 +150,19 @@ return 2 for curator
 return 3 for event_manager
 return 4 for general_manager
 """
+
+
 def check_title(request) -> int:
     table = request.session['table']
     if table is not None:
         if table == "aquarist":
-            request.session['title'] = 'staff'
+            request.session['title'] = 'AQUARIST'
             return 1
         elif table == "curator":
-            request.session['title'] = 'staff'
+            request.session['title'] = 'CURATOR'
             return 2
         elif table == "event_manager":
-            request.session['title'] = 'staff'
+            request.session['title'] = 'MANAGER'
             return 3
         elif table == "general_manager":
             request.session['title'] = 'DIRECTOR'
@@ -107,8 +174,10 @@ def check_title(request) -> int:
 def dire(request):
     return render(request, "Director/director.html")
 
+
 def home(request):
     return render(request, 'Home/Home.html')
+
 
 def register(request):
     return render(request, 'Register/register.html')

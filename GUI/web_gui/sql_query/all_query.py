@@ -92,7 +92,7 @@ class aquarist():
 
 class director():
     # view events report
-    def view_event(self,*arg):  # type,start_date,end_date
+    def view_event(self, *arg):  # type,start_date,end_date
         """
         View events by selecting
         :param args: type (enum),start_date(str),end_date(str)
@@ -108,16 +108,15 @@ class director():
                     where type ='{type}' and (date between '{start_date}' and '{end_date}')\
                     order by attendance desc;".format(type = arg[0], start_date = arg[1], end_date = arg[2])
 
-        with q.cursor(username = 'root', pwd = 'root') as cur:
+        with q.cursor() as cur:
             cur.execute(sql_query)
             # catch return result
             res = cur.fetchall()
 
         return ['ev_ID', 'title', 'type', 'date', 'attend'], res
 
-
     # create new event
-    def create_event(self,*arg):  # ev_ID,title,type,overseer
+    def create_event(self, *arg):  # ev_ID,title,type,overseer
         """
         Create new event by inserting
         :param args: ev_ID(char-6), title(str),type(enum),overseer(char-9)
@@ -142,7 +141,6 @@ class director():
 
         return True if res > 0 else False
 
-
     # view staff report
     def view_staff_report(self):
         """
@@ -164,9 +162,9 @@ class director():
                     cur.execute(sql_query)
                     res = cur.fetchall()
                     column_title = ['Curator', 'Animal']  # assign column name to str variable
-                    column.extend(column_title)  # insert column name
-                    print(res,"0")
-                    finalResult.extend(res)  # follow by staff detail
+                    finalResult.append(
+                        column_title)  # insert column name                    finalResult.extend(res)  # follow by staff detail
+                    finalResult.append(res)
 
                 elif (i == 1):
                     sql_query = "select event_manager.name as mangaer_Name, event.title as event_title\
@@ -174,9 +172,8 @@ class director():
                     cur.execute(sql_query)
                     column_title = ['Manager', 'Event']
                     res = cur.fetchall()
-                    column.extend(column_title)
-                    print(res,"1")
-                    finalResult.extend(res)
+                    finalResult.append(column_title)
+                    finalResult.append(res)
 
                 elif (i == 2):
                     sql_query = "select aquarist.name as aquarist_Name, facility.name as facility_Name\
@@ -185,8 +182,8 @@ class director():
                     cur.execute(sql_query)
                     column_title = ['Aquarist', 'Facility']
                     res = cur.fetchall()
-                    column.extend(column_title)
-                    finalResult.extend(res)
+                    finalResult.append(column_title)
+                    finalResult.append(res)
 
                 else:
                     sql_query = "select aquarist.name as aquarist_Name, event.title as event_Name\
@@ -195,14 +192,13 @@ class director():
                     cur.execute(sql_query)
                     column_title = ['Aquarist', 'Event']
                     res = cur.fetchall()
-                    column.extend(column_title)
-                    finalResult.extend(res)
+                    finalResult.append(column_title)
+                    finalResult.append(res)
 
-        return column,finalResult
-
+        return finalResult
 
     # Hire Staff
-    def hire_staff(self,*arg):  # role,st_ID,name,phone,email
+    def hire_staff(self, *arg):  # role,st_ID,name,phone,email
         """
         :param args: role{aquirst,curator,event_manger}, st_ID(char-9),
         name(str), phone(char-9), email(str)
@@ -228,9 +224,8 @@ class director():
 
         return True if res > 0 else False
 
-
     # Checking if Curator's animals have been reassigned before firing them
-    def animalAssignCheck(st_ID):
+    def animalAssignCheck(self, st_ID):
         """
         :param args: st_ID(char-9)
 
@@ -249,9 +244,8 @@ class director():
 
         return True if len(res) == 0 else False  # length=0 indicates reassigned all tasks
 
-
     # Checking if event manager's events have been reassigned before firing them
-    def eventAssignCheck(st_ID):
+    def eventAssignCheck(self, st_ID):
         """
         :param args: st_ID(char-9)
 
@@ -271,9 +265,8 @@ class director():
 
         return True if len(res) == 0 else False  # length=0 indicates reassigned all tasks
 
-
     # Fire Staff
-    def fire_staff(st_ID):
+    def fire_staff(self, st_ID):
         """
         :param args: st_ID(char-9)
 
@@ -287,7 +280,7 @@ class director():
 
         with q.cursor() as cur:
             # since aquarist is not in either tables, both remain true
-            if (self.animalAssignCheck(st_ID) == True and eventAssignCheck(st_ID) == True):
+            if (self.animalAssignCheck(st_ID) == True and self.eventAssignCheck(st_ID) == True):
                 for i in staff:  # locate the staff's role and fire
                     # sql query that delete staff from db
                     sql_query = "delete from {staff} where st_ID ='{st_ID}';".format(staff = i, st_ID = st_ID)
@@ -299,7 +292,6 @@ class director():
                 return True
             else:
                 return False
-
 
     # Refresh events/facility/animals
     def refreshAll(self):
@@ -333,6 +325,74 @@ class director():
             q.conn.commit()
 
             # catch return result
+            res = cur.rowcount
+
+        return True if res > 0 else False
+
+
+class aquarist():
+    # check maintanence times
+    # arg = [user_id]
+    def check_maint_times(self, *arg):
+        ls = ['Facility Name', 'Facility ID', 'Maintenance Time']
+        sql_query = "\
+        SELECT name AS 'Facility', fa_id AS 'ID', maint_time AS 'Maintenance Time' \
+        FROM facility_maint \
+        LEFT JOIN facility ON facility.fa_id = facility_maint.facility \
+        LEFT JOIN maintain ON fa_id = maintain.facility \
+        WHERE maint_status = FALSE \
+        AND staff = '" + arg[0] + "' \
+        ORDER BY maint_time ASC;"
+
+        q = query()
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+            # catch return result
+            res = cur.fetchall()
+
+        # """
+        # Use block below if returning query results directly
+        # RETURN FORMAT: list of tuples [('facility_name', 'fa_id', maint_time), ...]
+
+        return ls, res
+
+        """
+        # Use block below if returning list[rows[]]
+        # RETURN FORMAT: list of lists [['facility_name', 'fa_id', maint_time], ...]
+        result = []
+        #result.append(['Facility', 'ID', 'Maintenance Time']) # Add header row if necessary
+        for x in cursor.fetchall():
+            result.append(list(x))
+        # check results
+        for i in result:
+            print(i[0], ' ', i[1], ' ', i[2])
+        """
+        return result
+
+
+    # Update facility maintanence status
+    # arg = [user_id, fa_id, maint_time]
+    def maintain_facility(self, *arg):
+        # Check if the fa_id and maint_time combo exists for current user
+        input_match = False
+        for i in self.check_maint_times(arg[0]):
+            if str(i[1]) == str(arg[1]) and str(i[2]) == str(arg[2]):
+                input_match = True
+
+        if input_match == True:
+            sql_query = "\
+            UPDATE facility_maint \
+            SET maint_status = true \
+            WHERE facility = '" + arg[1] + "' \
+            AND maint_time = '" + arg[2] + "';"
+
+        q = query()
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+            # 提交修改后的语句到数据库
+            q.conn.commit()
+
+            # 获取被修改的行数
             res = cur.rowcount
 
         return True if res > 0 else False
