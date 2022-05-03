@@ -80,6 +80,7 @@ def report(request,job_title):
                 'event_h':value[6],
                 'event_r':value[7]
             }
+            #todo edit/delete 缺 id
             return render(request, 'Director/director.html',cont)
     else:
         return render()

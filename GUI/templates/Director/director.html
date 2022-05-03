@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block css_file %}
-	<link rel="stylesheet" href="{% static "Director/director.css" %}" >
+	<link rel="stylesheet" href="{% static "Director/director.css" %}">
 {% endblock %}
 
 {% block content %}
- 	<body>
- 	<h1>{{ job_title|default:"Director" }}</h1>
+	<body>
+	<h1>{{ job_title|default:"Director" }}</h1>
 	<div class="container">
 		<div class='jumbotron'>
 			<div class="card">
@@ -19,7 +19,24 @@
 				</div>
 				<div class="card-body">
 					<h5 class="card-title">Create,edit or delete the reports</h5>
-					<table class="table table-dark table-hover table-bordered">
+
+					<button type="button" class="btn btn-primary">Create a new report</button>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	<div>
+  <div class="container" >
+    <div class ='jumbotron'>
+      <div class="card">
+          <div class="card-header">
+            <h2>Staff</h2>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Hire or Fire staff</h5>
+            <table class="table table-dark table-hover table-bordered">
 						<thead>
 						<tr>
 							{% for name in animal_h %}
@@ -29,22 +46,22 @@
 						</thead>
 						<tbody>
 						{% for content in animal_r %}
- 							<tr>
+							<tr>
 								{% for each_row in content %}
 									{% if forloop.first %}
 										<th scope="row">{{ each_row }}</th>
 									{% else %}
 										<td>{{ each_row }}</td>
 									{% endif %}
- 								{% endfor %}
- 								</td>
+								{% endfor %}
+								</td>
 
 							</tr>
 						{% endfor %}
 						</tbody>
 					</table>
 
-				<table class="table table-dark table-hover table-bordered">
+					<table class="table table-dark table-hover table-bordered">
 						<thead>
 						<tr>
 							{% for name in manager_h %}
@@ -54,14 +71,14 @@
 						</thead>
 						<tbody>
 						{% for content in manager_r %}
- 							<tr>
+							<tr>
 								{% for each_row in content %}
 									{% if forloop.first %}
 										<th scope="row">{{ each_row }}</th>
 									{% else %}
 										<td>{{ each_row }}</td>
 									{% endif %}
- 								{% endfor %}
+								{% endfor %}
 
 
 							</tr>
@@ -69,26 +86,26 @@
 						</tbody>
 					</table>
 
-				<table class="table table-dark table-hover table-bordered">
+					<table class="table table-dark table-hover table-bordered">
 						<thead>
 						<tr>
 							{% for name in aquarist_h %}
 								<th scope="col">{{ name }}</th>
 							{% endfor %}
-						<th class="float-right">Actions</th>
+							<th class="float-right">Actions</th>
 						</tr>
 						</thead>
 						<tbody>
 						{% for content in aquarist_r %}
- 							<tr>
+							<tr>
 								{% for each_row in content %}
 									{% if forloop.first %}
 										<th scope="row">{{ each_row }}</th>
 									{% else %}
 										<td>{{ each_row }}</td>
 									{% endif %}
- 								{% endfor %}
-							<td class="float-right">
+								{% endfor %}
+								<td class="float-right">
 									<button type="button" class="btn btn-primary">Edit</button>
 									<button type="button" class="btn btn-danger">Delete</button>
 								</td>
@@ -97,7 +114,7 @@
 						</tbody>
 					</table>
 
-				<table class="table table-dark table-hover table-bordered">
+					<table class="table table-dark table-hover table-bordered">
 						<thead>
 						<tr>
 							{% for name in event_h %}
@@ -108,27 +125,33 @@
 						</thead>
 						<tbody>
 						{% for content in event_r %}
- 							<tr>
+							<tr>
 								{% for each_row in content %}
 									{% if forloop.first %}
 										<th scope="row">{{ each_row }}</th>
 									{% else %}
 										<td>{{ each_row }}</td>
 									{% endif %}
- 								{% endfor %}
- 								<td class="float-right">
+								{% endfor %}
+								<td class="float-right">
 									<button type="button" class="btn btn-primary">Edit</button>
 									<button type="button" class="btn btn-danger">Delete</button>
 								</td>
-
 							</tr>
 						{% endfor %}
 						</tbody>
 					</table>
-					<button type="button" class="btn btn-primary">Create a new report</button>
- 				</div>
- 			</div>
- 		</div>
- 	</div>
+            <button id ="mybutton"type="button" class="btn btn-primary">Hire</button>
+           <script>
+             document.getElementById("mybutton").onclick = function () {
+                 location.href = "../Register/register.html";
+              };
+           </script>
+          </div>
+        </div>
+        <button id ="mybutton"type="button" class="btn btn-primary float-right ">Start new Day!</button>
+    </div>
+  </div>
+ </div>
 	</body>
 {% endblock %}
