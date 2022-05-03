@@ -20,7 +20,7 @@ def verify_user(*arg):
     sql_query = "SELECT hashed_pw FROM {} WHERE st_id = {};"
     q = query()
 
-    with q.cursor(username = 'root', pwd = 'lucifer') as cur:
+    with q.cursor(username = 'root', pwd = 'qweqwe123') as cur:
         for i in table_list:
             sql = sql_query.format(i, arg[0])
             cur.execute(sql)
