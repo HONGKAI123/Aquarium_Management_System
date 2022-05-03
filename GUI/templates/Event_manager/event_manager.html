@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+	Welcome To 138 Project
+{% endblock %}
+
+{% block stat %}
+	{% static 'Event_manager/event.css' %}
+{% endblock %}
+{% block content %}
+
+<body>
+    <h1 class="title">Event Manager</h1>
+  </br>
+
+    <div>
+<div class="container" >
+  <div class ='jumbotron'>
+    <div class="card">
+        <div class="card-header">
+          <h2>Event Report</h2>
+        </div>
+        <div class="card-body">
+          <table class="table table-dark table-hover table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Event ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Type</th>
+                <th scope="col">Facility</th>
+                <th scope="col">Overseer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>123</td>
+                <td>abc</td>
+                <td>123</td>
+                <td>123</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>123</td>
+                <td>abc</td>
+                <td>123</td>
+                <td>123</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>123</td>
+                <td>abc</td>
+                <td>123</td>
+                <td>123</td>
+              </tr>
+              
+              
+            </tbody>
+            
+          </table>
+          
+        </div>
+      </div>
+
+
+  </div>
+  
+</div>
+ 
+    <div>
+<div class="container" >
+  <div class ='jumbotron'>
+    <div class="card">
+      <div class="card-header">
+        <h2>Available Aquarists</h2>
+      </div>
+      <div class="card-body">
+        <table class="table table-dark table-hover table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Staff (Aquarist ID)</th>
+              <th scope="col">Working on Event Counts</th>
+              <th class="float-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>123</td>
+              <td class="float-right">
+                  <button type="button" class="btn btn-primary">Assign</button>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>123</td>
+              <td class="float-right">
+                  <button type="button" class="btn btn-primary">Assign</button>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>123</td>
+              <td class="float-right">
+                  <button type="button" class="btn btn-primary">Assign</button>
+              </td>
+            </tr>
+            
+            
+          </tbody>
+          
+        </table>
+        
+      </div>
+    </div>
+
+
+  </div>
+  
+</div>
+  
+  
+     <div>
+ <div class="container" >
+   <div class ='jumbotron'>
+     <div class="card">
+       <div class="card-header">
+         <h2>Available Facilities</h2>
+       </div>
+       <div class="card-body">
+         <table class="table table-dark table-hover table-bordered">
+           <thead>
+             <tr>
+               <th scope="col">Facility ID</th>
+               <th scope="col">Facility Name</th>
+               <th class="float-right">Actions (Assign to event)</th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr>
+               <th scope="row">1</th>
+               <td>123</td>
+               <td class="float-right">
+                   <button type="button" class="btn btn-primary">Assign</button>
+               </td>
+             </tr>
+             <tr>
+               <th scope="row">2</th>
+               <td>123</td>
+               <td class="float-right">
+                   <button type="button" class="btn btn-primary">Assign</button>
+               </td>
+             </tr>
+             <tr>
+               <th scope="row">3</th>
+               <td>123</td>
+               <td class="float-right">
+                   <button type="button" class="btn btn-primary">Assign</button>
+               </td>
+             </tr>
+             
+             
+           </tbody>
+           
+         </table>
+         
+       </div>
+     </div>
+
+
+   </div>
+   
+
+ </div>
+   
+   
+      <div>
+  <div class="container" >
+    <div class ='jumbotron'>
+      <div class="card">
+        <div class="card-header">
+          <h2>Event Instances</h2>
+        </div>
+        <div class="card-body">
+          <table class="table table-dark table-hover table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Event ID</th>
+                <th scope="col">Date</th>
+                <th scope="col">Attendance</th>
+                <th class="float-right">Actions (Update Attendance)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>123</td>
+                <td>123</td>
+                <td class="float-right">
+                    <button type="button" class="btn btn-primary">update</button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>123</td>
+                <td>123</td>
+                <td class="float-right">
+                    <button type="button" class="btn btn-primary">Update</button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>123</td>
+                <td>123</td>
+                <td class="float-right">
+                    <button type="button" class="btn btn-primary">Update</button>
+                </td>
+              </tr>
+              
+              
+            </tbody>
+            
+          </table>
+          
+        </div>
+      </div>
+
+
+    </div>
+    
+
+
+
+</div>
+</body>
+
+{% endblock %}
