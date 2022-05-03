@@ -77,9 +77,9 @@ def log_in(request):
         if 1:
             return render(request, 'Director/director.html', {'job_title': "ha?"})
         else:
-            return render(request, 'Login/signup.html', {'error': 'username or password wrong'})
+            return render(request, 'Login/signin.html', {'error': 'username or password wrong'})
     elif request.method == "GET":
-        return render(request, 'Login/signup.html')
+        return render(request, 'Login/signin.html')
 
 
 def report(request):
