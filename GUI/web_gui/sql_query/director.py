@@ -5,20 +5,20 @@ from all_query import query
 # view events report
 def view_event(*arg): # type,start_date,end_date
     """
-    View events by selecting 
+    View events by selecting
     :param args: type (enum),start_date(str),end_date(str)
     :return: array of selected event detail
     """
     # call db connection API
     q=query()
 
-     # sql query that reterive event detail 
+     # sql query that reterive event detail
     sql_query = "select ev_ID, title, type, date, attendance \
                 from event join event_instance on event.ev_ID = event_instance.event \
                 where type ='{type}' and (date between '{start_date}' and '{end_date}')\
                 order by attendance desc;".format(type=arg[0],start_date=arg[1],end_date=arg[2])
 
-    with q.cursor(username='root',pwd='root') as cur:
+    with q.cursor() as cur:
         cur.execute(sql_query)
         # catch return result
         res = cur.fetchall()
@@ -29,18 +29,18 @@ def view_event(*arg): # type,start_date,end_date
 # create new event
 def create_event(*arg):# ev_ID,title,type,overseer
     """
-    Create new event by inserting 
+    Create new event by inserting
     :param args: ev_ID(char-6), title(str),type(enum),overseer(char-9)
     :return: has created event into database
     """
     # call db connection API
     q=query()
 
-     # sql query that create new event to db 
+     # sql query that create new event to db
     sql_query = "insert into event values ('{ev_ID}', '{title}', '{type}', null, '{overseer}');"\
             .format(ev_ID=arg[0],title=arg[1],type=arg[2],overseer=arg[3])
 
-    with q.cursor(username='root',pwd='root') as cur:
+    with q.cursor() as cur:
         cur.execute(sql_query)
 
         #submit change to database
@@ -55,19 +55,19 @@ def create_event(*arg):# ev_ID,title,type,overseer
 def view_staff_report():
     """
     :param args: N/A
-    :return: array of selected report on curator-animal, 
+    :return: array of selected report on curator-animal,
     event manager-event, aquraist-facility, aquraist-event
     """
 
     q = query()
 
-    with q.cursor(username='root',pwd='root') as cur:
+    with q.cursor() as cur:
 
-        finalResult=[] # an array that store colunm name, report title and staff detail without formating 
+        finalResult=[] # an array that store colunm name, report title and staff detail without formating
         for i in range(4): # each round append one type of staff's detail
             if(i==0):
                 sql_query = "select curator.name, animal.name\
-	                from curator join animal on curator.st_ID=animal.curator;"  
+	                from curator join animal on curator.st_ID=animal.curator;"
                 cur.execute(sql_query)
                 res = cur.fetchall()
                 column_title= ['Curator','Animal'] # assign column name to str variable
@@ -78,7 +78,7 @@ def view_staff_report():
                 sql_query = "select event_manager.name as mangaer_Name, event.title as event_title\
 	            from event_manager join event on event_manager.st_ID = event.overseer;"
                 cur.execute(sql_query)
-                column_title=['Manager','Event'] 
+                column_title=['Manager','Event']
                 res = cur.fetchall()
                 finalResult.append(column_title)
                 finalResult.append(res)
@@ -93,7 +93,7 @@ def view_staff_report():
                 finalResult.append(column_title)
                 finalResult.append(res)
 
-            else:       
+            else:
                 sql_query="select aquarist.name as aquarist_Name, event.title as event_Name\
 	            from aquarist, event, work_on\
                 where aquarist.st_ID = work_on.staff and work_on.event = event.ev_ID;"
@@ -115,11 +115,11 @@ def hire_staff(*arg): # role,st_ID,name,phone,email
     # call db connection API
     q=query()
 
-     # sql query that create new staff to db 
+     # sql query that create new staff to db
     sql_query = "insert into {role} values ('{st_ID}', NULL, '{name}', '{phone}', '{email}');"\
             .format(role=arg[0],st_ID=arg[1],name=arg[2],phone=arg[3],email=arg[4])
 
-    with q.cursor(username='root',pwd='root') as cur:
+    with q.cursor() as cur:
         cur.execute(sql_query)
 
         #submit change to database
@@ -143,7 +143,7 @@ def animalAssignCheck(st_ID):
      # sql query that reterive animal and curator from db
     sql_query = "select * from animal where animal.curator={st_ID};".format(st_ID=st_ID)
 
-    with q.cursor(username='root',pwd='root') as cur:
+    with q.cursor() as cur:
         cur.execute(sql_query)
         # catch return result
         res = cur.fetchall()
@@ -163,7 +163,7 @@ def eventAssignCheck(st_ID):
      # sql query that reterive event and manager from db
     sql_query = "select * from event where event.overseer = {st_ID};".format(st_ID=st_ID)
 
-    with q.cursor(username='root',pwd='root') as cur:
+    with q.cursor() as cur:
         cur.execute(sql_query)
         # catch return result
         res = cur.fetchall()
@@ -176,17 +176,17 @@ def fire_staff(st_ID):
     :param args: st_ID(char-9)
     :return: has removed staff from database
     """
-    
+
     staff=['curator','aquarist','event_manager']
 
     # call db connection API
     q=query()
-    
-    with q.cursor(username='root',pwd='root') as cur:
+
+    with q.cursor() as cur:
         # since aquarist is not in either tables, both remain true
-        if(animalAssignCheck(st_ID)==True and eventAssignCheck(st_ID)==True): 
+        if(animalAssignCheck(st_ID)==True and eventAssignCheck(st_ID)==True):
             for i in staff: #locate the staff's role and fire
-                # sql query that delete staff from db 
+                # sql query that delete staff from db
                 sql_query = "delete from {staff} where st_ID ='{st_ID}';".format(staff=i,st_ID=st_ID)
                 cur.execute(sql_query)
 
@@ -205,7 +205,7 @@ def refreshAll():
     """
     q=query()
 
-    with q.cursor(username='root',pwd='root') as cur:
+    with q.cursor() as cur:
 
         sql_query_maintance = "update facility_maint set facility_maint.maint_status= false;"
         cur.execute(sql_query_maintance)
@@ -215,7 +215,7 @@ def refreshAll():
 
          # create event_instance for a new day
         localtime = time.localtime(time.time())
-        newdate= str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2]) # retrieve current 
+        newdate= str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2]) # retrieve current
 
         sql_query_getEvent = "select event.ev_ID from event;"
         cur.execute(sql_query_getEvent)
@@ -240,15 +240,16 @@ def selectTest(st_ID):
     """
     staffList=['aquarist','curator','event_manager','general_manager']
     q=query()
-    with q.cursor(username='root',pwd='root') as cur:
+    with q.cursor() as cur:
         for i in range(4):
             cur.execute("select st_ID, name from {staff} where st_ID='{st_ID}';".format(staff=staffList[i],st_ID=st_ID))
-            foundStaff = cur.fetchall() 
+            foundStaff = cur.fetchall()
             if(len(foundStaff) !=0):
                 print("In table {tableName} found ".format(tableName=staffList[i])+str(foundStaff))
 ####################################################################### TESTING AREA ########################################################
 
-print(view_staff_report())
+if __name__ == '__main__':
+    print(view_staff_report())
 
 #print(view_event("performance","2022-05-03","2022-05-04"))
 

@@ -1,19 +1,23 @@
 body {
-  background-image: url(https://i0.wp.com/www.csscodelab.com/wp-content/uploads/2019/11/stripe-hero-background-effect-html-css.png?fit=1062%2C631&ssl=1);
-	
-	background-attachment:fixed;
+   background-image: url(https://i0.wp.com/www.csscodelab.com/wp-content/uploads/2019/11/stripe-hero-background-effect-html-css.png?fit=1062%2C631&ssl=1);
+	 
+	 background-attachment:fixed;
 
     height: 200px;
    
   }
-  .title{
 
-    text-align: center;
-    margin-top: 30px;
-   
+  .title{
+      text-align: center;
+      margin-top: 30px;
+     padding-bottom: 10px;
   }
 
-  h2{
+  /* span{
+    border: 5px solid ;
+    border-color: aqua;
+  } */
+h2{
     font-family: "Raleway", sans-serif;  
     font-weight: 300;
 }

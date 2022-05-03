@@ -3,8 +3,8 @@ import mysql.connector
 
 database = mysql.connector.connect(
     host='localhost',
-    user='root',
-    password='lucifer',
+    user='aq_admin',
+    password='aq_Password01!',
     database='aquarium'
 )
 
@@ -98,11 +98,11 @@ def log_event_attendance(*args):
 
 
 if __name__ == '__main__':
-    # view_my_events('123')
+    view_my_events('123')
     check_facility_availability()
     check_aquarist_availability()
-    # assign_aquarist_to_event('e11', 'a1')
-    # assign_facility_to_event('e2', 'f1')
-    # log_event_attendance('e1000', 99)
+    assign_aquarist_to_event('e11', 'a1')
+    assign_facility_to_event('e2', 'f1')
+    log_event_attendance('e1000', 99)
 
     #add

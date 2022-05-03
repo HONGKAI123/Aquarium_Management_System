@@ -32,7 +32,7 @@ def check_aquarist_availability():
     sql_query = "SELECT staff, COUNT(*) event_count " \
                 "FROM work_on " \
                 "GROUP BY staff " \
-                "ORDER BY COUNT(*) DESC"
+                "ORDER BY COUNT(*) "
     cursor.execute(sql_query)
     result = cursor.fetchall()
     # print(result)
@@ -69,10 +69,12 @@ def check_facility_availability():
 
 def assign_facility_to_event(*args):
     """
+    Input: facility_ID, event_ID
     assign facility(id) to event(id) 
     """
-    event_ID = args[0]
-    facility_ID = args[1]
+    facility_ID = args[0]
+    event_ID = args[1]
+ 
     sql_query = "UPDATE event SET facility = " + "'" + facility_ID + "' " + \
                 "WHERE ev_ID =" + "'" + event_ID + "'"
     try:
@@ -87,13 +89,14 @@ def assign_facility_to_event(*args):
 
 def log_event_attendance(*args):
     """
-    Input: recorded_attendance, event_ID
+    Input: recorded_attendance, event_ID, date
     Update an event's attendance number to an Event_instance.
     """
     event_ID = args[0]
     recorded_attendance = args[1]
+    date = args[2]
     sql_query = "UPDATE event_instance SET attendance = " + str(recorded_attendance) + \
-                " WHERE event = " + "'" + event_ID + "'"
+                " WHERE event = " + "'" + event_ID + "'" + " AND date = '" + date + "'"
     try:
         cursor.execute(sql_query)
         database.commit()
@@ -105,9 +108,10 @@ def log_event_attendance(*args):
 
 
 if __name__ == '__main__':
-    view_my_events('123')
-    check_facility_availability()
-    check_aquarist_availability()
-    assign_aquarist_to_event('e11', 'a1')
-    assign_facility_to_event('e2', 'f1')
-    log_event_attendance('e1000', 99)
+    # view_my_events('243910037')
+    #check_facility_availability()
+    # check_aquarist_availability()
+    # assign_aquarist_to_event('101001', '914191383')
+    #assign_facility_to_event('101001', ''100003'')
+    log_event_attendance('101001', 99, '2022-05-05')
+

@@ -8,6 +8,10 @@
   body {
     background-image: url("https://www.korvia.com/wp-content/uploads/2015/11/korvia-image-background-tnkr-signup-2.jpg");
     height: 200px;
+    background-image: url(https://i0.wp.com/www.csscodelab.com/wp-content/uploads/2019/11/stripe-hero-background-effect-html-css.png?fit=1062%2C631&ssl=1);
+	color:#fff;
+	background-attachment:fixed;
+
    
   }
 
@@ -28,9 +32,13 @@
   }
   .login-form h1 {
     padding: 35px;
-    font-size: 50px;
+    font-size: 45px;
     font-weight: 500;
-    margin-left: 150px;
+    margin-left: 125px;
+    color: #7c795d; font-family: 'Trocchi', serif; 
+     font-weight: 60px; 
+     line-height: 58px;
+    
   }
   .login-form .content {
     padding: 35px;
@@ -52,8 +60,25 @@
     transition: all .2s;
   }
   
+  button{
+    position:relative;
+    margin-bottom: 50px;
+  }
+
+  footer {
+    position: absolute;
+   
+    width: 100%;
+    text-align: center;
+    margin-top: 100px;
+    
+    
+}
+h6{
+  text-align: center;
+}
   
-  .login-form .action button {
+  /* .login-form .action button {
     width: 100%;
     border: none;
     padding: 18px;
@@ -72,5 +97,5 @@
   .login-form .action button:hover {
     background: aqua;
   }
-  
+   */
   
