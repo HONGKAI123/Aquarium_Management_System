@@ -100,7 +100,7 @@ subgraph menu_d[menu]
 direction LR
 e_report[view events report]
 %% new_event[create new event] 
-s_report[view stff report]
+s_report[view staff report]
 end
 
 subgraph menu_m[menu]
