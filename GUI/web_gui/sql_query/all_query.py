@@ -201,7 +201,7 @@ class director():
     def hire_staff(self, *arg):  # role,st_ID,name,phone,email
         """
         :param args: role{aquirst,curator,event_manger}, st_ID(char-9),
-        name(str), phone(char-9), email(str)
+        name(str), phone(char-9), email(str),password(str)
 
         :return: has added staff to database
 
@@ -210,8 +210,8 @@ class director():
         q = query()
 
         # sql query that create new staff to db
-        sql_query = "insert into {role} values ('{st_ID}', NULL, '{name}', '{phone}', '{email}');" \
-            .format(role = arg[0], st_ID = arg[1], name = arg[2], phone = arg[3], email = arg[4])
+        sql_query = "insert into {role} values ('{st_ID}', '{pwd}', '{name}', '{phone}', '{email}');" \
+            .format(role = arg[0], st_ID = arg[1], name = arg[2], phone = arg[3], email = arg[4],pwd = arg[5])
 
         with q.cursor() as cur:
             cur.execute(sql_query)

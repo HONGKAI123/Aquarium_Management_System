@@ -16,12 +16,7 @@ def welcome(request):
     """
     test pages, check sql connection
     """
-    # event test ok
-    # temp = director.view_event('exhibit', '2022-05-02', '2022-05-04')
-    # print(temp)
-    # test_data = [('101001', 'penguin exhibit', 'exhibit', datetime.date(2022, 5, 4), 130), ('101001', 'penguin exhibit', 'exhibit', datetime.date(2022, 5, 3), 120), ('101002', 'whale exhibit', 'exhibit', datetime.date(2022, 5, 4), 100)]
-    # test_data_header = ['id','name','type','date','attendence']
-    # return render(request,'Director1/director.html',{"job_title":"fuck!","main_table":test_data,"main_table_header":test_data_header,'page_title':'YO bitch'})
+    return render(request, 'Home/home.html')
 
 
 def index(request):
@@ -38,30 +33,17 @@ def log_in(request):
     # test login
     # username = 517465989
     # password = 517465989
-    print("ok")
     if request.method == "POST":
         request.session['table'] = ''
         login_info = [request.POST.get('username'), request.POST.get('pwd')]
-        print(login_info)
         if login_info[0] and login_info[1]:
             res = login_verify.verify_user(*login_info)
-            print(res)
             if res[1]:
                 request.session['table'] = res[0]
                 request.session['id'] = login_info[0]
                 check_title(request)
                 url = reverse('jobs_page', kwargs = {"job_title": request.session['title']})
                 return redirect(url)
-                # if request.session['table'] == "aquarist":
-                #     url = reverse('jobs_page', kwargs = {"job_title": request.session['title']})
-                #     return redirect(url)
-                # elif request.session['table'] == "curator":
-                #     pass
-                # elif request.session['table'] == "event_manager":
-                #     pass
-                # elif request.session['table'] == "general_manager":
-                #     url = reverse('jobs_page', kwargs = {"job_title": request.session['title']})
-                #     return redirect(url)
 
         else:
             print("else")
@@ -71,7 +53,7 @@ def log_in(request):
         return render(request, 'Login/signin.html')
 
 
-def report(request,job_title):
+def report(request, job_title):
     """
     return different type of webpage based on the job title
     :param request:
@@ -85,26 +67,30 @@ def report(request,job_title):
         result = aq.check_maint_times(id)
         print(result)
         cont = {
-            'aqu_h':result[0],
-            'aqu_r':result[1]
+            'aqu_h': result[0],
+            'aqu_r': result[1]
         }
-        return render(request,"Aquarist/aquarist.html",cont)
+        return render(request, "Aquarist/aquarist.html", cont)
 
     elif job_title == "CURATOR":
         cura = curator()
         result1 = cura.check_an_Status()
         result2 = cura.check_spare_facility(request.session.get('species'))
-        cont ={
-            'cura_h':result1[0],
-            'cura_r':result1[1],
-            'ava_h':result2[0],
-            'ava_r':result2[1],
+        cont = {
+            'cura_h': result1[0],
+            'cura_r': result1[1],
+            'ava_h': result2[0],
+            'ava_r': result2[1],
         }
-        return render(request,"Curator/curator.html",cont)
+        return render(request, "Curator/curator.html", cont)
         # return render(request, "")
     elif job_title == "MANAGER":
-        return render(request,"Event_manager/")
+        return render(request, "Event_manager/")
     elif job_title == "DIRECTOR":
+        event_list = []
+        print(request.POST.get('from_date'))
+        event_list.append(request.POST.get('selection'))
+        print(event_list)
         dire = director()
         value = dire.view_staff_report()
         print(value)
@@ -121,7 +107,7 @@ def report(request,job_title):
         # todo edit/delete 缺 id
         return render(request, 'Director/director.html', cont)
     else:
-        return render(request,'Login/signin/html')
+        return render(request, 'Login/signin/html')
 
     if request.method == "GET":
         return render(request, 'Director/director.html')
@@ -167,4 +153,18 @@ def home(request):
 
 
 def register(request):
+    if request.method == "POST":
+        pass
+        reg_info = []
+        reg_info.append(request.POST.get('selection'))
+        reg_info.append(request.POST.get("uname"))
+        reg_info.append(request.POST.get("email"))
+        reg_info.append(request.POST.get("phone"))
+        reg_info.append(request.POST.get("pwd"))
+
+        dire = director()
+        res = dire.hire_staff(*reg_info)
+        print(reg_info,"\t",*res)
+    url = reverse('signup')
+    return redirect(url)
     return render(request, 'Register/register.html')

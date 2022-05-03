@@ -15,7 +15,20 @@
 		<div class='jumbotron'>
 			<div class="card">
 				<div class="card-header">
-					<h1>Report</h1>
+					<div class="card-header">
+						<h2>Event</h2>
+						<form action="{% url 'search' %}" method="post">
+							{% csrf_token %}
+							<div>
+								<select name="selection">
+									<option value="exhibit">exhibit</option>
+									<option value="performance">performance</option>
+								</select>
+								<input type='date' name="from_date"/> <input input type='date' name="to_date"/>
+							</div>
+							<button type="button" class="btn btn-primary" type="submit">search</button>
+						</form>
+					</div>
 				</div>
 				<div class="card-body">
 					<h5 class="card-title">Create,edit or delete the reports</h5>
@@ -27,130 +40,128 @@
 
 	</div>
 	<div>
-  <div class="container" >
-    <div class ='jumbotron'>
-      <div class="card">
-          <div class="card-header">
-            <h2>Staff</h2>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Hire or Fire staff</h5>
-            <table class="table table-dark table-hover table-bordered">
-						<thead>
-						<tr>
-							{% for name in animal_h %}
-								<th scope="col">{{ name }}</th>
-							{% endfor %}
-						</tr>
-						</thead>
-						<tbody>
-						{% for content in animal_r %}
+		<div class="container">
+			<div class='jumbotron'>
+				<div class="card">
+					<div class="card-header">
+						<h2>Staff</h2>
+					</div>
+					<div class="card-body">
+						<h5 class="card-title">Hire or Fire staff</h5>
+						<table class="table table-dark table-hover table-bordered">
+							<thead>
 							<tr>
-								{% for each_row in content %}
-									{% if forloop.first %}
-										<th scope="row">{{ each_row }}</th>
-									{% else %}
-										<td>{{ each_row }}</td>
-									{% endif %}
+								{% for name in animal_h %}
+									<th scope="col">{{ name }}</th>
 								{% endfor %}
-								</td>
-
 							</tr>
-						{% endfor %}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+							{% for content in animal_r %}
+								<tr>
+									{% for each_row in content %}
+										{% if forloop.first %}
+											<th scope="row">{{ each_row }}</th>
+										{% else %}
+											<td>{{ each_row }}</td>
+										{% endif %}
+									{% endfor %}
+									</td>
 
-					<table class="table table-dark table-hover table-bordered">
-						<thead>
-						<tr>
-							{% for name in manager_h %}
-								<th scope="col">{{ name }}</th>
+								</tr>
 							{% endfor %}
-						</tr>
-						</thead>
-						<tbody>
-						{% for content in manager_r %}
+							</tbody>
+						</table>
+
+						<table class="table table-dark table-hover table-bordered">
+							<thead>
 							<tr>
-								{% for each_row in content %}
-									{% if forloop.first %}
-										<th scope="row">{{ each_row }}</th>
-									{% else %}
-										<td>{{ each_row }}</td>
-									{% endif %}
+								{% for name in manager_h %}
+									<th scope="col">{{ name }}</th>
 								{% endfor %}
-
-
 							</tr>
-						{% endfor %}
-						</tbody>
-					</table>
-
-					<table class="table table-dark table-hover table-bordered">
-						<thead>
-						<tr>
-							{% for name in aquarist_h %}
-								<th scope="col">{{ name }}</th>
+							</thead>
+							<tbody>
+							{% for content in manager_r %}
+								<tr>
+									{% for each_row in content %}
+										{% if forloop.first %}
+											<th scope="row">{{ each_row }}</th>
+										{% else %}
+											<td>{{ each_row }}</td>
+										{% endif %}
+									{% endfor %}
+								</tr>
 							{% endfor %}
-							<th class="float-right">Actions</th>
-						</tr>
-						</thead>
-						<tbody>
-						{% for content in aquarist_r %}
-							<tr>
-								{% for each_row in content %}
-									{% if forloop.first %}
-										<th scope="row">{{ each_row }}</th>
-									{% else %}
-										<td>{{ each_row }}</td>
-									{% endif %}
-								{% endfor %}
-								<td class="float-right">
-									<button type="button" class="btn btn-primary">Edit</button>
-									<button type="button" class="btn btn-danger">Delete</button>
-								</td>
-							</tr>
-						{% endfor %}
-						</tbody>
-					</table>
+							</tbody>
+						</table>
 
-					<table class="table table-dark table-hover table-bordered">
-						<thead>
-						<tr>
-							{% for name in event_h %}
-								<th scope="col">{{ name }}</th>
-							{% endfor %}
-							<th class="float-right">Actions</th>
-						</tr>
-						</thead>
-						<tbody>
-						{% for content in event_r %}
+						<table class="table table-dark table-hover table-bordered">
+							<thead>
 							<tr>
-								{% for each_row in content %}
-									{% if forloop.first %}
-										<th scope="row">{{ each_row }}</th>
-									{% else %}
-										<td>{{ each_row }}</td>
-									{% endif %}
+								{% for name in aquarist_h %}
+									<th scope="col">{{ name }}</th>
 								{% endfor %}
-								<td class="float-right">
-									<button type="button" class="btn btn-primary">Edit</button>
-									<button type="button" class="btn btn-danger">Delete</button>
-								</td>
+								<th class="float-right">Actions</th>
 							</tr>
-						{% endfor %}
-						</tbody>
-					</table>
-            <button id ="mybutton"type="button" class="btn btn-primary">Hire</button>
-           <script>
-             document.getElementById("mybutton").onclick = function () {
-                 location.href = "register/";
-              };
-           </script>
-          </div>
-        </div>
-        <button id ="mybutton"type="button" class="btn btn-primary float-right ">Start new Day!</button>
-    </div>
-  </div>
- </div>
+							</thead>
+							<tbody>
+							{% for content in aquarist_r %}
+								<tr>
+									{% for each_row in content %}
+										{% if forloop.first %}
+											<th scope="row">{{ each_row }}</th>
+										{% else %}
+											<td>{{ each_row }}</td>
+										{% endif %}
+									{% endfor %}
+									<td class="float-right">
+										<button type="button" class="btn btn-primary">Edit</button>
+										<button type="button" class="btn btn-danger">Delete</button>
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+
+						<table class="table table-dark table-hover table-bordered">
+							<thead>
+							<tr>
+								{% for name in event_h %}
+									<th scope="col">{{ name }}</th>
+								{% endfor %}
+								<th class="float-right">Actions</th>
+							</tr>
+							</thead>
+							<tbody>
+							{% for content in event_r %}
+								<tr>
+									{% for each_row in content %}
+										{% if forloop.first %}
+											<th scope="row">{{ each_row }}</th>
+										{% else %}
+											<td>{{ each_row }}</td>
+										{% endif %}
+									{% endfor %}
+									<td class="float-right">
+										<button type="button" class="btn btn-primary">Edit</button>
+										<button type="button" class="btn btn-danger">Delete</button>
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+						<button id="mybutton" type="button" class="btn btn-primary">Hire</button>
+						<script>
+                            document.getElementById("mybutton").onclick = function () {
+                                location.href = "register/";
+                            };
+						</script>
+					</div>
+				</div>
+				<button id="mybutton" type="button" class="btn btn-primary float-right ">Start new Day!</button>
+			</div>
+		</div>
+	</div>
 	</body>
 {% endblock %}

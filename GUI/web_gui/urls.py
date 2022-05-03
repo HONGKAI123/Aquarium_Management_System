@@ -5,10 +5,12 @@ from . import views
 urlpatterns = [
     #path('index/',views.index),
     # path('',views.welcome),
-    path('',views.index,name = 'index_page'),
+    path('',views.welcome),
     path(r'login/',views.log_in,name = 'login_page'),
-    path('register/',views.register,name='reg'),
+    re_path(r'\w+/register/',views.register,name='reg'),
     re_path(r'^(?P<job_title>\w+)/$',views.report,name = 'jobs_page'),
+    path('search/',views.report,name='search'),
+    re_path(r'signup/',views.register,name="signup")
     # re_path(r'^(?P<title>\w+)/(?P<op>\w+)/$',views.todo_view,name='ops'),
 
 
