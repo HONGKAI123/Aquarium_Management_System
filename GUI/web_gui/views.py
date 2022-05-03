@@ -4,6 +4,7 @@ from django.shortcuts import reverse
 from django.shortcuts import redirect
 from .sql_query import login_verify
 from .sql_query.all_query import director
+from .sql_query.all_query import aquarist
 
 # from .sql_query.all_query import query
 
@@ -49,8 +50,8 @@ def log_in(request):
                 request.session['id'] = login_info[0]
                 check_title(request)
                 if request.session['table'] == "aquarist":
-                    #return render(request, )
-                    pass
+                    url = reverse('jobs_page', kwargs = {"job_title": request.session['title']})
+                    return redirect(url)
 
                 elif request.session['table'] == "curator":
                     pass
@@ -77,10 +78,18 @@ def report(request,job_title):
     title = check_title(request)
 
     if job_title == "AQUARIST":
-        return render(request,"Aquarist/aquarist.html")
+        aq = aquarist()
+        id = request.session['id']
+        result = aq.check_maint_times(id)
+        print(result)
+        cont = {
+            'aqu_h':result[0],
+            'aqu_r':result[1]
+        }
+        return render(request,"Aquarist/aquarist.html",cont)
 
     elif job_title == "CURATOR":
-        pass
+        return render(request,"Aquarist/aquarist.html")
         # return render(request, "")
     elif job_title == "MANAGER":
         return render(request,"Event_manager/")
