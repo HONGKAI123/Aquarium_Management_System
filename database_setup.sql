@@ -1,7 +1,7 @@
 drop database if exists aquarium;
 create database aquarium;
 use aquarium;
-
+-- testing
 create table aquarist
 	(st_ID		char(9),
      hashed_pw	binary(32),
