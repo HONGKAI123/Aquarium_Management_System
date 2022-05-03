@@ -422,7 +422,7 @@ return True if cursor.rowcount > 0 else False
 
 ## 目前问题
 
-## login:
-
+### 已经使用的 func
+director.view_staff_report
 
 

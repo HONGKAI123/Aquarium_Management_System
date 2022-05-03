@@ -35,18 +35,23 @@ def log_in(request):
     # test login
     # username = 517465989
     # password = 517465989
+    print("ok")
     if request.method == "POST":
         request.session['table'] = ''
         login_info = [request.POST.get('username'),request.POST.get('pwd')]
+        print(login_info)
         if login_info[0] and login_info[1]:
             res = login_verify.verify_user(*login_info)
+            print(res)
             if res[1]:
                 request.session['table'] = res[0]
                 check_title(request)
+                print(request.session['title'])
                 url = reverse('jobs_page',kwargs = {"job_title":request.session['title']})
                 return redirect(url)
-            else:
-                return render(request, 'Login/signin.html', {'msg': 'username or password wrong'})
+        else:
+            print("else")
+            return render(request, 'Login/signin.html', {'msg': 'username or password wrong'})
 
     elif request.method == "GET":
         return render(request, 'Login/signin.html')
@@ -69,7 +74,8 @@ def report(request,job_title):
         elif title == 4:
             dire = director()
             value = dire.view_staff_report()
-            print(value)
+            # print(value)
+
             cont = {
                 'animal_h':value[0],
                 'animal_r':value[1],
