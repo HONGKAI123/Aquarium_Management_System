@@ -96,14 +96,14 @@ Mid Logic->>Web/CLI:整理结果后输出
 
 ```mermaid
 flowchart LR
-subgraph menu_d[可做成 menu]
+subgraph menu_d[menu]
 direction LR
 e_report[view events report]
 %% new_event[create new event] 
 s_report[view stff report]
 end
 
-subgraph menu_m[可做成 menu]
+subgraph menu_m[menu]
 direction LR
 e_single_report[view this person's event]
 aquarist_check[check all aquarist availability]
@@ -111,25 +111,26 @@ facility_check[check all facility availability]
 log_report
 end
 
-subgraph menu_c[可做成 menu]
+subgraph menu_c[menu]
 check_animal[check all animals' status]
+facility_check_c[see habitat availability]
 add_animal
 end
 
 
 
-login-->|检查用户是否存在,职位|main;
-main-.->|Director|main_D;
-main-.->|Manager|main_M;
+login-->|Verify User & Subclass|main;
+main-.->|General Manager|main_D;
+main-.->|Event Manager|main_M;
 main-.->|Curator|main_C;
 main-.->|Aquarist|main_A;
 
 main_D --- menu_d;
 e_report-->e_show[all reports+add event as a choice]
-e_report-->create_new_event[get input+flush event report]
+e_report-->create_new_event[get input+refresh event report]
 s_report-->s_show[all reports+add hire/fire as choices]
-s_report--->stuff_hire[hire stuff input+flush stuff report]
-s_report--->stuff_fire[choose stuff+flush stuff report]
+s_report--->staff_hire[hire staff input+refresh staff report]
+s_report--->staff_fire[choose staff+refresh staff report]
 
 main_M --- menu_m;
 e_single_report-->e_s_r_show[all relative reports]
@@ -138,8 +139,8 @@ facility_check-->fc[facility report+assign facility as a choice]
 log_report-->lr[edit as a choice]
 
 main_C --- menu_c;
-check_animal-->animal_edit[choose one to edit as a choice]
-main_C-->facility_check
+check_animal-->animal_edit[choose one to feed or remove as choice]
+
 
 main_A --> vmc[view maintenance schedule+mantain as a choice];
 vmc --> mantain[choose facility to clean ]
