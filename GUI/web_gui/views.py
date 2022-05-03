@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from .sql_query import login_verify
 from .sql_query.all_query import director
 from .sql_query.all_query import aquarist
+from .sql_query.all_query import curator
 
 # from .sql_query.all_query import query
 
@@ -49,16 +50,18 @@ def log_in(request):
                 request.session['table'] = res[0]
                 request.session['id'] = login_info[0]
                 check_title(request)
-                if request.session['table'] == "aquarist":
-                    url = reverse('jobs_page', kwargs = {"job_title": request.session['title']})
-                    return redirect(url)
-                elif request.session['table'] == "curator":
-                    pass
-                elif request.session['table'] == "event_manager":
-                    pass
-                elif request.session['table'] == "general_manager":
-                    url = reverse('jobs_page', kwargs = {"job_title": request.session['title']})
-                    return redirect(url)
+                url = reverse('jobs_page', kwargs = {"job_title": request.session['title']})
+                return redirect(url)
+                # if request.session['table'] == "aquarist":
+                #     url = reverse('jobs_page', kwargs = {"job_title": request.session['title']})
+                #     return redirect(url)
+                # elif request.session['table'] == "curator":
+                #     pass
+                # elif request.session['table'] == "event_manager":
+                #     pass
+                # elif request.session['table'] == "general_manager":
+                #     url = reverse('jobs_page', kwargs = {"job_title": request.session['title']})
+                #     return redirect(url)
 
         else:
             print("else")
@@ -88,13 +91,23 @@ def report(request,job_title):
         return render(request,"Aquarist/aquarist.html",cont)
 
     elif job_title == "CURATOR":
-        return render(request,"Aquarist/aquarist.html")
+        cura = curator()
+        result1 = cura.check_an_Status()
+        result2 = cura.check_spare_facility(request.session.get('species'))
+        cont ={
+            'cura_h':result1[0],
+            'cura_r':result1[1],
+            'ava_h':result2[0],
+            'ava_r':result2[1],
+        }
+        return render(request,"Curator/curator.html",cont)
         # return render(request, "")
     elif job_title == "MANAGER":
         return render(request,"Event_manager/")
     elif job_title == "DIRECTOR":
         dire = director()
         value = dire.view_staff_report()
+        print(value)
         cont = {
             'animal_h': value[0],
             'animal_r': value[1],
@@ -111,32 +124,7 @@ def report(request,job_title):
         return render(request,'Login/signin/html')
 
     if request.method == "GET":
-        pass
-
-    # if title is not None:
-    #     if title == 1:
-    #         pass
-    #     elif title == 2:
-    #         pass
-    #     elif title == 3:
-    #         pass
-    #     elif title == 4:
-    #         dire = director()
-    #         value = dire.view_staff_report()
-    #         cont = {
-    #             'animal_h': value[0],
-    #             'animal_r': value[1],
-    #             'manager_h': value[2],
-    #             'manager_r': value[3],
-    #             'aquarist_h': value[4],
-    #             'aquarist_r': value[5],
-    #             'event_h': value[6],
-    #             'event_r': value[7]
-    #         }
-    #         # todo edit/delete 缺 id
-    #         return render(request, 'Director/director.html', cont)
-    # else:
-    #     return render()
+        return render(request, 'Director/director.html')
 
 
 """

@@ -7,132 +7,92 @@
 	{% static "Curator/curator.css" %}
 {% endblock %}
 {% block content %}
-<body>
-<body>
-    <h1 class="title">Curator</h1>
-  </br>
+	<body>
+	<h1 class="title">Curator</h1>
+	</br>
+	<div>
+		<div class="container">
+			<div class='jumbotron'>
+				<div class="card">
+					<div class="card-header">
+						<h2>Animals</h2>
+					</div>
+					<div class="card-body">
+						<h5 class="card-title">Create or edit Animals</h5>
+						<table class="table table-dark table-hover table-bordered">
+							<thead>
+							<tr>
+								{% for name in cura_h %}
+									<th scope="col">{{ name }}</th>
+								{% endfor %}
+							</tr>
+							</thead>
+						<tbody>
+							{% for content in cura_r %}
+								<tr>
+									{% for each_row in content %}
+										{% if forloop.first %}
+											<th scope="row">{{ each_row }}</th>
+										{% else %}
+											<td>{{ each_row }}</td>
+										{% endif %}
+									{% endfor %}
+									<td class="float-right">
+										<button type="button" class="btn btn-primary">Delete</button>
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+						<button type="button" class="btn btn-primary ">Create new Animals</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="container">
+				<div class='jumbotron'>
+					<div class="card">
+						<div class="card-header">
+							<h2>Facility Avaible for New Animal</h2>
+						</div>
+						<div class="card-body">
+							<table class="table table-dark table-hover table-bordered">
+								<thead>
+								<tr>
+									<th scope="col">Facility ID</th>
+									<th scope="col">Facility Name</th>
+									<th scope="col">Species</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr>
+									<th scope="row">1</th>
+									<td>123</td>
+									<td>123</td>
+								</tr>
+								<tr>
+									<th scope="row">2</th>
+									<td>123</td>
+									<td>123</td>
+								</tr>
+								<tr>
+									<th scope="row">3</th>
+									<td>123</td>
+									<td>123</td>
 
-    <div>
-<div class="container" >
-  <div class ='jumbotron'>
-    <div class="card">
-        <div class="card-header">
-          <h2>Animals</h2>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Create or edit Animals</h5> 
-          <table class="table table-dark table-hover table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">a</th>
-                <th scope="col">b</th>
-                <th scope="col">c</th>
-                <th scope="col">d</th>
-                <th class="float-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>123</td>
-                <td>123</td>
-                <td>123@</td>
-                <td>123@</td>
-                <td class="float-right">
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>123</td>
-                <td>123</td>
-                <td>@fat</td>
-                <td>asd</td>
-                <td class="float-right">
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>123</td>
-                <td> 123</td>
-                <td>@</td>
-                <td>123</td>
-                <td class="float-right">
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </td>
-                
-              </tr>
-              
-            </tbody>
-            
-          </table>
-          <button type="button" class="btn btn-primary ">Create new Animals</button>
-        </div>
-      </div>
+								</tr>
 
+								</tbody>
 
-      
+							</table>
 
-  </div>
+						</div>
+					</div>
 
-  
-    
-
-
-</div>
-
-
-
-
-
-    <div>
-<div class="container" >
-  <div class ='jumbotron'>
-    <div class="card">
-        <div class="card-header">
-          <h2>Facility Avaible for New Animal</h2>
-        </div>
-        <div class="card-body">
-          <table class="table table-dark table-hover table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">Facility ID</th>
-                <th scope="col">Facility Name</th>
-                <th scope="col">Species</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>123</td>
-                <td>123</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>123</td>
-                <td>123</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>123</td>
-                <td>123</td>
-                
-              </tr>
-              
-            </tbody>
-            
-          </table>
-          
-        </div>
-      </div>
-
-
-  </div>
-
-
-
-</div>
-</body>
+				</div>
+			</div>
+		</div>
+	</div>
+	</body>
 {% endblock %}

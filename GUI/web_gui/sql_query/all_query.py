@@ -369,7 +369,6 @@ class aquarist():
         """
         return result
 
-
     # Update facility maintanence status
     # arg = [user_id, fa_id, maint_time]
     def maintain_facility(self, *arg):
@@ -393,6 +392,113 @@ class aquarist():
             q.conn.commit()
 
             # 获取被修改的行数
+            res = cur.rowcount
+
+        return True if res > 0 else False
+
+
+class curator():
+    # Helper function to make sure the animal belongs to current user
+    # return T/F
+    def check_ownership(self,st_id, an_id):
+        ls = ['Curator']
+        try:
+            q = query()
+            with q.cursor() as cur:
+                cur.execute("SELECT curator FROM animal WHERE an_ID = '" + an_id + "';")
+                return (st_id == str(cur.fetchone()[0]))
+        except:
+            print("The animal ID you have entered does not exist")
+            # return ls,result
+
+
+    # Check animal status
+    def check_an_Status(self):
+        ls = ["Animal Name","Animal ID","Status"]
+        sql_query = "\
+        SELECT name,an_id,Status \
+        FROM animal;"
+
+        q = query()
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+            res = cur.fetchall()
+        # for result in res:
+        #     print(result)
+        return ls, res
+
+
+    # Update animal status (set to 1)
+    # arg = [an_ID]
+    def update_an_Status(self,*arg):
+        sql_query = " \
+        UPDATE animal \
+        SET status = true \
+        WHERE an_ID = '" + arg[0] + "';"
+
+        q = query()
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+            # 提交修改后的语句到数据库
+            q.conn.commit()
+
+            # 获取被修改的行数
+            res = cur.rowcount
+
+        return True if res > 0 else False
+
+
+    # Chekc facility availability for adding new animals
+    # arg = [species]
+    def check_spare_facility(self,*arg):
+        ls = ['Facility ID', 'Facility Name']
+        sql_query = "\
+        SELECT fa_ID, f.name \
+        FROM facility f \
+        left join animal on f.fa_id = animal.habitat \
+        where species = '" + arg[0] + "' or (f.fa_ID not in (select habitat from animal group by habitat) and f.fa_ID not in (select e.facility from event e group by e.facility)) \
+        group by fa_ID;"
+
+        q = query()
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+            results = cur.fetchall()
+        # for result in results:
+        #     print(result)
+
+        return ls, results
+
+
+    # Add new animals
+    # arg = [an_ID, name, species, habitat]
+    def add_new_animal(self,*arg):
+        # try:
+        sql_query = "\
+        INSERT INTO animal VALUES ('" + arg[0] + "','" + arg[1] + "','" + arg[2] + "', 0, '705628448','" + arg[3] + "'); "
+        q = query()
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+            q.conn.commit()
+
+            res = cur.rowcount
+
+        return True if res > 0 else False
+
+
+    # Remove existing animal by an_ID
+    # arg = [st_ID, an_ID]
+    def remove_animal(self,*arg):
+
+        # Make sure the animal being removed belongs to current curator
+        if self.check_ownership(arg[0], arg[1]) == True:
+            sql_query = "\
+            DELETE FROM animal \
+            WHERE an_ID = '" + arg[1] + "';"
+
+        q = query()
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+            # 获得返回结果
             res = cur.rowcount
 
         return True if res > 0 else False
