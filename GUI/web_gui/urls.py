@@ -9,5 +9,8 @@ urlpatterns = [
     path('director/',views.dire,name = 'dire_edit'),
     path('Home',views.home, name='home'),
     path('register',views.register, name='tiny'),
-    path('aquarist', views.aquarist)
+    path('aquarist', views.aquarist),
+    path('event_manager', views.eventmanager),
+    path('curator', views.curator)
+
 ]

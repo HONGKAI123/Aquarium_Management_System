@@ -136,3 +136,10 @@ def register(request):
 
 def aquarist(request):
     return render(request,'Aquarist/aquarist.html')
+
+def curator(request):
+    return render(request,"Curator/curator.html")
+
+def eventmanager(request):
+    return render(request,"Event_manager/event_manager.html")
+
