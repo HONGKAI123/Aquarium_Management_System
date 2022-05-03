@@ -4,8 +4,8 @@ import mysql.connector
 
 database = mysql.connector.connect(
     host = 'localhost',
-    user = 'root',
-    password = 'batcat2022',
+    user = 'aq_admin',
+    password = 'aq_Password01!',
     database = 'aquarium'
     # Change the password above to your own localhost password
 )

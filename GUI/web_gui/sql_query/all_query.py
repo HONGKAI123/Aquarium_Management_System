@@ -2,6 +2,8 @@
 from mysql import connector
 import time
 
+un = 'aq_admin'
+pw = 'aq_Password01!'
 
 class dbHelper():
     def timedeltaTOstr(self):
@@ -9,7 +11,7 @@ class dbHelper():
 
 
 class query():
-    def cursor(self, username: str = 'root', pwd: str = "lucifer"):
+    def cursor(self, username: str = un, pwd: str = pw):
         self.conn = connector.connect(
             host = 'localhost',
             user = username,
@@ -108,7 +110,7 @@ class director():
                     where type ='{type}' and (date between '{start_date}' and '{end_date}')\
                     order by attendance desc;".format(type = arg[0], start_date = arg[1], end_date = arg[2])
 
-        with q.cursor(username = 'root', pwd = 'root') as cur:
+        with q.cursor(username = un, pwd = pw) as cur:
             cur.execute(sql_query)
             # catch return result
             res = cur.fetchall()

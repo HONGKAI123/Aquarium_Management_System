@@ -1,12 +1,15 @@
 # SJSU CMPE 138 Spring 2022 TEAM6
 from mysql.connector import connect
 
+un = 'aq_admin'
+pw = 'aq_Password01!'
+
 class connector():
     def __init__(self, username: str = '', password: str = ''):
         self.host = 'localhost'
         self.database = 'aquarium'
-        self.user = 'root'
-        self.password = 'lucifer'
+        self.user = un
+        self.password = pw
         if (username is not None) and (password is not None):
             self.user = username
             self.password = password

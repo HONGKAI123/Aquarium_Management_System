@@ -81,10 +81,11 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # },
     'default':{
+        
         'NAME': 'aquarium',
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'root',
-        'PASSWORD': 'qweqwe123',
+        'USER': 'aq_admin',
+        'PASSWORD': 'aq_Password01!',
         'HOST':'localhost',
         'PORT':'3306',
     }
