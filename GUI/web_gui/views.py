@@ -52,7 +52,6 @@ def log_in(request):
                 if request.session['table'] == "aquarist":
                     url = reverse('jobs_page', kwargs = {"job_title": request.session['title']})
                     return redirect(url)
-
                 elif request.session['table'] == "curator":
                     pass
                 elif request.session['table'] == "event_manager":
