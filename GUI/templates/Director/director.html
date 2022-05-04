@@ -17,7 +17,7 @@
 				<div class="card-header">
 					<div class="card-header">
 						<h2>Event</h2>
-						<form method="POST" action="{% url 'main_report' 'DIRECTOR' 'view' %}">
+						<form method="POST" action="{% url 'main_report'  job_title actions %}">
 							{% csrf_token %}
 							<div>
 								<select name="selection">
@@ -58,7 +58,7 @@
 					</tbody>
 				</table>
 				<h5>Delete a Event</h5>
-				<form action="{% url 'jobs_delete' 'DIRECTOR' 'view' %}" method="post">
+				<form action="{% url 'jobs_delete' job_title actions %}" method="post">
 					{% csrf_token %}
 					<div class="input-field">
 						<input type="text" placeholder="Enter a ID from above" name="event_delete">
@@ -67,7 +67,7 @@
 				</form>
 				<br>
 				<div>
-					<form action="{% url 'jobs_create' 'DIRECTOR' 'view' %}" method="post">
+					<form action="{% url 'jobs_create' job_title actions %}" method="post">
 						{% csrf_token %}
 						<div class="input-field">
 							<input type="text" placeholder="Enter a 6 digit ID" name="event_id">
