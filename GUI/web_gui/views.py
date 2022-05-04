@@ -62,6 +62,7 @@ def report(request, job_title):
     title = check_title(request)
 
     if job_title == "AQUARIST":
+        # sample 987153744
         aq = aquarist()
         id = request.session['id']
         result = aq.check_maint_times(id)
@@ -73,18 +74,21 @@ def report(request, job_title):
         return render(request, "Aquarist/aquarist.html", cont)
 
     elif job_title == "CURATOR":
+        # sample 705628448
         cura = curator()
         result1 = cura.check_an_Status()
-        result2 = cura.check_spare_facility(request.session.get('species'))
+        #result2 = cura.check_spare_facility(request.session.get('species'))
         cont = {
             'cura_h': result1[0],
             'cura_r': result1[1],
-            'ava_h': result2[0],
-            'ava_r': result2[1],
+            # 'ava_h': result2[0],
+            # 'ava_r': result2[1],
         }
         return render(request, "Curator/curator.html", cont)
         # return render(request, "")
     elif job_title == "MANAGER":
+        # sample 218363685
+        # todo
         return render(request, "Event_manager/")
     elif job_title == "DIRECTOR":
         event_list = []
@@ -107,7 +111,8 @@ def report(request, job_title):
         # todo edit/delete 缺 id
         return render(request, 'Director/director.html', cont)
     else:
-        return render(request, 'Login/signin/html')
+        print("job_title",job_title)
+        return render(request, 'Login/signin.html')
 
     if request.method == "GET":
         return render(request, 'Director/director.html')
@@ -165,6 +170,6 @@ def register(request):
         dire = director()
         res = dire.hire_staff(*reg_info)
         print(reg_info,"\t",*res)
-    url = reverse('signup')
-    return redirect(url)
+    # url = reverse('signup')
+    # return redirect(url)
     return render(request, 'Register/register.html')
