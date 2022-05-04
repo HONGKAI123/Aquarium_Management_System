@@ -37,12 +37,16 @@
 											<td>{{ each_row }}</td>
 										{% endif %}
 									{% endfor %}
-									<td class="float-right">
-										<button type="button" class="btn btn-primary">Maintain</button>
-									</td>
 								</tr>
 							{% endfor %}
 							</tbody>
+							<form action="{% url 'jobs_edit' job_title view %}" method="post">
+								{% csrf_token %}
+								<input type="text" placeholder="Enter a 6 digit ID from above to maintain" name="maintain_id">
+								<td class="float-right">
+									<button type="button" class="btn btn-primary">Maintain</button>
+								</td>
+							</form>
 						</table>
 
 					</div>

@@ -72,6 +72,9 @@ def report_view(request, job_title):
     :return:
     """
     if job_title == "AQUARIST":
+        # test login dire
+        # username = 987153744
+        # password = 987153744
         url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
         return redirect(url)
 
@@ -129,11 +132,17 @@ def main_view(request, actions, job_title):
         aq = aquarist()
         id = request.session['id']
         result = aq.check_maint_times(id)
+
         print(result)
         cont = {
+            'actions': actions,
+            'job_title': job_title,
             'aqu_h': result[0],
             'aqu_r': result[1]
         }
+        if request.method=="POST":
+            main_id = request.POST.get('maintain_id')
+            aq.maintain_facility(main_id)
         return render(request, "Aquarist/aquarist.html", cont)
 
 
