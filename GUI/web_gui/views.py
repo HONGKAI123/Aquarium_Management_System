@@ -11,7 +11,7 @@ from .sql_query.all_query import curator
 
 from django.http import HttpResponse
 
-
+# ok
 def welcome(request):
     """
     test pages, check sql connection

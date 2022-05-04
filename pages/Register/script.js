@@ -18,10 +18,7 @@
 
         if(userName !='' && Password !='' && cfmpassword !='' && Email !='' && Phone !='' && Password == cfmpassword){
           document.getElementById("submit1").removeAttribute("disabled")
-
-
         }
         else{
-
         }
       }
