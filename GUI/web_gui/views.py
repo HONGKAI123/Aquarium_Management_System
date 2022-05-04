@@ -2,20 +2,20 @@
 from django.shortcuts import render
 from django.shortcuts import reverse
 from django.shortcuts import redirect
+from django.shortcuts import HttpResponse
+from django.shortcuts import HttpResponseRedirect
+# from django.forms.widgets import DateInput
 from .sql_query import login_verify
 from .sql_query.all_query import director
 from .sql_query.all_query import aquarist
 from .sql_query.all_query import curator
 
+
 # from .sql_query.all_query import query
 
-from django.http import HttpResponse
 
 # ok
 def welcome(request):
-    """
-    test pages, check sql connection
-    """
     return render(request, 'Home/home.html')
 
 
@@ -30,7 +30,7 @@ def log_in(request):
     if exsit,redirect to relative pages,
     otherwise return error
     """
-    # test login
+    # test login dire
     # username = 517465989
     # password = 517465989
     if request.method == "POST":
@@ -42,25 +42,25 @@ def log_in(request):
                 request.session['table'] = res[0]
                 request.session['id'] = login_info[0]
                 check_title(request)
-                url = reverse('jobs_page', kwargs = {"job_title": request.session['title']})
+                url = reverse('report_pages', kwargs = {"job_title": request.session['title']})
                 return redirect(url)
-
         else:
-            print("else")
+            print("login_post_else")
             return render(request, 'Login/signin.html', {'msg': 'username or password wrong'})
 
     elif request.method == "GET":
+        print("login_get")
         return render(request, 'Login/signin.html')
 
 
-def report(request, job_title):
+
+def report_view(request, job_title):
     """
     return different type of webpage based on the job title
     :param request:
     :return:
     """
     title = check_title(request)
-
     if job_title == "AQUARIST":
         aq = aquarist()
         id = request.session['id']
@@ -75,42 +75,22 @@ def report(request, job_title):
     elif job_title == "CURATOR":
         cura = curator()
         result1 = cura.check_an_Status()
-        result2 = cura.check_spare_facility(request.session.get('species'))
+        # result2 = cura.check_spare_facility(request.session.get('species'))
+        # print("curator,check_spare_facility",result2)
         cont = {
             'cura_h': result1[0],
             'cura_r': result1[1],
-            'ava_h': result2[0],
-            'ava_r': result2[1],
+            # 'ava_h': result2[0],
+            # 'ava_r': result2[1],
         }
         return render(request, "Curator/curator.html", cont)
-        # return render(request, "")
     elif job_title == "MANAGER":
         return render(request, "Event_manager/")
     elif job_title == "DIRECTOR":
-        event_list = []
-        print(request.POST.get('from_date'))
-        event_list.append(request.POST.get('selection'))
-        print(event_list)
-        dire = director()
-        value = dire.view_staff_report()
-        print(value)
-        cont = {
-            'animal_h': value[0],
-            'animal_r': value[1],
-            'manager_h': value[2],
-            'manager_r': value[3],
-            'aquarist_h': value[4],
-            'aquarist_r': value[5],
-            'event_h': value[6],
-            'event_r': value[7]
-        }
-        # todo edit/delete 缺 id
-        return render(request, 'Director/director.html', cont)
-    else:
-        return render(request, 'Login/signin/html')
+        url = reverse('main_report',kwargs = {'job_title': job_title, "actions": "view" })
+        return redirect(url)
 
-    if request.method == "GET":
-        return render(request, 'Director/director.html')
+    return render(request, 'Login/signin.html')
 
 
 """
@@ -123,8 +103,6 @@ return 2 for curator
 return 3 for event_manager
 return 4 for general_manager
 """
-
-
 def check_title(request) -> int:
     table = request.session['table']
     if table is not None:
@@ -144,9 +122,47 @@ def check_title(request) -> int:
         return 0
 
 
-def dire(request):
-    return render(request, "Director/director.html")
+def main_view(request, actions,job_title):
+    print("dire_view")
+    job_title = 'DIRECTOR'
+    # url = reverse('jobs_dire', kwargs = {"actions": "view",'job_title':job_title})
+    # print(url)
+    if actions == 'view' and job_title=='DIRECTOR':
+        dire = director()
+        value = dire.view_staff_report()
+        cont = {
+            'animal_h': value[0],
+            'animal_r': value[1],
+            'manager_h': value[2],
+            'manager_r': value[3],
+            'aquarist_h': value[4],
+            'aquarist_r': value[5],
+            'event_h': value[6],
+            'event_r': value[7],
+        }
+        if request.method == "GET":
+            return render(request, "Director/director.html", cont)
+        elif request.method == "POST":
+            from_date = request.POST.get('from_date')
+            to_date = request.POST.get('to_date')
+            selected = request.POST.get('selection')
+            event_ranges = [selected, from_date, to_date]
+            if from_date and to_date and selected:
+                # print("dire.date", from_date, to_date)
+                res = dire.view_event(*event_ranges)
+                # print("res", res)
+            cont['event_range_h'] = res[0]
+            cont['event_range_r'] = res[1]
+            return render(request, "Director/director.html", cont)
 
+def editing(request):
+    pass
+
+def deleting(request):
+    pass
+
+def creating(request):
+    pass
 
 def home(request):
     return render(request, 'Home/Home.html')
@@ -164,7 +180,7 @@ def register(request):
 
         dire = director()
         res = dire.hire_staff(*reg_info)
-        print(reg_info,"\t",*res)
+        print(reg_info, "\t", *res)
     url = reverse('signup')
     return redirect(url)
     return render(request, 'Register/register.html')

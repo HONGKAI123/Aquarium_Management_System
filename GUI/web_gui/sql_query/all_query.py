@@ -113,7 +113,7 @@ class director():
             # catch return result
             res = cur.fetchall()
 
-        return ['ev_ID', 'title', 'type', 'date', 'attend'], res
+        return ['Event ID', 'title', 'type', 'date', 'attend'], res
 
     # create new event
     def create_event(self, *arg):  # ev_ID,title,type,overseer
@@ -141,6 +141,26 @@ class director():
 
         return True if res > 0 else False
 
+    # for Delete Event Button
+    def cancel_event(self, ev_ID):
+        """
+        :param args: ev_ID(char-6)
+
+        :return: has removed event from database
+        """
+
+        # call db connection API
+        q = query()
+        sql_query = "delete from event where ev_ID = '{ev_ID}';".format(ev_ID = ev_ID)
+
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+
+            q.conn.commit()
+            res = cur.rowcount
+
+        return True if res > 0 else False
+
     # view staff report
     def view_staff_report(self):
         """
@@ -157,40 +177,40 @@ class director():
             finalResult = []  # an array that store colunm name, report title and staff detail without formating
             for i in range(4):  # each round append one type of staff's detail
                 if (i == 0):
-                    sql_query = "select curator.name, animal.name\
+                    sql_query = "select curator.st_ID,curator.name, animal.name\
                         from curator join animal on curator.st_ID=animal.curator;"
                     cur.execute(sql_query)
                     res = cur.fetchall()
-                    column_title = ['Curator', 'Animal']  # assign column name to str variable
+                    column_title = ['ID','Curator', 'Animal']  # assign column name to str variable
                     finalResult.append(
                         column_title)  # insert column name                    finalResult.extend(res)  # follow by staff detail
                     finalResult.append(res)
 
                 elif (i == 1):
-                    sql_query = "select event_manager.name as mangaer_Name, event.title as event_title\
+                    sql_query = "select event_manager.st_ID,event_manager.name as mangaer_Name, event.title as event_title\
                     from event_manager join event on event_manager.st_ID = event.overseer;"
                     cur.execute(sql_query)
-                    column_title = ['Manager', 'Event']
+                    column_title = ['ID','Manager', 'Event']
                     res = cur.fetchall()
                     finalResult.append(column_title)
                     finalResult.append(res)
 
                 elif (i == 2):
-                    sql_query = "select aquarist.name as aquarist_Name, facility.name as facility_Name\
+                    sql_query = "select aquarist.st_ID,aquarist.name as aquarist_Name, facility.name as facility_Name\
                     from aquarist, facility, maintain\
                     where aquarist.st_ID=maintain.staff and maintain.facility = facility.fa_ID;"
                     cur.execute(sql_query)
-                    column_title = ['Aquarist', 'Facility']
+                    column_title = ['ID','Aquarist', 'Facility']
                     res = cur.fetchall()
                     finalResult.append(column_title)
                     finalResult.append(res)
 
                 else:
-                    sql_query = "select aquarist.name as aquarist_Name, event.title as event_Name\
+                    sql_query = "select aquarist.st_ID,aquarist.name as aquarist_Name, event.title as event_Name\
                     from aquarist, event, work_on\
                     where aquarist.st_ID = work_on.staff and work_on.event = event.ev_ID;"
                     cur.execute(sql_query)
-                    column_title = ['Aquarist', 'Event']
+                    column_title = ['ID','Aquarist', 'Event']
                     res = cur.fetchall()
                     finalResult.append(column_title)
                     finalResult.append(res)
@@ -452,8 +472,8 @@ class curator():
     # arg = [species]
     def check_spare_facility(self,*arg):
         ls = ['Facility ID', 'Facility Name']
-        sql_query = "\
-        SELECT fa_ID, f.name \
+        print("sql_check_spare_facility",arg[0])
+        sql_query = "SELECT fa_ID, f.name \
         FROM facility f \
         left join animal on f.fa_id = animal.habitat \
         where species = '" + arg[0] + "' or (f.fa_ID not in (select habitat from animal group by habitat) and f.fa_ID not in (select e.facility from event e group by e.facility)) \

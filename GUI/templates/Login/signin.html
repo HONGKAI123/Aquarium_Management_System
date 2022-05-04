@@ -8,37 +8,37 @@
 	{% static 'Login/loginstyle.css' %}
 {% endblock %}
 {% block content %}
-<body>
-
-
+	<body>
 	<div class="login-form">
-	  <form action="{% url 'login_page' %}" method="post">
-		{% csrf_token %}
-		<h1>Login</h1>
-		<h6>Please sign in with your username and password</h6>
-		<div class="content">
-		  <div class="input-field">
-			<input id ='user'type="username" placeholder= "Username" autocomplete="nope" onkeyup="empty()" name="username">
-		  </div>
-		  <div class="input-field">
-			<input id ='pswd1'type="password" placeholder= "Password" autocomplete="nope" onkeyup="empty()" name="pwd">
-		  </div>
-		</div>
-		<div class="action text-center">
-		  
-		  <button disabled id= 'submit1' class="btn btn-primary mb-5 btn-lg" type = "submit">Sign in</button>
-		</div>
-	  </form>
-	
-	 
+		<form action="{% url 'login_page' %}" method="post">
+			{% csrf_token %}
+			<h1>Login</h1>
+			<h6>Please sign in with your username and password</h6>
+			<div class="content">
+				<div class="input-field">
+					<input id='user' type="username" placeholder="Username" autocomplete="nope" onkeyup="empty()"
+						   name="username">
+				</div>
+				<div class="input-field">
+					<input id='pswd1' type="password" placeholder="Password" autocomplete="nope" onkeyup="empty()"
+						   name="pwd">
+				</div>
+			</div>
+			<div class="action text-center">
+
+				<button disabled id='submit1' class="btn btn-primary mb-5 btn-lg" type="submit">Sign in</button>
+			</div>
+		</form>
+
+
 	</div>
 	<footer>
-	  <h5>copyright@ CMPE138 Team4 Spring 2022</h5>
+		<h5>copyright@ CMPE138 Team4 Spring 2022</h5>
 	</footer>
-	
+
 	</body>
-	
+
 {% endblock %}
 {% block js_file %}
-	<script src = {% static "Login/loginscript.js" %} ></script>
+	<script src={% static "Login/loginscript.js" %}></script>
 {% endblock %}

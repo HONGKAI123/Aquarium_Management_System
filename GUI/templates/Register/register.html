@@ -18,6 +18,10 @@
 
 			<div class="content">
 				<div class="input-field">
+					<input type="username" id="user_id" placeholder=" User ID" autocomplete="nope" onkeyup="empty()"
+						   name="u_id">
+				</div>
+				<div class="input-field">
 					<input type="username" id="user" placeholder=" Username" autocomplete="nope" onkeyup="empty()"
 						   name="uname">
 				</div>
@@ -38,9 +42,9 @@
 						   name="phone">
 				</div>
 				<select name="selection">
-					<option value="curator">curator</option>
-					<option value="event_manager">event_manager</option>
-					<option value="aquarist">aquarist</option>
+					<option selected="selected" value="curator">CURATOR</option>
+					<option value="event_manager">MANAGER</option>
+					<option value="aquarist">AQUARIST</option>
 				</select>
 
 			</div>

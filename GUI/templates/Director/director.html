@@ -17,25 +17,56 @@
 				<div class="card-header">
 					<div class="card-header">
 						<h2>Event</h2>
-						<form action="{% url 'search' %}" method="post">
+						<form method="POST">
 							{% csrf_token %}
 							<div>
 								<select name="selection">
-									<option value="exhibit">exhibit</option>
+									<option selected="selected" value="exhibit">exhibit</option>
 									<option value="performance">performance</option>
 								</select>
-								<input type='date' name="from_date"/> <input input type='date' name="to_date"/>
+								<input type='date' name="from_date" value="2022-05-02"/> <input type='date' name="to_date" value="2022-05-05"/>
 							</div>
-							<button type="button" class="btn btn-primary" type="submit">search</button>
+							<button class="btn btn-primary" type="submit">search</button>
 						</form>
 					</div>
 				</div>
-				<div class="card-body">
-					<h5 class="card-title">Create,edit or delete the reports</h5>
-					<button type="button" class="btn btn-primary">Create a new report</button>
+				<br class="card-body">
+				<h5 class="card-title">Create,edit or delete the Events</h5>
+				<table class="table table-dark table-hover table-bordered">
+					<thead>
+					<tr>
+						{% for name in event_range_h %}
+							<th scope="col">{{ name }}</th>
+						{% endfor %}
+					</tr>
+					</thead>
+					<tbody>
+					{% for content in event_range_r %}
+						<tr>
+							{% for each_row in content %}
+								{% if forloop.first %}
+									<th scope="row">{{ each_row }}</th>
+								{% else %}
+									<td>{{ each_row }}</td>
+								{% endif %}
+							{% endfor %}
+							</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+				<h5>Delete a Event</h5>
+				<div class="input-field">
+					<input type="text" name="event_del" placeholder="Enter a ID from above" name="event_delete"/>
+					<button type="submit" class="btn btn-danger md-3">Delete!</button>
+				</div>
+				<br>
+				<div>
+					<button type="submit" class="btn btn-primary md-3">Create a new event</button>
 				</div>
 			</div>
 		</div>
+	</div>
 
 
 	</div>
@@ -102,7 +133,6 @@
 								{% for name in aquarist_h %}
 									<th scope="col">{{ name }}</th>
 								{% endfor %}
-								<th class="float-right">Actions</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -115,10 +145,6 @@
 											<td>{{ each_row }}</td>
 										{% endif %}
 									{% endfor %}
-									<td class="float-right">
-										<button type="button" class="btn btn-primary">Edit</button>
-										<button type="button" class="btn btn-danger">Delete</button>
-									</td>
 								</tr>
 							{% endfor %}
 							</tbody>
@@ -130,7 +156,6 @@
 								{% for name in event_h %}
 									<th scope="col">{{ name }}</th>
 								{% endfor %}
-								<th class="float-right">Actions</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -143,10 +168,6 @@
 											<td>{{ each_row }}</td>
 										{% endif %}
 									{% endfor %}
-									<td class="float-right">
-										<button type="button" class="btn btn-primary">Edit</button>
-										<button type="button" class="btn btn-danger">Delete</button>
-									</td>
 								</tr>
 							{% endfor %}
 							</tbody>
