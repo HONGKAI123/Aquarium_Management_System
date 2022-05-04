@@ -128,8 +128,8 @@ def main_view(request, actions, job_title):
         dire = director()
         value = dire.view_staff_report()
         cont = {
-            'actions': 'view',
-            'job_title': 'DIRECTOR',
+            'actions': actions,
+            'job_title': job_title,
             'animal_h': value[0],
             'animal_r': value[1],
             'manager_h': value[2],
