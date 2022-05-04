@@ -129,7 +129,7 @@ class director():
         # sql query that create new event to db
         sql_query = "insert into event values ('{ev_ID}', '{title}', '{type}', null, '{overseer}');" \
             .format(ev_ID = arg[0], title = arg[1], type = arg[2], overseer = arg[3])
-
+        print(sql_query,"sql")
         with q.cursor() as cur:
             cur.execute(sql_query)
 
@@ -155,7 +155,6 @@ class director():
 
         with q.cursor() as cur:
             cur.execute(sql_query)
-
             q.conn.commit()
             res = cur.rowcount
 

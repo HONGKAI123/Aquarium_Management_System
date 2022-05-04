@@ -30,9 +30,6 @@ def log_in(request):
     if exsit,redirect to relative pages,
     otherwise return error
     """
-    # test login dire
-    # username = 517465989
-    # password = 517465989
     if request.method == "POST":
         request.session['table'] = ''
         login_info = [request.POST.get('username'), request.POST.get('pwd')]
@@ -51,7 +48,6 @@ def log_in(request):
     elif request.method == "GET":
         print("login_get")
         return render(request, 'Login/signin.html')
-
 
 
 def report_view(request, job_title):
@@ -87,7 +83,10 @@ def report_view(request, job_title):
     elif job_title == "MANAGER":
         return render(request, "Event_manager/")
     elif job_title == "DIRECTOR":
-        url = reverse('main_report',kwargs = {'job_title': job_title, "actions": "view" })
+        # test login dire
+        # username = 517465989
+        # password = 517465989
+        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
         return redirect(url)
 
     return render(request, 'Login/signin.html')
@@ -103,6 +102,8 @@ return 2 for curator
 return 3 for event_manager
 return 4 for general_manager
 """
+
+
 def check_title(request) -> int:
     table = request.session['table']
     if table is not None:
@@ -122,12 +123,8 @@ def check_title(request) -> int:
         return 0
 
 
-def main_view(request, actions,job_title):
-    print("dire_view")
-    job_title = 'DIRECTOR'
-    # url = reverse('jobs_dire', kwargs = {"actions": "view",'job_title':job_title})
-    # print(url)
-    if actions == 'view' and job_title=='DIRECTOR':
+def main_view(request, actions, job_title):
+    if actions == 'view' and job_title == 'DIRECTOR':
         dire = director()
         value = dire.view_staff_report()
         cont = {
@@ -140,29 +137,54 @@ def main_view(request, actions,job_title):
             'event_h': value[6],
             'event_r': value[7],
         }
-        if request.method == "GET":
-            return render(request, "Director/director.html", cont)
-        elif request.method == "POST":
-            from_date = request.POST.get('from_date')
-            to_date = request.POST.get('to_date')
-            selected = request.POST.get('selection')
-            event_ranges = [selected, from_date, to_date]
-            if from_date and to_date and selected:
-                # print("dire.date", from_date, to_date)
-                res = dire.view_event(*event_ranges)
-                # print("res", res)
+        from_date = request.POST.get('from_date')
+        to_date = request.POST.get('to_date')
+        selected = request.POST.get('selection')
+        event_ranges = [selected, from_date, to_date]
+        if from_date and to_date and selected:
+            # print("dire.date", from_date, to_date)
+            res = dire.view_event(*event_ranges)
+            # print("res", res)
             cont['event_range_h'] = res[0]
             cont['event_range_r'] = res[1]
-            return render(request, "Director/director.html", cont)
+        return render(request, "Director/director.html", cont)
+
 
 def editing(request):
     pass
 
-def deleting(request):
+
+def deleting(request, job_title, actions):
+    print(request.POST.get('event_delete'))
+    if actions == 'view' and job_title == 'DIRECTOR':
+        id = request.POST.get('event_delete')
+        if len(id) == 6:
+            dire = director()
+            res = dire.cancel_event(101001)
+            if res:
+                print("ok")
+        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
+        return redirect(url)
     pass
 
-def creating(request):
+
+def creating(request, job_title, actions):
+    print(request.POST.get('event_create'))
+    if actions == 'view' and job_title == 'DIRECTOR':
+        create_event = []
+        create_event.append(request.POST.get('event_id'))
+        create_event.append(request.POST.get('event_title'))
+        create_event.append(request.POST.get('create_selection'))
+        create_event.append(request.POST.get('event_overseer'))
+        if create_event[0] and create_event[1] and create_event[2] and create_event[3]:
+            dire = director()
+            res = dire.create_event(*create_event)
+            if res:
+                print("ok")
+        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
+        return redirect(url)
     pass
+
 
 def home(request):
     return render(request, 'Home/Home.html')

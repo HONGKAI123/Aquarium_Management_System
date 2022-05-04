@@ -17,21 +17,23 @@
 				<div class="card-header">
 					<div class="card-header">
 						<h2>Event</h2>
-						<form method="POST">
+						<form method="POST" action="{% url 'main_report' 'DIRECTOR' 'view' %}">
 							{% csrf_token %}
 							<div>
 								<select name="selection">
 									<option selected="selected" value="exhibit">exhibit</option>
 									<option value="performance">performance</option>
 								</select>
-								<input type='date' name="from_date" value="2022-05-02"/> <input type='date' name="to_date" value="2022-05-05"/>
+								<input type='date' name="from_date" value="2022-05-02"/> <input type='date'
+																								name="to_date"
+																								value="2022-05-05"/>
 							</div>
 							<button class="btn btn-primary" type="submit">search</button>
 						</form>
 					</div>
 				</div>
 				<br class="card-body">
-				<h5 class="card-title">Create,edit or delete the Events</h5>
+				<h5 class="card-title">Assgined Events</h5>
 				<table class="table table-dark table-hover table-bordered">
 					<thead>
 					<tr>
@@ -56,13 +58,29 @@
 					</tbody>
 				</table>
 				<h5>Delete a Event</h5>
-				<div class="input-field">
-					<input type="text" name="event_del" placeholder="Enter a ID from above" name="event_delete"/>
-					<button type="submit" class="btn btn-danger md-3">Delete!</button>
-				</div>
+				<form action="{% url 'jobs_delete' 'DIRECTOR' 'view' %}" method="post">
+					{% csrf_token %}
+					<div class="input-field">
+						<input type="text" placeholder="Enter a ID from above" name="event_delete">
+						<button type="submit" class="btn btn-danger md-3">Delete!</button>
+					</div>
+				</form>
 				<br>
 				<div>
-					<button type="submit" class="btn btn-primary md-3">Create a new event</button>
+					<form action="{% url 'jobs_create' 'DIRECTOR' 'view' %}" method="post">
+						{% csrf_token %}
+						<div class="input-field">
+							<input type="text" placeholder="Enter a 6 digit ID" name="event_id">
+							<input type="text" placeholder="Enter a title" name="event_title">
+							<select name="create_selection">
+									<option selected="selected" value="exhibit">exhibit</option>
+									<option value="performance">performance</option>
+								</select>
+							<input type="text" placeholder="Enter manager ID" name="event_overseer">
+							<button type="submit" class="btn btn-primary md-3">Create a new event</button>
+						</div>
+					</form>
+
 				</div>
 			</div>
 		</div>
