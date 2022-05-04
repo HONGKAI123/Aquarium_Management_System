@@ -129,7 +129,7 @@ class director():
         # sql query that create new event to db
         sql_query = "insert into event values ('{ev_ID}', '{title}', '{type}', null, '{overseer}');" \
             .format(ev_ID = arg[0], title = arg[1], type = arg[2], overseer = arg[3])
-        print(sql_query,"sql")
+        print(sql_query, "sql")
         with q.cursor() as cur:
             cur.execute(sql_query)
 
@@ -180,7 +180,7 @@ class director():
                         from curator join animal on curator.st_ID=animal.curator;"
                     cur.execute(sql_query)
                     res = cur.fetchall()
-                    column_title = ['ID','Curator', 'Animal']  # assign column name to str variable
+                    column_title = ['ID', 'Curator', 'Animal']  # assign column name to str variable
                     finalResult.append(
                         column_title)  # insert column name                    finalResult.extend(res)  # follow by staff detail
                     finalResult.append(res)
@@ -189,7 +189,7 @@ class director():
                     sql_query = "select event_manager.st_ID,event_manager.name as mangaer_Name, event.title as event_title\
                     from event_manager join event on event_manager.st_ID = event.overseer;"
                     cur.execute(sql_query)
-                    column_title = ['ID','Manager', 'Event']
+                    column_title = ['ID', 'Manager', 'Event']
                     res = cur.fetchall()
                     finalResult.append(column_title)
                     finalResult.append(res)
@@ -199,7 +199,7 @@ class director():
                     from aquarist, facility, maintain\
                     where aquarist.st_ID=maintain.staff and maintain.facility = facility.fa_ID;"
                     cur.execute(sql_query)
-                    column_title = ['ID','Aquarist', 'Facility']
+                    column_title = ['ID', 'Aquarist', 'Facility']
                     res = cur.fetchall()
                     finalResult.append(column_title)
                     finalResult.append(res)
@@ -209,7 +209,7 @@ class director():
                     from aquarist, event, work_on\
                     where aquarist.st_ID = work_on.staff and work_on.event = event.ev_ID;"
                     cur.execute(sql_query)
-                    column_title = ['ID','Aquarist', 'Event']
+                    column_title = ['ID', 'Aquarist', 'Event']
                     res = cur.fetchall()
                     finalResult.append(column_title)
                     finalResult.append(res)
@@ -229,12 +229,10 @@ class director():
         q = query()
 
         # sql query that create new staff to db
-        sql_query = "insert into {role} values ('{st_ID}', '{pwd}', '{name}', '{phone}', '{email}');" \
-            .format(role = arg[0], st_ID = arg[1], name = arg[2], phone = arg[3], email = arg[4],pwd = arg[5])
-
+        sql_query = "insert into {role} values ('{st_ID}', md5('{pwd}'), '{name}', '{phone}', '{email}');" \
+            .format(role = arg[0], st_ID = arg[1], name = arg[2], phone = arg[3], email = arg[4], pwd = arg[5])
         with q.cursor() as cur:
             cur.execute(sql_query)
-
             # submit change to database
             q.conn.commit()
 
@@ -419,7 +417,7 @@ class aquarist():
 class curator():
     # Helper function to make sure the animal belongs to current user
     # return T/F
-    def check_ownership(self,st_id, an_id):
+    def check_ownership(self, st_id, an_id):
         ls = ['Curator']
         try:
             q = query()
@@ -430,10 +428,9 @@ class curator():
             print("The animal ID you have entered does not exist")
             # return ls,result
 
-
     # Check animal status
     def check_an_Status(self):
-        ls = ["Animal Name","Animal ID","Status"]
+        ls = ["Animal Name", "Animal ID", "Status"]
         sql_query = "\
         SELECT name,an_id,Status \
         FROM animal;"
@@ -446,10 +443,9 @@ class curator():
         #     print(result)
         return ls, res
 
-
     # Update animal status (set to 1)
     # arg = [an_ID]
-    def update_an_Status(self,*arg):
+    def update_an_Status(self, *arg):
         sql_query = " \
         UPDATE animal \
         SET status = true \
@@ -466,12 +462,11 @@ class curator():
 
         return True if res > 0 else False
 
-
     # Chekc facility availability for adding new animals
     # arg = [species]
-    def check_spare_facility(self,*arg):
+    def check_spare_facility(self, *arg):
         ls = ['Facility ID', 'Facility Name']
-        print("sql_check_spare_facility",arg[0])
+        print("sql_check_spare_facility", arg[0])
         sql_query = "SELECT fa_ID, f.name \
         FROM facility f \
         left join animal on f.fa_id = animal.habitat \
@@ -487,13 +482,12 @@ class curator():
 
         return ls, results
 
-
     # Add new animals
-    # arg = [an_ID, name, species, habitat]
-    def add_new_animal(self,*arg):
+    # arg = [an_ID, name, species,st_id, habitat]
+    def add_new_animal(self, *arg):
         # try:
-        sql_query = "\
-        INSERT INTO animal VALUES ('" + arg[0] + "','" + arg[1] + "','" + arg[2] + "', 0, '705628448','" + arg[3] + "'); "
+        sql_query = "INSERT INTO animal VALUES ('{}','{}','{}',0,'{}','{}');".format(arg[0], arg[1], arg[2],
+                                                                                     arg[3, arg[4]])
         q = query()
         with q.cursor() as cur:
             cur.execute(sql_query)
@@ -503,10 +497,9 @@ class curator():
 
         return True if res > 0 else False
 
-
     # Remove existing animal by an_ID
     # arg = [st_ID, an_ID]
-    def remove_animal(self,*arg):
+    def remove_animal(self, *arg):
 
         # Make sure the animal being removed belongs to current curator
         if self.check_ownership(arg[0], arg[1]) == True:

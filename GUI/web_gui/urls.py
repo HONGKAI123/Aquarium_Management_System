@@ -3,9 +3,9 @@ from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
-    path('', views.welcome),  # ok
+    path('', views.welcome),
     path(r'login/', views.log_in, name = 'login_page'),
-    re_path(r'\w+/register/', views.register, name = 'reg'),
+    re_path(r'register/', views.register, name = 'reg'),
     re_path(r'^(?P<job_title>\w+)/$', views.report_view, name = 'report_pages'),
     re_path(r'^(?P<job_title>\w+)/(?P<actions>\w+)/$', views.main_view, name = 'main_report'),
     re_path(r'^(?P<job_title>\w+)/(?P<actions>\w+)/edit/$', views.editing, name = 'jobs_edit'),

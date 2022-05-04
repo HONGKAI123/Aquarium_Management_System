@@ -73,9 +73,9 @@
 							<input type="text" placeholder="Enter a 6 digit ID" name="event_id">
 							<input type="text" placeholder="Enter a title" name="event_title">
 							<select name="create_selection">
-									<option selected="selected" value="exhibit">exhibit</option>
-									<option value="performance">performance</option>
-								</select>
+								<option selected="selected" value="exhibit">exhibit</option>
+								<option value="performance">performance</option>
+							</select>
 							<input type="text" placeholder="Enter manager ID" name="event_overseer">
 							<button type="submit" class="btn btn-primary md-3">Create a new event</button>
 						</div>
@@ -198,8 +198,12 @@
 						</script>
 					</div>
 				</div>
-				<button id="mybutton" type="button" class="btn btn-primary float-right ">Start new Day!</button>
+
 			</div>
+			<button id="mybutton" type="button" class="btn btn-primary float-right"
+					onclick="location.href='{% url 'jobs_edit' job_title actions %}'">Start new Day!
+			</button>
+
 		</div>
 	</div>
 	</body>
