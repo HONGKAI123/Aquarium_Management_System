@@ -2,6 +2,7 @@
 
 # *arg
 import mysql.connector
+#from all_query import query
 
 database = mysql.connector.connect(
     host='localhost',
@@ -32,7 +33,7 @@ def check_aquarist_availability():
     sql_query = "SELECT staff, COUNT(*) event_count " \
                 "FROM work_on " \
                 "GROUP BY staff " \
-                "ORDER BY COUNT(*) "
+                "ORDER BY COUNT(*) DESC"
     cursor.execute(sql_query)
     result = cursor.fetchall()
     # print(result)
@@ -69,12 +70,10 @@ def check_facility_availability():
 
 def assign_facility_to_event(*args):
     """
-    Input: facility_ID, event_ID
     assign facility(id) to event(id) 
     """
-    facility_ID = args[0]
-    event_ID = args[1]
- 
+    event_ID = args[0]
+    facility_ID = args[1]
     sql_query = "UPDATE event SET facility = " + "'" + facility_ID + "' " + \
                 "WHERE ev_ID =" + "'" + event_ID + "'"
     try:
@@ -89,14 +88,13 @@ def assign_facility_to_event(*args):
 
 def log_event_attendance(*args):
     """
-    Input: recorded_attendance, event_ID, date
+    Input: recorded_attendance, event_ID
     Update an event's attendance number to an Event_instance.
     """
     event_ID = args[0]
     recorded_attendance = args[1]
-    date = args[2]
     sql_query = "UPDATE event_instance SET attendance = " + str(recorded_attendance) + \
-                " WHERE event = " + "'" + event_ID + "'" + " AND date = '" + date + "'"
+                " WHERE event = " + "'" + event_ID + "'"
     try:
         cursor.execute(sql_query)
         database.commit()
@@ -106,12 +104,71 @@ def log_event_attendance(*args):
     count = cursor.rowcount
     return True if count > 0 else False
 
+def view_event_table(*args):
+    """
+    args = [st_ID]
+    returns rows of events that the current user oversees,
+    how many aquarists work on each event, 
+    and which facility hosts each event
+    """
+    # db connection API
+    #q = query()
+
+    # build sql query
+    sql_query = "\
+        SELECT ev_ID, COUNT(staff), facility \
+        FROM event \
+        LEFT JOIN work_on ON event.ev_ID = work_on.event \
+        WHERE overseer = {0} \
+        GROUP BY ev_ID;".format(args[0])
+
+    """
+    # connect database
+    with q.cursor(username = 'aq_admin', pwd = 'aq_Password01!') as cur:
+        cur.execute(sql_query)
+
+        res = cur.fetchall()
+    """
+    cursor.execute(sql_query)
+    res = cursor.fetchall()
+    return ['Event ID', 'Worker Count', 'Facility'], res
+
+def view_event_instances(*args):
+    """
+    args = [st_ID]
+    returns rows of event instances that the current user oversees,
+    the date of each event instance, and the attendance
+    """
+    # db connection API
+    #q = query()
+
+    # build sql query
+    sql_query = "\
+        SELECT ev_ID, date, attendance \
+        FROM event_instance \
+        LEFT JOIN event ON event.ev_ID = event_instance.event \
+        WHERE overseer = {0} \
+        ORDER BY date DESC;".format(args[0])
+
+    """
+    # connect database
+    with q.cursor(username = 'aq_admin', pwd = 'aq_Password01!') as cur:
+        cur.execute(sql_query)
+
+        res = cur.fetchall()
+    """
+    cursor.execute(sql_query)
+    res = cursor.fetchall()
+    return ['Event ID', 'Date', 'Attendance'], res
 
 if __name__ == '__main__':
-    # view_my_events('243910037')
-    #check_facility_availability()
-    # check_aquarist_availability()
-    # assign_aquarist_to_event('101001', '914191383')
-    #assign_facility_to_event('101001', ''100003'')
-    log_event_attendance('101001', 99, '2022-05-05')
+    view_my_events('123')
+    check_facility_availability()
+    check_aquarist_availability()
+    assign_aquarist_to_event('e11', 'a1')
+    assign_facility_to_event('e2', 'f1')
+    log_event_attendance('e1000', 99)
+    print(view_event_table('218363685'))
+    print(view_event_instances('218363685'))
+
 

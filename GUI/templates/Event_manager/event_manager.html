@@ -9,229 +9,181 @@
 {% endblock %}
 {% block content %}
 
-<body>
-    <h1 class="title">Event Manager</h1>
-  </br>
+	<body>
+	<h1 class="title">Event Manager</h1>
+	</br>
+	<div>
+		<div class="container">
+			<div class='jumbotron'>
+				<div class="card">
+					<div class="card-header">
+						<h2>Event Report</h2>
+					</div>
+					<div class="card-body">
+						<table class="table table-dark table-hover table-bordered">
+							<thead>
+							<tr>
+								{% for name in repo_h %}
+									<th scope="col">{{ name }}</th>
+								{% endfor %}
+							</tr>
+							</thead>
+							<tbody>
+							{% for content in repo_r %}
+								<tr>
+									{% for each_row in content %}
+										{% if forloop.first %}
+											<th scope="row">{{ each_row }}</th>
+										{% else %}
+											<td>{{ each_row }}</td>
+										{% endif %}
+									{% endfor %}
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 
-    <div>
-<div class="container" >
-  <div class ='jumbotron'>
-    <div class="card">
-        <div class="card-header">
-          <h2>Event Report</h2>
-        </div>
-        <div class="card-body">
-          <table class="table table-dark table-hover table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">Event ID</th>
-                <th scope="col">Title</th>
-                <th scope="col">Type</th>
-                <th scope="col">Facility</th>
-                <th scope="col">Overseer</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>123</td>
-                <td>abc</td>
-                <td>123</td>
-                <td>123</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>123</td>
-                <td>abc</td>
-                <td>123</td>
-                <td>123</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>123</td>
-                <td>abc</td>
-                <td>123</td>
-                <td>123</td>
-              </tr>
-              
-              
-            </tbody>
-            
-          </table>
-          
-        </div>
-      </div>
+		</div>
 
+		<div class="container">
+			<div class='jumbotron'>
+				<div class="card">
+					<div class="card-header">
+						<h2>Available Aquarists</h2>
+					</div>
+					<div class="card-body">
+						<table class="table table-dark table-hover table-bordered">
+							<thead>
+							<tr>
+								{% for name in ava_aqu_h %}
+									<th scope="col">{{ name }}</th>
+								{% endfor %}
+							</tr>
+							</thead>
+							<tbody>
+							{% for content in ava_aqu_r %}
+								<tr>
+									{% for each_row in content %}
+										{% if forloop.first %}
+											<th scope="row">{{ each_row }}</th>
+										{% else %}
+											<td>{{ each_row }}</td>
+										{% endif %}
+									{% endfor %}
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+						<form action="{% url 'manage_edit' job_title actions 'aquarists_sign' %}" method="post">
+							{% csrf_token %}
+							<div class="input-field">
+								<input type="text" placeholder="Enter a ID from above" name="fac_id">
+								<input type="text" placeholder="Enter a ID from above" name="eve_id">
+								<button type="submit" class="btn btn-primary md-3">Assgin!</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 
-  </div>
-  
-</div>
- 
-    <div>
-<div class="container" >
-  <div class ='jumbotron'>
-    <div class="card">
-      <div class="card-header">
-        <h2>Available Aquarists</h2>
-      </div>
-      <div class="card-body">
-        <table class="table table-dark table-hover table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Staff (Aquarist ID)</th>
-              <th scope="col">Working on Event Counts</th>
-              <th class="float-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>123</td>
-              <td class="float-right">
-                  <button type="button" class="btn btn-primary">Assign</button>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>123</td>
-              <td class="float-right">
-                  <button type="button" class="btn btn-primary">Assign</button>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>123</td>
-              <td class="float-right">
-                  <button type="button" class="btn btn-primary">Assign</button>
-              </td>
-            </tr>
-            
-            
-          </tbody>
-          
-        </table>
-        
-      </div>
-    </div>
+		<div class="container">
+			<div class='jumbotron'>
+				<div class="card">
+					<div class="card-header">
+						<h2>Available Facilities</h2>
+					</div>
+					<div class="card-body">
+						<table class="table table-dark table-hover table-bordered">
+							<thead>
+							<tr>
+								{% for name in ava_fac_h %}
+									<th scope="col">{{ name }}</th>
+								{% endfor %}
+							</tr>
+							</thead>
+							<tbody>
+							{% for content in ava_fac_r %}
+								<tr>
+									{% for each_row in content %}
+										{% if forloop.first %}
+											<th scope="row">{{ each_row }}</th>
+										{% else %}
+											<td>{{ each_row }}</td>
+										{% endif %}
+									{% endfor %}
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+						<form action="{% url 'manage_edit' job_title actions 'facility_assign' %}" method="post">
+							{% csrf_token %}
+							<div class="input-field">
+								<input type="text" placeholder="Enter a facility ID from above" name="aqu_id">
+								<input type="text" placeholder="Enter a event ID from above" name="eve_id">
+								<button type="submit" class="btn btn-primary md-3">Assgin!</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 
-
-  </div>
-  
-</div>
-  
-  
-     <div>
- <div class="container" >
-   <div class ='jumbotron'>
-     <div class="card">
-       <div class="card-header">
-         <h2>Available Facilities</h2>
-       </div>
-       <div class="card-body">
-         <table class="table table-dark table-hover table-bordered">
-           <thead>
-             <tr>
-               <th scope="col">Facility ID</th>
-               <th scope="col">Facility Name</th>
-               <th class="float-right">Actions (Assign to event)</th>
-             </tr>
-           </thead>
-           <tbody>
-             <tr>
-               <th scope="row">1</th>
-               <td>123</td>
-               <td class="float-right">
-                   <button type="button" class="btn btn-primary">Assign</button>
-               </td>
-             </tr>
-             <tr>
-               <th scope="row">2</th>
-               <td>123</td>
-               <td class="float-right">
-                   <button type="button" class="btn btn-primary">Assign</button>
-               </td>
-             </tr>
-             <tr>
-               <th scope="row">3</th>
-               <td>123</td>
-               <td class="float-right">
-                   <button type="button" class="btn btn-primary">Assign</button>
-               </td>
-             </tr>
-             
-             
-           </tbody>
-           
-         </table>
-         
-       </div>
-     </div>
-
-
-   </div>
-   
-
- </div>
-   
-   
-      <div>
-  <div class="container" >
-    <div class ='jumbotron'>
-      <div class="card">
-        <div class="card-header">
-          <h2>Event Instances</h2>
-        </div>
-        <div class="card-body">
-          <table class="table table-dark table-hover table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">Event ID</th>
-                <th scope="col">Date</th>
-                <th scope="col">Attendance</th>
-                <th class="float-right">Actions (Update Attendance)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>123</td>
-                <td>123</td>
-                <td class="float-right">
-                    <button type="button" class="btn btn-primary">update</button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>123</td>
-                <td>123</td>
-                <td class="float-right">
-                    <button type="button" class="btn btn-primary">Update</button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>123</td>
-                <td>123</td>
-                <td class="float-right">
-                    <button type="button" class="btn btn-primary">Update</button>
-                </td>
-              </tr>
-              
-              
-            </tbody>
-            
-          </table>
-          
-        </div>
-      </div>
+		<div>
+			<div class="container">
+				<div class='jumbotron'>
+					<div class="card">
+						<div class="card-header">
+							<h2>Event Attendance</h2>
+						</div>
+						<div class="card-body">
+							<table class="table table-dark table-hover table-bordered">
+								<thead>
+								<tr>
+									{% for name in eve_att_h %}
+										<th scope="col">{{ name }}</th>
+									{% endfor %}
+								</tr>
+								</thead>
+								<tbody>
+								{% for content in eve_att_r %}
+									<tr>
+										{% for each_row in content %}
+											{% if forloop.first %}
+												<th scope="row">{{ each_row }}</th>
+											{% else %}
+												<td>{{ each_row }}</td>
+											{% endif %}
+										{% endfor %}
+										</td>
+									</tr>
+								{% endfor %}
+								</tbody>
+							</table>
+							<form action="{% url 'manage_edit' job_title actions 'att_assign' %}" method="post">
+								{% csrf_token %}
+								<input type="text" placeholder="Enter a 6 digit ID from above to maintain"
+									   name="eve_id">
+								<td class="float-right"><input type="text" placeholder="How many people"
+									   name="att_num">
+									<button type="submit" class="btn btn-primary">Log</button>
+								</td>
+							</form>
+						</div>
+					</div>
 
 
-    </div>
-    
+				</div>
 
-
-
-</div>
-</body>
+			</div>
+		</div>
+	</div>
+	</body>
 
 {% endblock %}

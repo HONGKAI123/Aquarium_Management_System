@@ -14,36 +14,18 @@
 	<div class="container">
 		<div class='jumbotron'>
 			<div class="card">
-				<div class="card-header">
-					<div class="card-header">
-						<h2>Event</h2>
-						<form method="POST" action="{% url 'main_report'  job_title actions %}">
-							{% csrf_token %}
-							<div>
-								<select name="selection">
-									<option selected="selected" value="exhibit">exhibit</option>
-									<option value="performance">performance</option>
-								</select>
-								<input type='date' name="from_date" value="2022-05-02"/> <input type='date'
-																								name="to_date"
-																								value="2022-05-05"/>
-							</div>
-							<button class="btn btn-primary" type="submit">search</button>
-						</form>
-					</div>
-				</div>
-				<br class="card-body">
-				<h5 class="card-title">Assgined Events</h5>
+				<h5>view all staffs</h5>
+
 				<table class="table table-dark table-hover table-bordered">
 					<thead>
 					<tr>
-						{% for name in event_range_h %}
+						{% for name in all_staff_h %}
 							<th scope="col">{{ name }}</th>
 						{% endfor %}
 					</tr>
 					</thead>
 					<tbody>
-					{% for content in event_range_r %}
+					{% for content in all_staff_r %}
 						<tr>
 							{% for each_row in content %}
 								{% if forloop.first %}
@@ -57,33 +39,101 @@
 					{% endfor %}
 					</tbody>
 				</table>
-				<h5>Delete a Event</h5>
-				<form action="{% url 'jobs_delete' job_title actions %}" method="post">
-					{% csrf_token %}
-					<div class="input-field">
-						<input type="text" placeholder="Enter a ID from above" name="event_delete">
-						<button type="submit" class="btn btn-danger md-3">Delete!</button>
-					</div>
-				</form>
-				<br>
-				<div>
-					<form action="{% url 'jobs_create' job_title actions %}" method="post">
+				<h5>view all events</h5>
+				<table class="table table-dark table-hover table-bordered">
+					<thead>
+					<tr>
+						{% for name in all_eve_h %}
+							<th scope="col">{{ name }}</th>
+						{% endfor %}
+					</tr>
+					</thead>
+					<tbody>
+					{% for content in all_eve_r %}
+						<tr>
+							{% for each_row in content %}
+								{% if forloop.first %}
+									<th scope="row">{{ each_row }}</th>
+								{% else %}
+									<td>{{ each_row }}</td>
+								{% endif %}
+							{% endfor %}
+							</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			<div class="card">
+				<div class="card-header">
+					<h2>Event</h2>
+					<form method="POST" action="{% url 'main_report'  job_title actions %}">
 						{% csrf_token %}
-						<div class="input-field">
-							<input type="text" placeholder="Enter a 6 digit ID" name="event_id">
-							<input type="text" placeholder="Enter a title" name="event_title">
-							<select name="create_selection">
+						<div>
+							<select name="selection">
 								<option selected="selected" value="exhibit">exhibit</option>
 								<option value="performance">performance</option>
 							</select>
-							<input type="text" placeholder="Enter manager ID" name="event_overseer">
-							<button type="submit" class="btn btn-primary md-3">Create a new event</button>
+							<input type='date' name="from_date" value="2022-05-02"/> <input type='date'
+																							name="to_date"
+																							value="2022-05-05"/>
 						</div>
+						<button class="btn btn-primary" type="submit">search</button>
 					</form>
-
 				</div>
 			</div>
+			<br class="card-body">
+			<h5 class="card-title">Assgined Events</h5>
+			<table class="table table-dark table-hover table-bordered">
+				<thead>
+				<tr>
+					{% for name in event_range_h %}
+						<th scope="col">{{ name }}</th>
+					{% endfor %}
+				</tr>
+				</thead>
+				<tbody>
+				{% for content in event_range_r %}
+					<tr>
+						{% for each_row in content %}
+							{% if forloop.first %}
+								<th scope="row">{{ each_row }}</th>
+							{% else %}
+								<td>{{ each_row }}</td>
+							{% endif %}
+						{% endfor %}
+						</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			<h5>Delete a Event</h5>
+			<form action="{% url 'jobs_delete' job_title actions %}" method="post">
+				{% csrf_token %}
+				<div class="input-field">
+					<input type="text" placeholder="Enter a ID from above" name="event_delete">
+					<button type="submit" class="btn btn-danger md-3">Delete!</button>
+				</div>
+			</form>
+			<br>
+			<div>
+				<form action="{% url 'jobs_create' job_title actions %}" method="post">
+					{% csrf_token %}
+					<div class="input-field">
+						<input type="text" placeholder="Enter a 6 digit ID" name="event_id">
+						<input type="text" placeholder="Enter a title" name="event_title">
+						<select name="create_selection">
+							<option selected="selected" value="exhibit">exhibit</option>
+							<option value="performance">performance</option>
+						</select>
+						<input type="text" placeholder="Enter manager ID" name="event_overseer">
+						<button type="submit" class="btn btn-primary md-3">Create a new event</button>
+					</div>
+				</form>
+
+			</div>
 		</div>
+	</div>
 	</div>
 
 
@@ -146,7 +196,7 @@
 							{% endfor %}
 							</tbody>
 						</table>
-											<h5 class="card-title">Aquarist Working on Facility</h5>
+						<h5 class="card-title">Aquarist Working on Facility</h5>
 
 						<table class="table table-dark table-hover table-bordered">
 							<thead>
@@ -170,7 +220,7 @@
 							{% endfor %}
 							</tbody>
 						</table>
-											<h5 class="card-title">Aquarist Working On Event</h5>
+						<h5 class="card-title">Aquarist Working On Event</h5>
 
 						<table class="table table-dark table-hover table-bordered">
 							<thead>

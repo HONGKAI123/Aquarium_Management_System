@@ -292,7 +292,7 @@ class director():
                     # sql query that delete staff from db
                     sql_query = "delete from {staff} where st_ID ='{st_ID}';".format(staff = i, st_ID = st_ID)
                     cur.execute(sql_query)
-                    print('fire',sql_query)
+                    print('fire', sql_query)
                     # submit change to database
                     q.conn.commit()
 
@@ -335,6 +335,51 @@ class director():
             res = cur.rowcount
 
         return True if res > 0 else False
+
+    def check_all_staff(self):
+        """
+        check all staff
+        """
+        # db connection API
+        q = query()
+
+        # build SQL query
+        sql_query = "\
+        SELECT st_ID, name FROM aquarist \
+        UNION \
+        SELECT st_ID, name FROM curator \
+        UNION \
+        SELECT st_ID, name FROM event_manager \
+        UNION \
+        SELECT st_ID, name FROM general_manager;"
+
+        # connect to API
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+
+            res = cur.fetchall()
+
+        # add column names to result and return
+        return ['Staff ID', 'Name'], res
+
+    def check_all_events(self):
+        """
+        check all events
+        """
+        # db connection API
+        q = query()
+
+        # build SQL query
+        sql_query = "SELECT ev_ID, title FROM event;"
+
+        # connect to API
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+
+            res = cur.fetchall()
+
+        # add column names to result and return
+        return ['Event ID', 'Title'], res
 
 
 class curator():
@@ -404,7 +449,8 @@ class curator():
     # arg = [an_ID, name, species,st_id, habitat]
     def add_new_animal(self, *args):
         # try:
-        sql_query = "INSERT INTO animal VALUES ('{0}','{1}','{2}',0,'{3}','{4}');".format(args[0], args[1], args[2], args[3],args[4])
+        sql_query = "INSERT INTO animal VALUES ('{0}','{1}','{2}',0,'{3}','{4}');".format(args[0], args[1], args[2],
+                                                                                          args[3], args[4])
         q = query()
         with q.cursor() as cur:
             cur.execute(sql_query)
@@ -431,3 +477,155 @@ class curator():
             res = cur.rowcount
 
         return True if res > 0 else False
+
+
+class event_manager():
+    def view_my_events(self, *args):
+        """
+        input: manager ID,
+        return all of the event manager's events.
+        """
+        sql_query = "SELECT * FROM event WHERE overseer = " + "'" + args[0] + "'"
+        q = query()
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+            result = cur.fetchall()
+        # print(result)
+        return ['Event ID', 'title', 'type', 'facility', 'overseer'], result
+
+    def check_aquarist_availability(self):
+        """
+        list all workers with counts of events that the person is working on
+        """
+        # list all people, count events..
+        sql_query = "SELECT staff, COUNT(*) event_count " \
+                    "FROM work_on " \
+                    "GROUP BY staff " \
+                    "ORDER BY COUNT(*) DESC"
+        q = query()
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+            result = cur.fetchall()
+        # print(result)
+        return ['Staff (Aquarist ID)', 'Working on Event Counts'], result
+
+    def assign_aquarist_to_event(self, *args):
+        """
+        assign aquarist(id) to event(id)
+        """
+
+        aquarist_ID = args[0]
+        event_ID = args[1]
+        sql_query = "INSERT INTO work_on VALUES (" + "'" + event_ID + "','" + aquarist_ID + "')"
+        try:
+            q = query()
+            with q.cursor() as cur:
+                cur.execute(sql_query)
+                result = cur.fetchall()
+                q.conn.commit()
+                count = cur.rowcount
+            print('aquarist assigned successfully')
+        except:
+            print('failed to assign aquarist')
+
+        return True if count > 0 else False
+
+    def check_facility_availability(self):
+        """
+        list all facilities that is not hosting an event
+        """
+        sql_query = "SELECT * from facility WHERE fa_ID NOT IN (SELECT facility from event)"
+        q = query()
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+            result = cur.fetchall()
+
+        return ['Facility ID', 'Facility Name'], result
+
+    def assign_facility_to_event(self, *args):
+        """
+        assign facility(id) to event(id)
+        """
+        event_ID = args[0]
+        facility_ID = args[1]
+        sql_query = "UPDATE event SET facility = " + "'" + facility_ID + "' " + \
+                    "WHERE ev_ID =" + "'" + event_ID + "'"
+        try:
+            q = query()
+            with q.cursor() as cur:
+                cur.execute(sql_query)
+                result = cur.fetchall()
+                q.conn.commit()
+                count = cur.rowcount
+            print('facility assigned successfully')
+        except:
+            print('failed to assign facility')
+
+        return True if count > 0 else False
+
+    def log_event_attendance(self, *args):
+        """
+        Input: recorded_attendance, event_ID
+        Update an event's attendance number to an Event_instance.
+        """
+        event_ID = args[0]
+        recorded_attendance = args[1]
+        sql_query = "UPDATE event_instance SET attendance = " + str(recorded_attendance) + \
+                    " WHERE event = " + "'" + event_ID + "'"
+        try:
+            q = query()
+            with q.cursor() as cur:
+                cur.execute(sql_query)
+                q.conn.commit()
+                count = cur.rowcount
+        except:
+            print('failed to update event log')
+        return True if count > 0 else False
+
+    def view_event_table(self, *args):
+        """
+        args = [st_ID]
+        returns rows of events that the current user oversees,
+        how many aquarists work on each event,
+        and which facility hosts each event
+        """
+        # db connection API
+
+        # build sql query
+        sql_query = "\
+            SELECT ev_ID, COUNT(staff), facility \
+            FROM event \
+            LEFT JOIN work_on ON event.ev_ID = work_on.event \
+            WHERE overseer = {0} \
+            GROUP BY ev_ID;".format(args[0])
+
+        q = query()
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+            res = cur.fetchall()
+
+        return ['Event ID', 'Worker Count', 'Facility'], res
+
+    def view_event_instances(self, *args):
+        """
+        args = [st_ID]
+        returns rows of event instances that the current user oversees,
+        the date of each event instance, and the attendance
+        """
+        # db connection API
+        # q = query()
+
+        # build sql query
+        sql_query = "\
+            SELECT ev_ID, date, attendance \
+            FROM event_instance \
+            LEFT JOIN event ON event.ev_ID = event_instance.event \
+            WHERE overseer = {0} \
+            ORDER BY date DESC;".format(args[0])
+        print(sql_query)
+        q = query()
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+            res = cur.fetchall()
+
+        return ['Event ID', 'Date', 'Attendance'], res

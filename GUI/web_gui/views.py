@@ -9,6 +9,7 @@ from .sql_query import login_verify
 from .sql_query.all_query import director
 from .sql_query.all_query import aquarist
 from .sql_query.all_query import curator
+from .sql_query.all_query import event_manager
 
 
 # from .sql_query.all_query import query
@@ -75,28 +76,15 @@ def report_view(request, job_title):
     :param request:
     :return:
     """
-    if job_title == "AQUARIST":
-        # test login
+    if job_title == "AQUARIST" or job_title == "CURATOR" or job_title == "MANAGER" or job_title == "DIRECTOR":
+        # test AQUARIST
         # username = 987153744
-        # password = 987153744
-        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
-        return redirect(url)
-    elif job_title == "CURATOR":
-        # test login
+        # test CURATOR
         # username = 736289249
-        # password = 736289249
-        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
-        return redirect(url)
-    elif job_title == "MANAGER":
-        # test login
+        # test MANAGER
         # username = 218363685
-        # password = 218363685
-        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
-        return redirect(url)
-    elif job_title == "DIRECTOR":
-        # test login
+        # test DIRECTOR
         # username = 517465989
-        # password = 517465989
         url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
         return redirect(url)
 
@@ -107,6 +95,8 @@ def main_view(request, actions, job_title):
     if actions == 'view' and job_title == 'DIRECTOR':
         dire = director()
         value = dire.view_staff_report()
+        all_stf = dire.check_all_staff()
+        all_eve = dire.check_all_events()
         cont = {
             'actions': actions,
             'job_title': job_title,
@@ -118,6 +108,10 @@ def main_view(request, actions, job_title):
             'aquarist_r': value[5],
             'event_h': value[6],
             'event_r': value[7],
+            'all_staff_h':all_stf[0],
+            'all_staff_r':all_stf[1],
+            'all_eve_h':all_eve[0],
+            'all_eve_r':all_eve[1]
         }
         from_date = request.POST.get('from_date')
         to_date = request.POST.get('to_date')
@@ -164,29 +158,61 @@ def main_view(request, actions, job_title):
         return render(request, "Curator/curator.html", cont)
 
     elif actions == 'view' and job_title == 'MANAGER':
-        return render(request, "Event_manager/event_manager.html")
+        mana = event_manager()
+        mana_id = request.session['id']
+        print("mana", mana_id)
+        repo = mana.view_my_events(mana_id)
+        ava_aqu = mana.check_aquarist_availability()
+        ava_fac = mana.check_facility_availability()
+        eve_att = mana.view_event_instances(mana_id)
+        cont = {
+            'actions': actions,
+            'job_title': job_title,
+            'repo_h': repo[0],
+            'repo_r': repo[1],
+            'ava_aqu_h': ava_aqu[0],
+            'ava_aqu_r': ava_aqu[1],
+            'ava_fac_h': ava_fac[0],
+            'ava_fac_r': ava_fac[1],
+            'eve_att_h': eve_att[0],
+            'eve_att_r': eve_att[1],
+        }
+        print(ava_fac)
+        return render(request, "Event_manager/event_manager.html", cont)
 
 
 def editing(request, job_title, actions):
     if actions == 'view' and job_title == 'DIRECTOR':
         dire = director()
         dire.refreshAll()
-        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
-        return redirect(url)
     elif actions == 'view' and job_title == 'AQUARIST':
         aq = aquarist()
         arg_list = [request.POST.get('maintain_id'), request.POST.get('maintain_time')]
         aq.maintain_facility(*arg_list)
-        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
-        return redirect(url)
-
     elif actions == 'view' and job_title == 'CURATOR':
         cur = curator()
         arg = request.POST.get('animal_id')
         if arg:
             cur.update_an_Status(arg)
-        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
-        return redirect(url)
+
+
+def event_manager_edit(request, job_title, actions, subaction):
+    ev_man = event_manager()
+    if subaction == 'aquarists_sign':
+        aqu_id = request.POST.get('aqu_id');
+        eve_id = request.POST.get('eve_id');
+        ev_man.assign_aquarist_to_event(aqu_id, eve_id)
+    elif subaction == 'facility_assign':
+        fac_id = request.POST.get('fac_id');
+        eve_id = request.POST.get('eve_id');
+        ev_man.assign_facility_to_event(fac_id, eve_id)
+    elif subaction == 'att_assign':
+        eve_id = request.POST.get('eve_id');
+        att_num = request.POST.get('att_num');
+        ev_man.log_event_attendance(eve_id,att_num)
+
+    url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
+    return redirect(url)
 
 
 def fire(request, job_title, actions):
@@ -204,7 +230,7 @@ def deleting(request, job_title, actions):
         id = request.POST.get('event_delete')
         if len(id) == 6:
             dire = director()
-            res = dire.cancel_event(101001)
+            res = dire.cancel_event(id)
             if res:
                 print("ok")
         url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
