@@ -11,6 +11,8 @@ urlpatterns = [
     re_path(r'^(?P<job_title>\w+)/(?P<actions>\w+)/edit/$', views.editing, name = 'jobs_edit'),
     re_path(r'^(?P<job_title>\w+)/(?P<actions>\w+)/delete/$', views.deleting, name = 'jobs_delete'),
     re_path(r'^(?P<job_title>\w+)/(?P<actions>\w+)/create/$', views.creating, name = 'jobs_create'),
+    re_path(r'^(?P<job_title>\w+)/(?P<actions>\w+)/(?P<id_num>\d+)/$', views.testing, name = 'jobs_test'),
+
 
 
 

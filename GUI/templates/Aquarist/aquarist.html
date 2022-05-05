@@ -40,15 +40,17 @@
 								</tr>
 							{% endfor %}
 							</tbody>
-							<form action="{% url 'jobs_edit' job_title view %}" method="post">
-								{% csrf_token %}
-								<input type="text" placeholder="Enter a 6 digit ID from above to maintain" name="maintain_id">
-								<td class="float-right">
-									<button type="button" class="btn btn-primary">Maintain</button>
-								</td>
-							</form>
-						</table>
 
+						</table>
+						<form action="{% url 'jobs_edit' job_title actions %}" method="post">
+							{% csrf_token %}
+							<input type="text" placeholder="Enter a 6 digit ID from above to maintain"
+								   name="maintain_id">
+							<input type="time" name="maintain_time" value="12:00:00">
+							<td class="float-right">
+								<button type="submit" class="btn btn-primary">Maintain</button>
+							</td>
+						</form>
 					</div>
 				</div>
 			</div>

@@ -390,22 +390,29 @@ class aquarist():
     # arg = [user_id, fa_id, maint_time]
     def maintain_facility(self, *arg):
         # Check if the fa_id and maint_time combo exists for current user
+        print(*arg)
         input_match = False
         for i in self.check_maint_times(arg[0]):
+            print(self.check_maint_times(arg[0]))
+            print(str(i[1]),"str 1")
+            print(str(i[2]),"str 2")
             if str(i[1]) == str(arg[1]) and str(i[2]) == str(arg[2]):
                 input_match = True
 
-        if input_match == True:
+        if input_match:
             sql_query = "\
             UPDATE facility_maint \
             SET maint_status = true \
             WHERE facility = '" + arg[1] + "' \
             AND maint_time = '" + arg[2] + "';"
+        else:
+            return False
 
         q = query()
         with q.cursor() as cur:
             cur.execute(sql_query)
             # 提交修改后的语句到数据库
+            print("sql",sql_query)
             q.conn.commit()
 
             # 获取被修改的行数

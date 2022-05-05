@@ -72,28 +72,21 @@ def report_view(request, job_title):
     :return:
     """
     if job_title == "AQUARIST":
-        # test login dire
+        # test login
         # username = 987153744
         # password = 987153744
         url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
         return redirect(url)
-
     elif job_title == "CURATOR":
-        cura = curator()
-        result1 = cura.check_an_Status()
-        # result2 = cura.check_spare_facility(request.session.get('species'))
-        # print("curator,check_spare_facility",result2)
-        cont = {
-            'cura_h': result1[0],
-            'cura_r': result1[1],
-            # 'ava_h': result2[0],
-            # 'ava_r': result2[1],
-        }
-        return render(request, "Curator/curator.html", cont)
+        # test login
+        # username = 736289249
+        # password = 736289249
+        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
+        return redirect(url)
     elif job_title == "MANAGER":
         return render(request, "Event_manager/")
     elif job_title == "DIRECTOR":
-        # test login dire
+        # test login
         # username = 517465989
         # password = 517465989
         url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
@@ -132,18 +125,37 @@ def main_view(request, actions, job_title):
         aq = aquarist()
         id = request.session['id']
         result = aq.check_maint_times(id)
-
-        print(result)
+        # print(result)
         cont = {
             'actions': actions,
             'job_title': job_title,
             'aqu_h': result[0],
             'aqu_r': result[1]
         }
-        if request.method=="POST":
-            main_id = request.POST.get('maintain_id')
-            aq.maintain_facility(main_id)
         return render(request, "Aquarist/aquarist.html", cont)
+
+    elif actions == 'view' and job_title == 'CURATOR':
+        cura = curator()
+        result1 = cura.check_an_Status()
+        # result2 = cura.check_spare_facility(request.session.get('species'))
+        # print("curator,check_spare_facility",result2)
+        id_list = []
+        for i in result1[1]:
+            id_list.append(i[1])
+        # print(test_list)
+        cura_line = zip(result1,id_list)
+        cont = {
+            'actions': actions,
+            'job_title': job_title,
+            'cura_h': result1[0],
+            'cura_r': result1[1],
+            # 'button_id':id_list
+            # 'ava_h': result2[0],
+            # 'ava_r': result2[1],
+        }
+
+
+        return render(request, "Curator/curator.html", cont)
 
 
 def editing(request, job_title, actions):
@@ -151,6 +163,13 @@ def editing(request, job_title, actions):
     if actions == 'view' and job_title == 'DIRECTOR':
         dire = director()
         dire.refreshAll()
+        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
+        return redirect(url)
+    elif actions == 'view' and job_title == 'AQUARIST':
+        # todo 有问题
+        aq = aquarist()
+        arg_list = [request.session['id'], request.POST.get('maintain_id'), request.POST.get('maintain_time')]
+        aq.maintain_facility(*arg_list)
         url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
         return redirect(url)
 
@@ -166,6 +185,11 @@ def deleting(request, job_title, actions):
         url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
         return redirect(url)
     pass
+
+
+def testing(request, job_title, actions, id_num):
+    url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
+    return redirect(url)
 
 
 def creating(request, job_title, actions):
