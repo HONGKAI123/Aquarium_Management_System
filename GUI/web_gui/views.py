@@ -35,7 +35,11 @@ def register(request):
         reg_info.append(request.POST.get("pwd"))
         dire = director()
         res = dire.hire_staff(*reg_info)
-        print(reg_info, "\t", res)
+        if res:
+            url = reverse('main_report', kwargs = {'job_title': 'DIRECTOR', "actions": "view"})
+            return redirect(url)
+        else:
+            return redirect('login_page')
 
     return render(request, 'Register/register.html')
 
@@ -84,7 +88,11 @@ def report_view(request, job_title):
         url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
         return redirect(url)
     elif job_title == "MANAGER":
-        return render(request, "Event_manager/")
+        # test login
+        # username = 218363685
+        # password = 218363685
+        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
+        return redirect(url)
     elif job_title == "DIRECTOR":
         # test login
         # username = 517465989
@@ -137,8 +145,7 @@ def main_view(request, actions, job_title):
     elif actions == 'view' and job_title == 'CURATOR':
         cura = curator()
         result1 = cura.check_an_Status()
-        # result2 = cura.check_spare_facility(request.session.get('species'))
-        # print("curator,check_spare_facility",result2)
+        result2 = cura.view_all_facilities()
         id_list = []
         for i in result1[1]:
             id_list.append(i[1])
@@ -150,15 +157,17 @@ def main_view(request, actions, job_title):
             'cura_h': result1[0],
             'cura_r': result1[1],
             # 'button_id':id_list
-            # 'ava_h': result2[0],
-            # 'ava_r': result2[1],
+            'ava_h': result2[0],
+            'ava_r': result2[1],
         }
 
         return render(request, "Curator/curator.html", cont)
 
+    elif actions == 'view' and job_title == 'MANAGER':
+        return render(request, "Event_manager/event_manager.html")
+
 
 def editing(request, job_title, actions):
-    print("edit")
     if actions == 'view' and job_title == 'DIRECTOR':
         dire = director()
         dire.refreshAll()
@@ -171,11 +180,21 @@ def editing(request, job_title, actions):
         url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
         return redirect(url)
 
+    elif actions == 'view' and job_title == 'CURATOR':
+        cur = curator()
+        arg = request.POST.get('animal_id')
+        if arg:
+            cur.update_an_Status(arg)
+        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
+        return redirect(url)
+
 
 def fire(request, job_title, actions):
     id = request.POST.get('fire_delete')
     dire = director()
-    dire.fire_staff(id)
+    res = dire.fire_staff(id)
+    if res:
+        print("ok")
     url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
     return redirect(url)
 
@@ -190,7 +209,15 @@ def deleting(request, job_title, actions):
                 print("ok")
         url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
         return redirect(url)
-    pass
+    elif actions == 'view' and job_title == 'CURATOR':
+        cur = curator()
+        arg = request.POST.get('animal_id')
+        if arg:
+            res = cur.remove_animal(request.session['id'], arg)
+            if res:
+                print('ok')
+        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
+        return redirect(url)
 
 
 def testing(request, job_title, actions, id_num):
@@ -212,7 +239,17 @@ def creating(request, job_title, actions):
                 print("ok")
         url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
         return redirect(url)
-    pass
+    elif actions == 'view' and job_title == 'CURATOR':
+        cur = curator()
+        arg_list = []
+        arg_list.append(request.POST.get('animal_id'))
+        arg_list.append(request.POST.get('animal_name'))
+        arg_list.append(request.POST.get('selection'))
+        arg_list.append(request.session['id'])
+        arg_list.append(request.POST.get('facility_id'))
+        cur.add_new_animal(*arg_list)
+        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
+        return redirect(url)
 
 
 def check_title(request) -> int:

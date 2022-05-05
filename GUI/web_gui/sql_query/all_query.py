@@ -21,6 +21,7 @@ class query():
         self.cursor().close()
         self.conn.disconnect()
 
+
 class aquarist():
     def __init__(self):
         self.q = query()
@@ -50,7 +51,7 @@ class aquarist():
         finally:
             return ['Facility', 'ID', 'Maintenance Time'], result
 
-    def maintain_facility(self,*args):
+    def maintain_facility(self, *args):
         """
         arg = [fa_id, maint_time]
         returns success or error message
@@ -67,7 +68,7 @@ class aquarist():
             SET maint_status = true \
             WHERE facility = '{0}' \
             AND maint_time = '{1}';".format(args[0], args[1])
-        print('sql',sql_query)
+        print('sql', sql_query)
         # connect to API
         with q.cursor() as cur:
             cur.execute(sql_query)
@@ -284,13 +285,14 @@ class director():
         q = query()
 
         with q.cursor() as cur:
+            print("in fire")
             # since aquarist is not in either tables, both remain true
             if (self.animalAssignCheck(st_ID) == True and self.eventAssignCheck(st_ID) == True):
                 for i in staff:  # locate the staff's role and fire
                     # sql query that delete staff from db
                     sql_query = "delete from {staff} where st_ID ='{st_ID}';".format(staff = i, st_ID = st_ID)
                     cur.execute(sql_query)
-
+                    print('fire',sql_query)
                     # submit change to database
                     q.conn.commit()
 
@@ -333,8 +335,6 @@ class director():
             res = cur.rowcount
 
         return True if res > 0 else False
-
-
 
 
 class curator():
@@ -386,31 +386,25 @@ class curator():
         return True if res > 0 else False
 
     # Chekc facility availability for adding new animals
-    # arg = [species]
-    def check_spare_facility(self, *arg):
-        ls = ['Facility ID', 'Facility Name']
-        print("sql_check_spare_facility", arg[0])
-        sql_query = "SELECT fa_ID, f.name \
-        FROM facility f \
-        left join animal on f.fa_id = animal.habitat \
-        where species = '" + arg[0] + "' or (f.fa_ID not in (select habitat from animal group by habitat) and f.fa_ID not in (select e.facility from event e group by e.facility)) \
-        group by fa_ID;"
+    def view_all_facilities(self):
+        sql_query = "\
+            SELECT DISTINCT fa_ID, facility.name, species \
+            FROM facility \
+            LEFT JOIN animal ON facility.fa_ID = animal.habitat \
+            WHERE fa_ID NOT IN (SELECT facility FROM event) \
+            AND facility.name != 'public restroom';"
 
         q = query()
         with q.cursor() as cur:
             cur.execute(sql_query)
             results = cur.fetchall()
-        # for result in results:
-        #     print(result)
-
-        return ls, results
+        return ['Facility ID', 'Facility Name', 'Species'], results
 
     # Add new animals
     # arg = [an_ID, name, species,st_id, habitat]
-    def add_new_animal(self, *arg):
+    def add_new_animal(self, *args):
         # try:
-        sql_query = "INSERT INTO animal VALUES ('{}','{}','{}',0,'{}','{}');".format(arg[0], arg[1], arg[2],
-                                                                                     arg[3, arg[4]])
+        sql_query = "INSERT INTO animal VALUES ('{0}','{1}','{2}',0,'{3}','{4}');".format(args[0], args[1], args[2], args[3],args[4])
         q = query()
         with q.cursor() as cur:
             cur.execute(sql_query)
@@ -426,14 +420,14 @@ class curator():
 
         # Make sure the animal being removed belongs to current curator
         if self.check_ownership(arg[0], arg[1]) == True:
-            sql_query = "\
-            DELETE FROM animal \
-            WHERE an_ID = '" + arg[1] + "';"
+            sql_query = "DELETE FROM animal WHERE an_ID = '" + arg[1] + "';"
 
+        print('sql', sql_query)
         q = query()
         with q.cursor() as cur:
             cur.execute(sql_query)
             # 获得返回结果
+            q.conn.commit()
             res = cur.rowcount
 
         return True if res > 0 else False

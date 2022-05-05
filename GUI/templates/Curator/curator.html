@@ -27,26 +27,77 @@
 								{% endfor %}
 							</tr>
 							</thead>
-						<tbody>
+							<tbody>
 							{% for content in cura_r %}
 								<tr>
 									{% for each_row in content %}
 										{% if forloop.first %}
 											<th scope="row">{{ each_row }}</th>
 										{% else %}
-											<td>{{ each_row }}</td>
+											{% if each_row == 0 %}
+												<td>NEED FEED!</td>
+											{% elif each_row == 1 %}
+												<td>FEEDED</td>
+											{% else %}
+												<td>{{ each_row }}</td>
+											{% endif %}
 										{% endif %}
 									{% endfor %}
-									<td class="float-right">
-										<button type="button" class="btn btn-primary">Delete</button>
-										<h1>{% url 'jobs_test' job_title actions 1 %}</h1>
-									</td>
+									{#									<td class="float-right">#}
+									{#										<button type="button" class="btn btn-primary">Delete</button>#}
+									{#										<h1>{% url 'jobs_test' job_title actions 1 %}</h1>#}
+									{#									</td>#}
 								</tr>
 							{% endfor %}
 							</tbody>
 						</table>
-						<button type="button" class="btn btn-primary ">Create new Animals</button>
+						<form action="{% url 'jobs_edit' job_title actions %}" method="post">
+							{% csrf_token %}
+							<h5>Enter a 6 digit ID from above to feed animal</h5>
+							<input type="text" placeholder="6 digit ID"
+								   name="animal_id">
+							<td class="float-right">
+								<button type="submit" class="btn btn-success">FEED</button>
+							</td>
+						</form>
+
+						<form action="{% url 'jobs_delete' job_title actions %}" method="post">
+							{% csrf_token %}
+							<h5>Enter a 6 digit ID from above to Delete animal</h5>
+							<input type="text" placeholder="6 digit ID"
+								   name="animal_id">
+							<td class="float-right">
+								<button type="submit" class="btn btn-danger">Delete</button>
+							</td>
+						</form>
+
 					</div>
+
+				</div>
+
+			</div>
+			<div class="card">
+				<div class="card-body">
+					<form action="{% url 'jobs_create' job_title actions %}" method="post">
+						{% csrf_token %}
+						<h5>Enter a 6 digit ID for new animal</h5>
+						<input type="text" placeholder="6 digit ID"
+							   name="animal_id">
+						<h5>Enter animal name for new animal</h5>
+						<input type="text" placeholder="name"
+							   name="animal_name">
+						<h5>select the species for animal </h5>
+						<select name="selection">
+							<option selected="selected" value="emperor penguin">emperor penguin</option>
+							<option value="blue whale">blue whale</option>
+							<option value="spotted seal">spotted seal</option>
+							<option value="bottlenose dolphin">bottlenose dolphin</option>
+						</select>
+						<h5>Enter facility ID for animal </h5>
+						<input type="text" placeholder="6 digit ID"
+							   name="facility_id"/>
+						<button type="submit" class="btn btn-primary ">Create new Animals</button>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -56,37 +107,27 @@
 					<div class="card">
 						<div class="card-header">
 							<h2>Facility Avaible for New Animal</h2>
-							<select name="selection">
-							<option selected="selected" value="curator">curator</option>
-							<option value="event_manager">event_manager</option>
-							<option value="aquarist">aquarist</option>
-				</select>
 						</div>
 						<div class="card-body">
 							<table class="table table-dark table-hover table-bordered">
 								<thead>
 								<tr>
-									<th scope="col">Facility ID</th>
-									<th scope="col">Facility Name</th>
-									<th scope="col">Species</th>
+									{% for name in ava_h %}
+										<th scope="col">{{ name }}</th>
+									{% endfor %}
 								</tr>
 								</thead>
 								<tbody>
-								<tr>
-									<th scope="row">1</th>
-									<td>123</td>
-									<td>123</td>
-								</tr>
-								<tr>
-									<th scope="row">2</th>
-									<td>123</td>
-									<td>123</td>
-								</tr>
-								<tr>
-									<th scope="row">3</th>
-									<td>123</td>
-									<td>123</td>
-								</tr>
+								{% for content in ava_r %}
+									<tr>
+									{% for each_row in content %}
+										{% if forloop.first %}
+											<th scope="row">{{ each_row }}</th>
+										{% else %}
+											<td>{{ each_row }}</td>
+										{% endif %}
+									{% endfor %}
+								{% endfor %}
 								</tbody>
 							</table>
 						</div>
