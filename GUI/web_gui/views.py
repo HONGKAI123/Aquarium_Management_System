@@ -145,7 +145,7 @@ def main_view(request, actions, job_title):
         all_eve = dire.check_all_events()
         cont = {
             'actions': actions,
-            'job_title': actions,
+            'job_title': job_title,
             'animal_h': value[0],
             'animal_r': value[1],
             'manager_h': value[2],
@@ -159,14 +159,16 @@ def main_view(request, actions, job_title):
             'all_eve_h': all_eve[0],
             'all_eve_r': all_eve[1]
         }
-        from_date = request.POST.get('from_date')
-        to_date = request.POST.get('to_date')
-        selected = request.POST.get('selection')
-        event_ranges = [selected, from_date, to_date]
-        if from_date and to_date and selected:
-            res = dire.view_event(*event_ranges)
-            cont['event_range_h'] = res[0]
-            cont['event_range_r'] = res[1]
+        if request.method == "POST":
+            from_date = request.POST.get('from_date')
+            to_date = request.POST.get('to_date')
+            selected = request.POST.get('selection')
+            event_ranges = [selected, from_date, to_date]
+            if from_date and to_date and selected:
+                res = dire.view_event(*event_ranges)
+                cont['event_range_h'] = res[0]
+                cont['event_range_r'] = res[1]
+
         return render(request, "Director/director.html", cont)
 
     elif actions == 'view' and job_title == 'AQUARIST':
@@ -219,6 +221,8 @@ def main_view(request, actions, job_title):
             'eve_att_r': eve_att[1],
         }
         return render(request, "Event_manager/event_manager.html", cont)
+    # url = reverse('main_report', kwargs = {'job_title': job_title, "actions": actions })
+    # return redirect(url)
 
 
 def editing(request, job_title, actions):
@@ -275,16 +279,16 @@ def event_manager_edit(request, job_title, actions, subaction):
     """
     ev_man = event_manager()
     if subaction == 'aquarists_sign':
-        aqu_id = request.POST.get('aqu_id');
-        eve_id = request.POST.get('eve_id');
+        aqu_id = request.POST.get('aqu_id')
+        eve_id = request.POST.get('eve_id')
         ev_man.assign_aquarist_to_event(aqu_id, eve_id)
     elif subaction == 'facility_assign':
-        fac_id = request.POST.get('fac_id');
-        eve_id = request.POST.get('eve_id');
+        fac_id = request.POST.get('fac_id')
+        eve_id = request.POST.get('eve_id')
         ev_man.assign_facility_to_event(fac_id, eve_id)
     elif subaction == 'att_assign':
-        eve_id = request.POST.get('eve_id');
-        att_num = request.POST.get('att_num');
+        eve_id = request.POST.get('eve_id')
+        att_num = request.POST.get('att_num')
         ev_man.log_event_attendance(eve_id, att_num)
 
     url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})

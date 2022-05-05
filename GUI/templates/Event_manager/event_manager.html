@@ -82,7 +82,7 @@
 						<form action="{% url 'manage_edit' job_title actions 'aquarists_sign' %}" method="post">
 							{% csrf_token %}
 							<div class="input-field">
-								<input type="text" placeholder="Enter a ID from above" name="fac_id">
+								<input type="text" placeholder="Enter a ID from above" name="aqu_id">
 								<input type="text" placeholder="Enter a ID from above" name="eve_id">
 								<button type="submit" class="btn btn-primary md-3">Assgin!</button>
 							</div>
@@ -125,7 +125,7 @@
 						<form action="{% url 'manage_edit' job_title actions 'facility_assign' %}" method="post">
 							{% csrf_token %}
 							<div class="input-field">
-								<input type="text" placeholder="Enter a facility ID from above" name="aqu_id">
+								<input type="text" placeholder="Enter a facility ID from above" name="fac_id">
 								<input type="text" placeholder="Enter a event ID from above" name="eve_id">
 								<button type="submit" class="btn btn-primary md-3">Assgin!</button>
 							</div>
