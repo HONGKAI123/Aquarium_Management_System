@@ -68,7 +68,6 @@ class aquarist():
             SET maint_status = true \
             WHERE facility = '{0}' \
             AND maint_time = '{1}';".format(args[0], args[1])
-        print('sql', sql_query)
         # connect to API
         with q.cursor() as cur:
             cur.execute(sql_query)
@@ -118,7 +117,6 @@ class director():
         # sql query that create new event to db
         sql_query = "insert into event values ('{ev_ID}', '{title}', '{type}', null, '{overseer}');" \
             .format(ev_ID = arg[0], title = arg[1], type = arg[2], overseer = arg[3])
-        print(sql_query, "sql")
         with q.cursor() as cur:
             cur.execute(sql_query)
 
@@ -285,14 +283,12 @@ class director():
         q = query()
 
         with q.cursor() as cur:
-            print("in fire")
             # since aquarist is not in either tables, both remain true
             if (self.animalAssignCheck(st_ID) == True and self.eventAssignCheck(st_ID) == True):
                 for i in staff:  # locate the staff's role and fire
                     # sql query that delete staff from db
                     sql_query = "delete from {staff} where st_ID ='{st_ID}';".format(staff = i, st_ID = st_ID)
                     cur.execute(sql_query)
-                    print('fire', sql_query)
                     # submit change to database
                     q.conn.commit()
 
@@ -468,7 +464,6 @@ class curator():
         if self.check_ownership(arg[0], arg[1]) == True:
             sql_query = "DELETE FROM animal WHERE an_ID = '" + arg[1] + "';"
 
-        print('sql', sql_query)
         q = query()
         with q.cursor() as cur:
             cur.execute(sql_query)
@@ -490,7 +485,6 @@ class event_manager():
         with q.cursor() as cur:
             cur.execute(sql_query)
             result = cur.fetchall()
-        # print(result)
         return ['Event ID', 'title', 'type', 'facility', 'overseer'], result
 
     def check_aquarist_availability(self):
@@ -506,7 +500,6 @@ class event_manager():
         with q.cursor() as cur:
             cur.execute(sql_query)
             result = cur.fetchall()
-        # print(result)
         return ['Staff (Aquarist ID)', 'Working on Event Counts'], result
 
     def assign_aquarist_to_event(self, *args):
@@ -612,9 +605,6 @@ class event_manager():
         returns rows of event instances that the current user oversees,
         the date of each event instance, and the attendance
         """
-        # db connection API
-        # q = query()
-
         # build sql query
         sql_query = "\
             SELECT ev_ID, date, attendance \
@@ -622,7 +612,6 @@ class event_manager():
             LEFT JOIN event ON event.ev_ID = event_instance.event \
             WHERE overseer = {0} \
             ORDER BY date DESC;".format(args[0])
-        print(sql_query)
         q = query()
         with q.cursor() as cur:
             cur.execute(sql_query)

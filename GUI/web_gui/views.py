@@ -2,9 +2,6 @@
 from django.shortcuts import render
 from django.shortcuts import reverse
 from django.shortcuts import redirect
-from django.shortcuts import HttpResponse
-from django.shortcuts import HttpResponseRedirect
-# from django.forms.widgets import DateInput
 from .sql_query import login_verify
 from .sql_query.all_query import director
 from .sql_query.all_query import aquarist
@@ -12,19 +9,36 @@ from .sql_query.all_query import curator
 from .sql_query.all_query import event_manager
 
 
-# from .sql_query.all_query import query
-
-
-# ok
 def welcome(request):
+    """
+    gallery page
+    :param request:
+    :return:
+    """
+
     return render(request, 'Home/home.html')
 
 
 def index(request):
+    """
+    Login page
+    :param request:
+    :return:
+    """
     return render(request, 'Login/signin.html')
 
 
 def register(request):
+    """
+    trgger sql query when front page submit something
+    get job type,user id, user name, phone number,email and password
+    return to director page if sql query succeed.
+    go to login page if query failed
+
+    show regular register page by default
+    :param request:
+    :return:
+    """
     if request.method == "POST":
         pass
         reg_info = []
@@ -49,8 +63,10 @@ def log_in(request):
     """
     get username and pwd from webpage,
     using query to see where it exsits.
-    if exsit,redirect to relative pages,
-    otherwise return error
+    if exsit,redirect to relative pages.
+    meanwhile store job title by finding data table,
+    and store ID into session
+    otherwise return default login page
     """
     if request.method == "POST":
         request.session['table'] = ''
@@ -66,13 +82,13 @@ def log_in(request):
         else:
             return render(request, 'Login/signin.html', {'msg': 'username or password wrong'})
 
-    elif request.method == "GET":
-        return render(request, 'Login/signin.html')
+    return render(request, 'Login/signin.html')
 
 
 def report_view(request, job_title):
     """
-    return different type of webpage based on the job title
+    filer to different type of webpage based on the job title
+    return signin if no job title passby
     :param request:
     :return:
     """
@@ -92,6 +108,36 @@ def report_view(request, job_title):
 
 
 def main_view(request, actions, job_title):
+    """
+    4 basic report pages by 4 kinds of title
+    pass actions,actions for html/url tag
+    DIRECTOR:
+    regular:
+    read assigned curator-animal, event manager-event, aquraist-facility, aquraist-event table;
+    read all staff from diffeernt tables; read all event
+    post:
+    pass 2 date and event type to find relative events
+
+    AQUARIST:
+    regular:
+    read current staff's maintain report by it's id
+
+    CURATOR:
+    regular:
+    read current staff's animal report by it's id
+    read exsit animas' empty facilities except restroom
+
+    MANAGER:
+    regular:
+    read current staff's event report by it's id
+    read all workers with counts of events that the person is working on
+    read all facilities that is not hosting an event
+    read all managing events and their data & Attendance
+    :param request:
+    :param actions:
+    :param job_title:
+    :return:
+    """
     if actions == 'view' and job_title == 'DIRECTOR':
         dire = director()
         value = dire.view_staff_report()
@@ -99,7 +145,7 @@ def main_view(request, actions, job_title):
         all_eve = dire.check_all_events()
         cont = {
             'actions': actions,
-            'job_title': job_title,
+            'job_title': actions,
             'animal_h': value[0],
             'animal_r': value[1],
             'manager_h': value[2],
@@ -108,10 +154,10 @@ def main_view(request, actions, job_title):
             'aquarist_r': value[5],
             'event_h': value[6],
             'event_r': value[7],
-            'all_staff_h':all_stf[0],
-            'all_staff_r':all_stf[1],
-            'all_eve_h':all_eve[0],
-            'all_eve_r':all_eve[1]
+            'all_staff_h': all_stf[0],
+            'all_staff_r': all_stf[1],
+            'all_eve_h': all_eve[0],
+            'all_eve_r': all_eve[1]
         }
         from_date = request.POST.get('from_date')
         to_date = request.POST.get('to_date')
@@ -127,7 +173,6 @@ def main_view(request, actions, job_title):
         aq = aquarist()
         id = request.session['id']
         result = aq.check_maint_times(id)
-        # print(result)
         cont = {
             'actions': actions,
             'job_title': job_title,
@@ -143,14 +188,11 @@ def main_view(request, actions, job_title):
         id_list = []
         for i in result1[1]:
             id_list.append(i[1])
-        # print(test_list)
-        cura_line = zip(result1, id_list)
         cont = {
             'actions': actions,
             'job_title': job_title,
             'cura_h': result1[0],
             'cura_r': result1[1],
-            # 'button_id':id_list
             'ava_h': result2[0],
             'ava_r': result2[1],
         }
@@ -160,7 +202,6 @@ def main_view(request, actions, job_title):
     elif actions == 'view' and job_title == 'MANAGER':
         mana = event_manager()
         mana_id = request.session['id']
-        print("mana", mana_id)
         repo = mana.view_my_events(mana_id)
         ava_aqu = mana.check_aquarist_availability()
         ava_fac = mana.check_facility_availability()
@@ -177,11 +218,28 @@ def main_view(request, actions, job_title):
             'eve_att_h': eve_att[0],
             'eve_att_r': eve_att[1],
         }
-        print(ava_fac)
         return render(request, "Event_manager/event_manager.html", cont)
 
 
 def editing(request, job_title, actions):
+    """
+    execute some regular action on pages from different jobs
+    then return to report page(refresh)
+    DIRECTOR:
+    reset facility to false, animal to 0.
+    Assgin all event_instance with event id and date # todo 所以后面显示不出来
+
+    AQUARIST:
+    set facility to true by facility id and time
+
+    CURATOR:
+    set animal to true by animal id
+
+    :param request:
+    :param job_title:
+    :param actions:
+    :return:
+    """
     if actions == 'view' and job_title == 'DIRECTOR':
         dire = director()
         dire.refreshAll()
@@ -195,8 +253,26 @@ def editing(request, job_title, actions):
         if arg:
             cur.update_an_Status(arg)
 
+    url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
+    return redirect(url)
+
 
 def event_manager_edit(request, job_title, actions, subaction):
+    """
+    special edit class for manager, it has lots of modification
+    return to report page when single action done
+    aquarists_sign:
+    assign aquarist to event by aquarist id and event id
+    facility assign:
+    assign facility to event by facility id and event id
+    attence assign
+    pass number of attend people to an event with event id
+    :param request:
+    :param job_title:
+    :param actions:
+    :param subaction:
+    :return:
+    """
     ev_man = event_manager()
     if subaction == 'aquarists_sign':
         aqu_id = request.POST.get('aqu_id');
@@ -209,7 +285,7 @@ def event_manager_edit(request, job_title, actions, subaction):
     elif subaction == 'att_assign':
         eve_id = request.POST.get('eve_id');
         att_num = request.POST.get('att_num');
-        ev_man.log_event_attendance(eve_id,att_num)
+        ev_man.log_event_attendance(eve_id, att_num)
 
     url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
     return redirect(url)
@@ -226,32 +302,49 @@ def fire(request, job_title, actions):
 
 
 def deleting(request, job_title, actions):
+    """
+    delete data from tables
+    DIRECTOR:
+    delete event from event table by event id
+    CURATOR:
+    delete relative animal with its id and animal id
+    :param request:
+    :param job_title:
+    :param actions:
+    :return:
+    """
     if actions == 'view' and job_title == 'DIRECTOR':
         id = request.POST.get('event_delete')
         if len(id) == 6:
             dire = director()
             res = dire.cancel_event(id)
-            if res:
-                print("ok")
-        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
-        return redirect(url)
+            # if res:
+            #     print("ok")
+
     elif actions == 'view' and job_title == 'CURATOR':
         cur = curator()
         arg = request.POST.get('animal_id')
         if arg:
             res = cur.remove_animal(request.session['id'], arg)
-            if res:
-                print('ok')
-        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
-        return redirect(url)
+            # if res:
+            #     print('ok')
 
-
-def testing(request, job_title, actions, id_num):
     url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
     return redirect(url)
 
 
 def creating(request, job_title, actions):
+    """
+    insert data into different tables
+    DIRECTOR:
+    create a new event by assign event id, title,type and manager id
+    CURATOR:
+    add a new animal under his name into table with animal id,name, type,facility id
+    :param request:
+    :param job_title:
+    :param actions:
+    :return:
+    """
     if actions == 'view' and job_title == 'DIRECTOR':
         create_event = []
         create_event.append(request.POST.get('event_id'))
@@ -261,10 +354,7 @@ def creating(request, job_title, actions):
         if create_event[0] and create_event[1] and create_event[2] and create_event[3]:
             dire = director()
             res = dire.create_event(*create_event)
-            if res:
-                print("ok")
-        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
-        return redirect(url)
+
     elif actions == 'view' and job_title == 'CURATOR':
         cur = curator()
         arg_list = []
@@ -274,15 +364,18 @@ def creating(request, job_title, actions):
         arg_list.append(request.session['id'])
         arg_list.append(request.POST.get('facility_id'))
         cur.add_new_animal(*arg_list)
-        url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
-        return redirect(url)
+
+    url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
+    return redirect(url)
 
 
-def check_title(request) -> int:
+def check_title(request):
     """
-    by checking the table name set the job title for it
-    title = staff, when table is aquarist,curator,event_manager
-    title = Director when table is general_manager
+    by checking the database table name set the job title for it
+    aquarist:AQUARIST
+    curator:CURATOR
+    event_manager:MANAGER
+    general_manager:DIRECTOR
     """
     table = request.session['table']
     if table is not None:
