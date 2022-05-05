@@ -10,6 +10,11 @@ urlpatterns = [
     re_path(r'^(?P<job_title>\w+)/(?P<actions>\w+)/$', views.main_view, name = 'main_report'),
     re_path(r'^(?P<job_title>\w+)/(?P<actions>\w+)/edit/$', views.editing, name = 'jobs_edit'),
     re_path(r'^(?P<job_title>\w+)/(?P<actions>\w+)/delete/$', views.deleting, name = 'jobs_delete'),
+    re_path(r'^(?P<job_title>\w+)/(?P<actions>\w+)/delete/fire$', views.fire, name = 'jobs_fire'),
+
+    re_path(r'^(?P<job_title>\w+)/(?P<actions>\w+)/delete/(?P<id_num>\d+)$', views.deleting, name = 'jobs_delete_item'),
+
+
     re_path(r'^(?P<job_title>\w+)/(?P<actions>\w+)/create/$', views.creating, name = 'jobs_create'),
     re_path(r'^(?P<job_title>\w+)/(?P<actions>\w+)/(?P<id_num>\d+)/$', views.testing, name = 'jobs_test'),
 

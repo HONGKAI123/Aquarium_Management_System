@@ -116,8 +116,10 @@
 										{% endif %}
 									{% endfor %}
 									</td>
-
 								</tr>
+								{#								<button class="btn btn-primary" type="submit" onclick="location.href='{% url 'jobs_delete_item' job_title actions forloop.first|add:'0' %}'">#}
+								{#								Fire!#}
+								{#								</button>#}
 							{% endfor %}
 							</tbody>
 						</table>
@@ -190,6 +192,13 @@
 							{% endfor %}
 							</tbody>
 						</table>
+						<form action="{% url 'jobs_fire' job_title actions %}" method="post">
+							{% csrf_token %}
+							<div class="input-field">
+								<input type="text" placeholder="Enter a ID from above" name="fire_delete">
+								<button type="submit" class="btn btn-danger md-3">Fire!</button>
+							</div>
+						</form>
 						<button id="mybutton" type="button" class="btn btn-primary">Hire</button>
 						<script>
                             document.getElementById("mybutton").onclick = function () {

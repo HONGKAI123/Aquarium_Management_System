@@ -21,7 +21,6 @@ class query():
         self.cursor().close()
         self.conn.disconnect()
 
-
 class aquarist():
     def __init__(self):
         self.q = query()
@@ -51,43 +50,32 @@ class aquarist():
         finally:
             return ['Facility', 'ID', 'Maintenance Time'], result
 
-    def maintain_facility(self, *arg):
-        # todo effected row not return
+    def maintain_facility(self,*args):
         """
-        Update facility maintanence status
-        :param arg:
-        [user_id, fa_id, maint_time]
-        user_id string :'987153744'
-        fac_id string : '300001'
-        time_slot type??? : '12:00:00'
-        :return:
+        arg = [fa_id, maint_time]
+        returns success or error message
+
+        take input of facility id and maintanence time slot,
+        change the maintanence status to TRUE for that instance
         """
-        # Check if the fa_id and maint_time combo exists for current user
-        input_match = False
-        for i in self.check_maint_times(arg[0])[1]:
-            if str(i[1]) == str(arg[1]) and str(i[2]) == str(arg[2]):
-                input_match = True
+        # db connection API
+        q = query()
 
-        try:
-            if input_match == True:
-                query = "UPDATE facility_maint \
-                SET maint_status = 1 \
-                WHERE facility = '{0}' \
-                AND maint_time = '{1}';".format(arg[1], arg[2])
-            cursor = self.cursor()
-            cursor.execute(query)
+        # build SQL query
+        sql_query = "\
+            UPDATE facility_maint \
+            SET maint_status = true \
+            WHERE facility = '{0}' \
+            AND maint_time = '{1}';".format(args[0], args[1])
+        print('sql',sql_query)
+        # connect to API
+        with q.cursor() as cur:
+            cur.execute(sql_query)
+            q.conn.commit()
+            res = cur.rowcount
 
-            # print(self.cursor.rowcount)
-            print(query)
-            print('?')
-            self.q.conn.commit()
-            self.q.disconnect()
-        except connector.Error as e:
-            print(e)
-
-        # SJSU CMPE 138 Spring 2022 TEAM6
-        finally:
-            return True if self.cursor.rowcount > 0 else False
+        # whether the data is modified
+        return True if res > 0 else False
 
 
 class director():
@@ -347,78 +335,6 @@ class director():
         return True if res > 0 else False
 
 
-class aquarist():
-    # check maintanence times
-    # arg = [user_id]
-    def check_maint_times(self, *arg):
-        ls = ['Facility Name', 'Facility ID', 'Maintenance Time']
-        sql_query = "\
-        SELECT name AS 'Facility', fa_id AS 'ID', maint_time AS 'Maintenance Time' \
-        FROM facility_maint \
-        LEFT JOIN facility ON facility.fa_id = facility_maint.facility \
-        LEFT JOIN maintain ON fa_id = maintain.facility \
-        WHERE maint_status = FALSE \
-        AND staff = '" + arg[0] + "' \
-        ORDER BY maint_time ASC;"
-
-        q = query()
-        with q.cursor() as cur:
-            cur.execute(sql_query)
-            # catch return result
-            res = cur.fetchall()
-
-        # """
-        # Use block below if returning query results directly
-        # RETURN FORMAT: list of tuples [('facility_name', 'fa_id', maint_time), ...]
-
-        return ls, res
-
-        """
-        # Use block below if returning list[rows[]]
-        # RETURN FORMAT: list of lists [['facility_name', 'fa_id', maint_time], ...]
-        result = []
-        #result.append(['Facility', 'ID', 'Maintenance Time']) # Add header row if necessary
-        for x in cursor.fetchall():
-            result.append(list(x))
-        # check results
-        for i in result:
-            print(i[0], ' ', i[1], ' ', i[2])
-        """
-        return result
-
-    # Update facility maintanence status
-    # arg = [user_id, fa_id, maint_time]
-    def maintain_facility(self, *arg):
-        # Check if the fa_id and maint_time combo exists for current user
-        print(*arg)
-        input_match = False
-        for i in self.check_maint_times(arg[0]):
-            print(self.check_maint_times(arg[0]))
-            print(str(i[1]),"str 1")
-            print(str(i[2]),"str 2")
-            if str(i[1]) == str(arg[1]) and str(i[2]) == str(arg[2]):
-                input_match = True
-
-        if input_match:
-            sql_query = "\
-            UPDATE facility_maint \
-            SET maint_status = true \
-            WHERE facility = '" + arg[1] + "' \
-            AND maint_time = '" + arg[2] + "';"
-        else:
-            return False
-
-        q = query()
-        with q.cursor() as cur:
-            cur.execute(sql_query)
-            # 提交修改后的语句到数据库
-            print("sql",sql_query)
-            q.conn.commit()
-
-            # 获取被修改的行数
-            res = cur.rowcount
-
-        return True if res > 0 else False
 
 
 class curator():

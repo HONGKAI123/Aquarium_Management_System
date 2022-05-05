@@ -143,7 +143,7 @@ def main_view(request, actions, job_title):
         for i in result1[1]:
             id_list.append(i[1])
         # print(test_list)
-        cura_line = zip(result1,id_list)
+        cura_line = zip(result1, id_list)
         cont = {
             'actions': actions,
             'job_title': job_title,
@@ -153,7 +153,6 @@ def main_view(request, actions, job_title):
             # 'ava_h': result2[0],
             # 'ava_r': result2[1],
         }
-
 
         return render(request, "Curator/curator.html", cont)
 
@@ -166,12 +165,19 @@ def editing(request, job_title, actions):
         url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
         return redirect(url)
     elif actions == 'view' and job_title == 'AQUARIST':
-        # todo 有问题
         aq = aquarist()
-        arg_list = [request.session['id'], request.POST.get('maintain_id'), request.POST.get('maintain_time')]
+        arg_list = [request.POST.get('maintain_id'), request.POST.get('maintain_time')]
         aq.maintain_facility(*arg_list)
         url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
         return redirect(url)
+
+
+def fire(request, job_title, actions):
+    id = request.POST.get('fire_delete')
+    dire = director()
+    dire.fire_staff(id)
+    url = reverse('main_report', kwargs = {'job_title': job_title, "actions": "view"})
+    return redirect(url)
 
 
 def deleting(request, job_title, actions):
